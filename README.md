@@ -148,11 +148,34 @@ npx skills add FW1201/tw-edu-skills --all -a antigravity
 
 ---
 
-## 👨‍💻 作者
+## ⚠️ 重要聲明
 
-**奇老師・數位敘事力社群**  
-GitHub：[@FW1201](https://github.com/FW1201)
+### 鼓勵共創與客製化
+
+本套組以開放精神釋出，**歡迎所有人 Fork、客製化、延伸開發**。  
+唯使用或衍生本套組時，請務必遵守以下 Citation 規範：
+
+```
+吳奇（Kevin Wu）. (2025). tw-edu-skills: K-12 教學 Claude Skills 套組 [Software].
+數位敘事力期刊. https://github.com/FW1201/tw-edu-skills
+```
+
+> 本套組的設計理念深受 **曾慶良老師**（GitHub：[@ChatGPT3a01](https://github.com/ChatGPT3a01)）啟發，  
+> 在此致上誠摯謝意。
+
+如需提交貢獻或客製化 Skills，請參閱 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ---
 
-*本套組採 MIT 授權。歡迎 Fork、提 Issue、或 PR 貢獻新 Skill。*
+## 👨‍💻 作者
+
+**奇老師・數位敘事力期刊**  
+GitHub：[@FW1201](https://github.com/FW1201)
+
+📘 [Facebook](https://www.facebook.com/Journal.of.Digital.Narrative) ｜
+▶️ [YouTube](https://www.youtube.com/@Journal_of_Digital_Narrative) ｜
+📸 [Instagram](https://www.instagram.com/journal_of_digital_narrative/)
+
+---
+
+*本套組採 MIT 授權。歡迎 Fork、提 Issue、或 PR 貢獻新 Skill。使用時請標註來源。*
