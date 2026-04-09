@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# 測試輸出（本地產生，不上傳）
+*.docx
+*.xlsx
+*.pptx
+*.pdf
+/tmp/
+
+# 環境
+.env
+.venv
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# 不上傳個資相關檔案
+*_個資*
+*_student_data*

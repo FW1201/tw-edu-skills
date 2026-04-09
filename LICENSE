@@ -1,0 +1,35 @@
+MIT License
+
+Copyright (c) 2026 吳奇（奇老師）・數位敘事力社群
+https://github.com/YOUR_USERNAME/tw-edu-skills
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 關於本專案
+
+本套組依據 Anthropic Agent Skills Open Standard 開發，
+遵循開源精神，歡迎臺灣教師社群自由使用、修改與分享。
+
+引用建議：
+吳奇（2026）。臺灣 K-12 教育 Claude Code Skills 套組。
+GitHub: https://github.com/YOUR_USERNAME/tw-edu-skills
+
+「AI 是工具，教師才是靈魂。」

@@ -1,0 +1,217 @@
+name: 測試所有 Skills 腳本
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-scripts:
+    name: 測試 Python 生成腳本
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 取出程式碼
+      uses: actions/checkout@v4
+
+    - name: 設定 Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: 安裝依賴套件
+      run: pip install -r requirements.txt
+
+    - name: 測試 A1 教案生成
+      run: |
+        python3 tw-edu-lesson-plan-108/scripts/generate_lesson_plan.py \
+          --subject 國語文 --title 背影 --grade 國中八年級 \
+          --publisher 翰林 --periods 3 --output /tmp/test_a1.docx
+        ls -lh /tmp/test_a1.docx
+        python3 -c "from docx import Document; d=Document('/tmp/test_a1.docx'); print(f'✓ A1 教案 {len(d.tables)} 個表格')"
+
+    - name: 測試 A2 課程地圖
+      run: |
+        python3 tw-edu-curriculum-mapper/scripts/generate_curriculum_map.py \
+          --subject 國語文 --grade 國中八年級 \
+          --units "背影,鄉愁,岳陽樓記" --output /tmp/test_a2.xlsx
+        ls -lh /tmp/test_a2.xlsx
+        python3 -c "from openpyxl import load_workbook; wb=load_workbook('/tmp/test_a2.xlsx'); print(f'✓ A2 課程地圖 {len(wb.sheetnames)} 工作表')"
+
+    - name: 測試 A3 差異化教學
+      run: |
+        python3 tw-edu-differentiated/scripts/generate_differentiated.py \
+          --subject 國語文 --title 背影 --output /tmp/test_a3.docx
+        ls -lh /tmp/test_a3.docx && echo "✓ A3 OK"
+
+    - name: 測試 A4 跨領域課程
+      run: |
+        python3 tw-edu-interdisciplinary/scripts/generate_interdisciplinary.py \
+          --question "如何讓城市更永續？" --subjects "社會,自然" \
+          --weeks 4 --output /tmp/test_a4.docx
+        ls -lh /tmp/test_a4.docx && echo "✓ A4 OK"
+
+    - name: 測試 B1 評量規準
+      run: |
+        python3 tw-edu-rubric-designer/scripts/generate_rubric.py \
+          --task 議論文寫作 --subject 國語文 --output /tmp/test_b1.docx
+        ls -lh /tmp/test_b1.docx && echo "✓ B1 OK"
+
+    - name: 測試 B2 試卷
+      run: |
+        python3 tw-edu-exam-generator/scripts/generate_exam.py \
+          --subject 國語文 --grade 國中九年級 --output /tmp/test_b2.docx
+        ls -lh /tmp/test_b2.docx && echo "✓ B2 OK"
+
+    - name: 測試 B3 形成性評量
+      run: |
+        python3 tw-edu-formative-assessment/scripts/generate_formative.py \
+          --type all --output /tmp/test_b3.docx
+        ls -lh /tmp/test_b3.docx && echo "✓ B3 OK"
+
+    - name: 測試 C1 學習單
+      run: |
+        python3 tw-edu-worksheet-creator/scripts/generate_worksheet.py \
+          --topic 背影 --output /tmp/test_c1.docx
+        ls -lh /tmp/test_c1.docx && echo "✓ C1 OK"
+
+    - name: 測試 C2 閱讀鷹架
+      run: |
+        python3 tw-edu-reading-scaffold/scripts/generate_reading_scaffold.py \
+          --title 背影 --genre 記敘文 --output /tmp/test_c2.docx
+        ls -lh /tmp/test_c2.docx && echo "✓ C2 OK"
+
+    - name: 測試 C3 字詞教材
+      run: |
+        python3 tw-edu-vocab-material/scripts/generate_vocab.py \
+          --type all --output /tmp/test_c3.docx
+        ls -lh /tmp/test_c3.docx && echo "✓ C3 OK"
+
+    - name: 測試 D1 回饋評語
+      run: |
+        python3 tw-edu-feedback-writer/scripts/generate_feedback.py \
+          --task 議論文寫作 --output /tmp/test_d1.docx
+        ls -lh /tmp/test_d1.docx && echo "✓ D1 OK"
+
+    - name: 測試 D2 學習歷程
+      run: |
+        python3 tw-edu-learning-portfolio/scripts/generate_portfolio.py \
+          --type course_result --output /tmp/test_d2.docx
+        ls -lh /tmp/test_d2.docx && echo "✓ D2 OK"
+
+    - name: 測試 D3 IEP 框架
+      run: |
+        python3 tw-edu-student-iep/scripts/generate_iep.py \
+          --disability_type 學習障礙 --output /tmp/test_d3.docx
+        ls -lh /tmp/test_d3.docx && echo "✓ D3 OK"
+
+    - name: 測試 E1 親師溝通
+      run: |
+        python3 tw-edu-parent-communication/scripts/generate_parent_comm.py \
+          --type activity --teacher 測試老師 --output /tmp/test_e1.docx
+        ls -lh /tmp/test_e1.docx && echo "✓ E1 OK"
+
+    - name: 測試 E2 班級經營
+      run: |
+        python3 tw-edu-classroom-culture/scripts/generate_classroom.py \
+          --type all --output /tmp/test_e2.docx
+        ls -lh /tmp/test_e2.docx && echo "✓ E2 OK"
+
+    - name: 測試 E3 行政文書
+      run: |
+        python3 tw-edu-school-document/scripts/generate_school_doc.py \
+          --type plan --subject 課程計畫 --output /tmp/test_e3.docx
+        ls -lh /tmp/test_e3.docx && echo "✓ E3 OK"
+
+    - name: 測試 E4 會議文件
+      run: |
+        python3 tw-edu-meeting-facilitator/scripts/generate_meeting.py \
+          --type plc --output /tmp/test_e4.docx
+        ls -lh /tmp/test_e4.docx && echo "✓ E4 OK"
+
+    - name: 測試 F1 AI素養簡報
+      run: |
+        python3 tw-edu-ai-literacy/scripts/generate_ai_literacy_pptx.py \
+          --type prompt --output_pptx /tmp/test_f1.pptx
+        ls -lh /tmp/test_f1.pptx && echo "✓ F1 OK"
+
+    - name: 測試 F2 數位敘事簡報
+      run: |
+        python3 tw-edu-digital-story/scripts/generate_story_pptx.py \
+          --topic 我的故事 --output_pptx /tmp/test_f2.pptx
+        ls -lh /tmp/test_f2.pptx && echo "✓ F2 OK"
+
+    - name: 測試 F3 PBL設計
+      run: |
+        python3 tw-edu-pbl-designer/scripts/generate_pbl.py \
+          --question "測試驅動問題？" --weeks 4 --output /tmp/test_f3.docx
+        ls -lh /tmp/test_f3.docx && echo "✓ F3 OK"
+
+    - name: 確認所有輸出檔案大小正常
+      run: |
+        echo "=== 所有測試輸出 ==="
+        for f in /tmp/test_*.docx /tmp/test_*.xlsx /tmp/test_*.pptx; do
+          size=$(stat -c%s "$f" 2>/dev/null || echo 0)
+          if [ "$size" -gt 20000 ]; then
+            echo "✅ $f ($((size/1024))K)"
+          else
+            echo "❌ $f 檔案過小或不存在 ($size bytes)"
+            exit 1
+          fi
+        done
+        echo "=== 所有 20 個 Skills 測試通過 🎉 ==="
+
+  validate-skills:
+    name: 驗證 SKILL.md 格式
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: 安裝 Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: 安裝 PyYAML
+      run: pip install pyyaml
+
+    - name: 驗證所有 SKILL.md 的 YAML frontmatter
+      run: |
+        python3 << 'EOF'
+        import os, yaml, sys
+        errors = []
+        base = '.'
+        for skill_dir in os.listdir(base):
+            skill_path = os.path.join(base, skill_dir)
+            skill_md = os.path.join(skill_path, 'SKILL.md')
+            if not os.path.isfile(skill_md): continue
+            with open(skill_md) as f:
+                content = f.read()
+            if not content.startswith('---'): 
+                errors.append(f'{skill_dir}: 缺少 YAML frontmatter')
+                continue
+            parts = content.split('---', 2)
+            if len(parts) < 3:
+                errors.append(f'{skill_dir}: frontmatter 格式錯誤')
+                continue
+            try:
+                meta = yaml.safe_load(parts[1])
+                required = ['name', 'description', 'version']
+                for field in required:
+                    if field not in meta:
+                        errors.append(f'{skill_dir}: 缺少必要欄位 {field}')
+                # 確認 description 包含中文觸發詞
+                desc = str(meta.get('description',''))
+                if not any(c > '\u4e00' for c in desc):
+                    errors.append(f'{skill_dir}: description 應包含中文觸發詞')
+                print(f'✓ {skill_dir}: name={meta.get("name","?")} v{meta.get("version","?")}')
+            except yaml.YAMLError as e:
+                errors.append(f'{skill_dir}: YAML 解析錯誤 {e}')
+        
+        if errors:
+            print('\n❌ 驗證失敗:')
+            for e in errors: print(f'  - {e}')
+            sys.exit(1)
+        else:
+            print('\n✅ 所有 SKILL.md 格式驗證通過')
+        EOF
