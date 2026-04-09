@@ -156,7 +156,7 @@ npx skills add FW1201/tw-edu-skills --all -a antigravity
 唯使用或衍生本套組時，請務必遵守以下 Citation 規範：
 
 ```
-吳奇（Kevin Wu）. (2025). tw-edu-skills: K-12 教學 Claude Skills 套組 [Software].
+吳奇（Kevin Wu）. (2026). tw-edu-skills: K-12 教學 Claude Skills 套組 [Software].
 數位敘事力期刊. https://github.com/FW1201/tw-edu-skills
 ```
 
