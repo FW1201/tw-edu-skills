@@ -1,156 +1,158 @@
-# 臺灣 K-12 教育 Claude Code Skills 套組
+# tw-edu-skills — K-12 教學 Claude Skills 套組
 
-> 專為臺灣中小學教師設計的 20 種 AI 輔助教學技能，以「**教師素養為主、AI 為輔**」為核心哲學，全面對應 108 課綱。
+> **臺灣 K-12 教師專用 AI 技能套組**  
+> 基於 108 課綱素養導向設計，涵蓋備課、命題、評量、班級經營、親師溝通等完整教學流程。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Platform: Claude Code](https://img.shields.io/badge/Platform-Claude%20Code-orange)](https://code.claude.com)
-[![Agent Skills Standard](https://img.shields.io/badge/Standard-Agent%20Skills%20Open%20Standard-blue)](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
-
----
-
-## ✨ 功能一覽
-
-| 類別 | Skill 名稱 | 主要輸出 | 說明 |
-|------|-----------|---------|------|
-| **A 課程設計** | tw-edu-lesson-plan-108 | .docx | 108課綱素養導向教案（各領域） |
-| | tw-edu-curriculum-mapper | .xlsx | 課程地圖與學習表現對應 |
-| | tw-edu-differentiated | .docx | 差異化教學設計（三層次） |
-| | tw-edu-interdisciplinary | .docx + .pptx | 跨領域/彈性課程設計 |
-| **B 評量命題** | tw-edu-rubric-designer | .docx | 評量規準（整體式/分析式） |
-| | tw-edu-exam-generator | .docx | 各科試卷（含答案卷） |
-| | tw-edu-formative-assessment | .docx | 形成性評量工具包 |
-| **C 教材資源** | tw-edu-worksheet-creator | .docx | 素養導向學習單 |
-| | tw-edu-reading-scaffold | .docx | 閱讀理解鷹架 |
-| | tw-edu-vocab-material | .docx | 字詞教學材料 |
-| **D 學生表現** | tw-edu-feedback-writer | .docx | 學生作業/作文評語 |
-| | tw-edu-learning-portfolio | .docx | 學習歷程檔案輔助 |
-| | tw-edu-student-iep | .docx | 個別化教育計畫框架 |
-| **E 班級行政** | tw-edu-parent-communication | .docx | 親師溝通文件 |
-| | tw-edu-classroom-culture | .docx | 班級經營策略 |
-| | tw-edu-school-document | .docx | 校園公文與計畫書 |
-| | tw-edu-meeting-facilitator | .docx | 會議議程與記錄 |
-| **F AI素養** | tw-edu-ai-literacy | .pptx | AI素養融入教學方案 |
-| | tw-edu-digital-story | .pptx | 數位敘事力教學 |
-| | tw-edu-pbl-designer | .docx | 專題式學習（PBL）設計 |
+[![Skills](https://img.shields.io/badge/Skills-18-green)](https://github.com/FW1201/tw-edu-skills)
+[![Version](https://img.shields.io/badge/Version-3.0-blue)](https://github.com/FW1201/tw-edu-skills)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 ---
 
-## 🚀 快速安裝
+## 📦 套組概覽
 
-### 方式一：一鍵安裝（推薦）
+本套組包含 **18 個 Skills**，面向臺灣 K-12 各學段教師，深度整合：
+- 108 課綱核心素養三面九項
+- 十大學習領域 × 各版本教科書（南一/翰林/康軒）
+- SDGs / ESG 跨領域議題
+- 差異化教學（NESA 特教規範）
+
+> **相關套組**：[tw-stu-skills（學生）](https://github.com/FW1201/tw-stu-skills) ｜ [tw-research-skills（學術研究）](https://github.com/FW1201/tw-research-skills)
+
+---
+
+## 🛠 Skills 清單
+
+### 課程設計
+| Skill | 功能說明 |
+|-------|---------|
+| `tw-edu-lesson-plan-108` | 依 108 課綱生成素養導向教案（.docx），支援所有學習領域 |
+| `tw-edu-curriculum-mapper` | 繪製課程地圖，對應核心素養指標 |
+| `tw-edu-differentiated` | 差異化教學設計，依學生程度分組教學策略 |
+| `tw-edu-interdisciplinary` | 跨領域/跨科課程設計，整合 SDGs 議題 |
+| `tw-edu-pbl-designer` | 專題式學習（PBL）完整設計，含驅動問題、任務鷹架、成果展示 |
+
+### 評量命題
+| Skill | 功能說明 |
+|-------|---------|
+| `tw-edu-exam-generator` | 素養導向試題生成，支援會考/學測題型，含閱讀素材 |
+| `tw-edu-rubric-designer` | 評量規準（Rubric）設計，布魯姆認知層次對應 |
+| `tw-edu-formative-assessment` | 形成性評量工具設計（提問策略、出口票、同儕互評） |
+| `tw-edu-anti-ai-assessment` | 抗 AI 作弊評量設計，確保學習真實性 |
+
+### 教材資源
+| Skill | 功能說明 |
+|-------|---------|
+| `tw-edu-worksheet-creator` | 學習單製作，支援引導式問題設計與素養題型 |
+| `tw-edu-slides-creator` | 教學簡報製作，含視覺化架構建議 |
+| `tw-edu-mini-app` | 生成互動式教學小程式（HTML Artifact），無需寫程式 |
+
+### 學生表現
+| Skill | 功能說明 |
+|-------|---------|
+| `tw-edu-feedback-writer` | 學生評語撰寫，個人化、具體描述學習表現 |
+
+### 班級行政
+| Skill | 功能說明 |
+|-------|---------|
+| `tw-edu-classroom-culture` | 班級經營計畫、班規設計、導師輔導策略 |
+| `tw-edu-parent-communication` | 親師溝通信件、聯絡簿回覆、家長說明文件 |
+| `tw-edu-school-document` | 校園公文寫作（會議記錄、申請表、活動計畫） |
+| `tw-edu-meeting-facilitator` | 教師會議引導，生成會議議程、摘要與行動事項 |
+
+### 套組設定
+| Skill | 功能說明 |
+|-------|---------|
+| `tw-edu-synchronizer` | 個人化套組設定助手，根據科別/年段/教學風格客製化所有 Skills 行為 |
+
+---
+
+## 🚀 安裝方式
+
+### Claude Code（推薦）
+
+Claude Code 是本套組設計的**主要平台**，所有功能完整支援。
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/tw-edu-skills/main/install.sh | bash
+# 安裝全套組（18 個 Skills）
+npx skills add FW1201/tw-edu-skills --all -a claude-code
+
+# 安裝單一 Skill
+npx skills add FW1201/tw-edu-skills tw-edu-lesson-plan-108 -a claude-code
+
+# 確認安裝
+npx skills list -a claude-code
+
+# 更新套組
+npx skills update -a claude-code
 ```
 
-### 方式二：手動安裝全套
+安裝後，在 Claude Code 中直接輸入觸發詞即可啟動（例如：「幫我寫一份教案」、「設計一份試卷」）。
+
+### Codex CLI
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/tw-edu-skills.git
-cd tw-edu-skills
-bash install.sh
+# 安裝（需先有 Codex CLI 環境）
+npx skills add FW1201/tw-edu-skills --all -a codex
 ```
 
-### 方式三：安裝單一 Skill
+> ⚠️ **Codex 限制**：
+> - `Bash` 工具不支援（無法執行 Python/R 程式碼）
+> - MCP Connectors（Notion、Google Drive、Gmail、Google Calendar、Canva）**不可用**
+> - 涉及 `.docx` / `.pdf` 生成的功能需搭配 `docx`、`pdf` Skill
+
+### Antigravity
 
 ```bash
-bash install.sh tw-edu-lesson-plan-108
+# 安裝
+npx skills add FW1201/tw-edu-skills --all -a antigravity
 ```
 
-### 方式四：學校/組織統一部署
-
-```bash
-# 在專案 .claude/skills/ 目錄加入 submodule
-git submodule add https://github.com/YOUR_USERNAME/tw-edu-skills .claude/skills/tw-edu-bundle
-```
+> ⚠️ **Antigravity 限制**：
+> - MCP Connectors 支援程度依個人環境而定
+> - 互動式 HTML Artifact（`tw-edu-mini-app`）需確認瀏覽器預覽功能已啟用
+> - 部分 `WebSearch` 功能依連線狀態而定
 
 ---
 
-## 📋 系統需求
+## 🔌 MCP Connectors 整合
 
-| 項目 | 需求 |
-|------|------|
-| Claude Code | 最新版本（Pro / Max / Team / Enterprise） |
-| Python | 3.9 以上 |
-| Python 套件 | `pip install -r requirements.txt` |
-| 中文字型 | 標楷體（macOS 內建）或 Noto Serif CJK TC |
+本套組部分 Skills 可連接以下 MCP Connectors（需在 Claude Code 中設定）：
 
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 💡 使用方式
-
-安裝後，在 Claude Code 中直接用中文描述需求：
-
-```
-# 教案生成
-請幫我做一份《背影》的教案，國中八年級，翰林版，3節課
-
-# 出題
-幫我出一份國中九年級數學二次方程式的段考題，30題，含選擇和計算
-
-# 評量規準
-設計一份議論文寫作的評量規準，高中二年級
-
-# 親師溝通
-幫我寫一封給家長的班訊，說明下週戶外教學的注意事項
-```
-
-Claude 會自動辨識情境，載入對應 skill，引導你輸入必要參數，產出完整 .docx / .pptx / .xlsx 文件。
+| Connector | 應用 Skills | 功能 |
+|-----------|------------|------|
+| Google Drive | 所有 Skills | 讀取已有素材、儲存生成文件 |
+| Gmail | `tw-edu-parent-communication` | 直接生成信件草稿 |
+| Google Calendar | `tw-edu-lesson-plan-108`, `tw-edu-worksheet-creator` | 課程排程自動建立 |
+| Notion | 所有 Skills | 知識庫存檔、教案管理 |
+| Canva | `tw-edu-slides-creator`, `tw-edu-worksheet-creator` | 設計模板套用 |
+| Gamma | `tw-edu-slides-creator` | AI 生成教學簡報 |
 
 ---
 
-## 🏗️ 專案結構
+## 💡 第一次使用建議
 
-```
-tw-edu-skills/
-├── tw-edu-lesson-plan-108/
-│   ├── SKILL.md          # 核心指令（Claude 讀取）
-│   ├── references/        # 108課綱指標、格式規範
-│   ├── scripts/           # Python 文件生成腳本
-│   └── assets/            # 樣板、圖示
-├── tw-edu-exam-generator/
-│   └── ...
-├── install.sh             # 安裝腳本
-├── requirements.txt       # Python 依賴
-└── README.md
-```
+1. **執行 `tw-edu-synchronizer`**（輸入「我要設定教師套組」）  
+   → 完成 10 分鐘問卷，系統自動記住你的科別、年段、教學偏好
+2. **嘗試 `tw-edu-lesson-plan-108`**（輸入「幫我設計一份國文教案」）
+3. 依需求使用其他 Skills
 
 ---
 
-## 📐 設計原則
+## 📐 設計理念
 
-1. **漸進揭露**：SKILL.md 僅載核心邏輯，細節參考置於 `references/`
-2. **直覺引導**：每個 skill 啟動後主動詢問年級、科目、版本等參數
-3. **108課綱原生**：使用素養導向、學習表現等臺灣教育術語
-4. **跨平台相容**：遵循 Agent Skills Open Standard，相容 Claude Code / Claude.ai / API
-5. **美觀文件**：產出符合臺灣教師習慣的精美排版文件
-
----
-
-## 🤝 貢獻指南
-
-歡迎教師社群參與改善！
-1. Fork 此專案
-2. 建立功能分支：`git checkout -b feature/改善XX教案格式`
-3. 提交變更：`git commit -m 'feat: 新增高中英文教案模板'`
-4. 推送分支並建立 Pull Request
+- **素養優先**：所有輸出對應 108 課綱核心素養三面九項
+- **教師主導**：AI 提供草稿與架構，教師保有最終判斷權
+- **概念對齊**：每個 Skill 執行前確認使用者意圖，避免誤解
+- **本土深度**：台灣版本教科書（南一/翰林/康軒）+ 本土文化語境
 
 ---
 
-## 📄 授權
+## 👨‍💻 作者
 
-MIT License © 2026 奇老師 · 數位敘事力社群
+**奇老師・數位敘事力社群**  
+GitHub：[@FW1201](https://github.com/FW1201)
 
 ---
 
-## 🙏 致謝
-
-- 臺灣教育部 108 課綱相關文件
-- Anthropic Agent Skills Open Standard
-- 翻轉教育、數位敘事力期刊教師社群
-
-> 「AI 是工具，教師才是靈魂。」——奇老師
+*本套組採 MIT 授權。歡迎 Fork、提 Issue、或 PR 貢獻新 Skill。*
