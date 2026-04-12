@@ -76,17 +76,34 @@ jobs:
           --topic 背影 --output /tmp/test_c1.docx
         ls -lh /tmp/test_c1.docx && echo "✓ C1 OK"
 
-    - name: 測試 C2 閱讀鷹架
+    - name: 測試 C2 教學簡報
       run: |
-        python3 tw-edu-reading-scaffold/scripts/generate_reading_scaffold.py \
-          --title 背影 --genre 記敘文 --output /tmp/test_c2.docx
-        ls -lh /tmp/test_c2.docx && echo "✓ C2 OK"
-
-    - name: 測試 C3 字詞教材
-      run: |
-        python3 tw-edu-vocab-material/scripts/generate_vocab.py \
-          --type all --output /tmp/test_c3.docx
-        ls -lh /tmp/test_c3.docx && echo "✓ C3 OK"
+        python3 -c "
+        import json
+        content = {
+          'title': '背影', 'subject': '國語文', 'grade': '國中八年級',
+          'objectives': ['能描述文章中的情感', '能分析父子關係'],
+          'slides': [
+            {'layout': 'hero_message', 'headline': '「背影」', 'subtext': '朱自清'},
+            {'layout': 'content', 'title': '文章主旨', 'bullets': ['父子情深', '離別之感'], 'note': ''},
+            {'layout': 'big_quote', 'quote': '我看見他戴著黑布小帽', 'source': '朱自清《背影》'},
+            {'layout': 'discussion', 'question': '文中父親的行為讓你想到什麼？', 'thinking_time': '2'},
+            {'layout': 'two_column', 'title': '文章特色', 'left_title': '寫作手法', 'left_bullets': ['白描', '細節描寫'], 'right_title': '情感表現', 'right_text': '質樸真摯的父愛'}
+          ],
+          'discussion_question': '你與父母之間有什麼難忘的回憶？',
+          'summary': [['背影', '父愛象徵'], ['白描', '樸實筆法']],
+          'homework': '寫一段描述家人的文字'
+        }
+        with open('/tmp/test_slides.json','w',encoding='utf-8') as f:
+            json.dump(content, f, ensure_ascii=False)
+        print('JSON created')
+        "
+        python3 tw-edu-slides-creator/scripts/generate_slides.py \
+          --title 背影 --subject 國語文 --grade 國中八年級 \
+          --stage junior --style modern --icons emoji \
+          --content_file /tmp/test_slides.json \
+          --output /tmp/test_c2.pptx
+        ls -lh /tmp/test_c2.pptx && echo "✓ C2 教學簡報 OK"
 
     - name: 測試 D1 回饋評語
       run: |
@@ -99,12 +116,6 @@ jobs:
         python3 tw-edu-learning-portfolio/scripts/generate_portfolio.py \
           --type course_result --output /tmp/test_d2.docx
         ls -lh /tmp/test_d2.docx && echo "✓ D2 OK"
-
-    - name: 測試 D3 IEP 框架
-      run: |
-        python3 tw-edu-student-iep/scripts/generate_iep.py \
-          --disability_type 學習障礙 --output /tmp/test_d3.docx
-        ls -lh /tmp/test_d3.docx && echo "✓ D3 OK"
 
     - name: 測試 E1 親師溝通
       run: |
@@ -130,18 +141,6 @@ jobs:
           --type plc --output /tmp/test_e4.docx
         ls -lh /tmp/test_e4.docx && echo "✓ E4 OK"
 
-    - name: 測試 F1 AI素養簡報
-      run: |
-        python3 tw-edu-ai-literacy/scripts/generate_ai_literacy_pptx.py \
-          --type prompt --output_pptx /tmp/test_f1.pptx
-        ls -lh /tmp/test_f1.pptx && echo "✓ F1 OK"
-
-    - name: 測試 F2 數位敘事簡報
-      run: |
-        python3 tw-edu-digital-story/scripts/generate_story_pptx.py \
-          --topic 我的故事 --output_pptx /tmp/test_f2.pptx
-        ls -lh /tmp/test_f2.pptx && echo "✓ F2 OK"
-
     - name: 測試 F3 PBL設計
       run: |
         python3 tw-edu-pbl-designer/scripts/generate_pbl.py \
@@ -160,7 +159,7 @@ jobs:
             exit 1
           fi
         done
-        echo "=== 所有 20 個 Skills 測試通過 🎉 ==="
+        echo "=== 所有 16 個 Skills 測試通過 🎉 ==="
 
   validate-skills:
     name: 驗證 SKILL.md 格式
@@ -187,7 +186,7 @@ jobs:
             if not os.path.isfile(skill_md): continue
             with open(skill_md) as f:
                 content = f.read()
-            if not content.startswith('---'): 
+            if not content.startswith('---'):
                 errors.append(f'{skill_dir}: 缺少 YAML frontmatter')
                 continue
             parts = content.split('---', 2)
@@ -200,14 +199,13 @@ jobs:
                 for field in required:
                     if field not in meta:
                         errors.append(f'{skill_dir}: 缺少必要欄位 {field}')
-                # 確認 description 包含中文觸發詞
                 desc = str(meta.get('description',''))
                 if not any(c > '\u4e00' for c in desc):
                     errors.append(f'{skill_dir}: description 應包含中文觸發詞')
                 print(f'✓ {skill_dir}: name={meta.get("name","?")} v{meta.get("version","?")}')
             except yaml.YAMLError as e:
                 errors.append(f'{skill_dir}: YAML 解析錯誤 {e}')
-        
+
         if errors:
             print('\n❌ 驗證失敗:')
             for e in errors: print(f'  - {e}')
