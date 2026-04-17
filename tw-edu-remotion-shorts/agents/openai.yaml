@@ -1,5 +1,0 @@
-interface:
-  display_name: "Remotion 直式短影音"
-  short_description: "分鏡、風格、旁白、字幕、Remotion 設定"
-  default_prompt: "Use $tw-edu-remotion-shorts to turn teaching content into a storyboard first, then choose a motion flow and visual style, and finally prepare Remotion and ElevenLabs settings."
-
