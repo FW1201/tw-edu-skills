@@ -3,15 +3,15 @@
 > **臺灣 K-12 教師專用 AI 技能套組**  
 > 基於 108 課綱素養導向設計，涵蓋備課、命題、評量、班級經營、親師溝通等完整教學流程。
 
-[![Skills](https://img.shields.io/badge/Skills-18-green)](https://github.com/FW1201/tw-edu-skills)
-[![Version](https://img.shields.io/badge/Version-3.0-blue)](https://github.com/FW1201/tw-edu-skills)
+[![Skills](https://img.shields.io/badge/Skills-19-green)](https://github.com/FW1201/tw-edu-skills)
+[![Version](https://img.shields.io/badge/Version-3.1-blue)](https://github.com/FW1201/tw-edu-skills)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 ---
 
 ## 📦 套組概覽
 
-本套組包含 **18 個 Skills**，面向臺灣 K-12 各學段教師，深度整合：
+本套組包含 **19 個 Skills**，面向臺灣 K-12 各學段教師，深度整合：
 - 108 課綱核心素養三面九項
 - 十大學習領域 × 各版本教科書（南一/翰林/康軒）
 - SDGs / ESG 跨領域議題
@@ -46,6 +46,7 @@
 | `tw-edu-worksheet-creator` | 學習單製作，支援引導式問題設計與素養題型 |
 | `tw-edu-slides-creator` | 教學簡報製作，含視覺化架構建議 |
 | `tw-edu-mini-app` | 生成互動式教學小程式（HTML Artifact），無需寫程式 |
+| `tw-edu-remotion-shorts` | 直式短影音學習動畫製作，含分鏡、風格與 Remotion 設定 |
 
 ### 學生表現
 | Skill | 功能說明 |
@@ -74,7 +75,7 @@
 Claude Code 是本套組設計的**主要平台**，所有功能完整支援。
 
 ```bash
-# 安裝全套組（18 個 Skills）
+# 安裝全套組（19 個 Skills）
 npx skills add FW1201/tw-edu-skills --all -a claude-code
 
 # 安裝單一 Skill
@@ -134,8 +135,9 @@ npx skills add FW1201/tw-edu-skills --all -a antigravity
 
 1. **執行 `tw-edu-synchronizer`**（輸入「我要設定教師套組」）  
    → 完成 10 分鐘問卷，系統自動記住你的科別、年段、教學偏好
-2. **嘗試 `tw-edu-lesson-plan-108`**（輸入「幫我設計一份國文教案」）
-3. 依需求使用其他 Skills
+2. **嘗試 `tw-edu-remotion-shorts`**（輸入「幫我做一支 9:16 的國中自然短影音學習動畫」）
+3. **再試 `tw-edu-lesson-plan-108`**（輸入「幫我設計一份國文教案」）
+4. 依需求使用其他 Skills
 
 ---
 
