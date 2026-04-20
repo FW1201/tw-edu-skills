@@ -11,6 +11,45 @@ disable-model-invocation: true
 
 # 學習單生成工具
 
+---
+
+## 設計系統 V2.0：Edu Warm × A4 格線
+
+> 基於 Claude Design（2026-04-17）+ canvas-design 最少裝飾原則
+
+### A4 版面格線系統（595×842pt）
+```
+所有邊距: 72pt（1英寸）
+內容欄寬: 451pt
+格線 base unit: 8pt
+行距建議: 1.75（閱讀舒適）
+```
+
+### Edu Warm 學習單字型
+```
+主標題（學習單名稱）: Work Sans Bold 18pt / color: #d97757
+小節標題:            Work Sans SemiBold 14pt
+正文/問題:           Noto Sans TC Regular 12pt / line-height: 1.75
+填答空格標示:        Noto Sans TC Regular 12pt / color: #6B6B6B
+頁碼:                Noto Sans TC Regular 10pt
+```
+
+### HTML artifact 輸出（A4 可列印版）
+學習單優先輸出為 **HTML artifact**（A4 比例，可直接列印）：
+```css
+.worksheet { width: 595px; min-height: 842px; padding: 72pt;
+             font-family: 'Noto Sans TC', sans-serif;
+             background: white; }
+@media print { .worksheet { page-break-inside: avoid; } }
+```
+
+### canvas-design 最少裝飾原則
+- 格線輔助：8pt 格線保持元素對齊，不顯示格線本身
+- 色彩克制：最多 3 種顏色（Edu Warm 主色 #d97757 + 黑 + 灰）
+- 空間留白：每個問題區塊之間保持 16pt 間距
+
+---
+
 ## Step 0：讀取文件
 - `/mnt/skills/public/docx/SKILL.md`
 

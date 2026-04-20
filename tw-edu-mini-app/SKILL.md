@@ -20,6 +20,54 @@ disable-model-invocation: true
 
 ---
 
+## 設計系統 V2.0：Edu Warm
+
+> 基於 Claude Design（2026-04-17）+ canvas-design 字型庫（Work Sans + Noto Sans TC）
+
+### Edu Warm CSS Token
+```css
+:root {
+  --bg: #fffbf5;      --surface: #f5f0e8;
+  --text: #141413;    --text-muted: #6B6B6B;
+  --primary: #d97757; --primary-hover: #c4664a;
+  --secondary: #6a9bcc; --accent: #788c5d;
+  --radius: 12px;     --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --font-heading: 'Work Sans', 'Noto Sans TC', sans-serif;
+  --font-body: 'Noto Sans TC', sans-serif;
+}
+```
+
+### Edu Warm 元件規格（canvas-design 共用元件庫）
+```css
+/* 按鈕 */
+.btn-primary { background: #d97757; color: white; border-radius: 8px; 
+               padding: 12px 24px; font: Work Sans Bold 16px; }
+
+/* 卡片 */
+.card { background: white; border-radius: 12px; padding: 24px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+/* 強調框 */
+.callout { border-left: 4px solid #d97757; background: rgba(217,119,87,0.08);
+           padding: 16px 20px; border-radius: 0 8px 8px 0; }
+
+/* 進度徽章 */
+.badge { background: #d97757; color: white; border-radius: 50%;
+         width: 32px; height: 32px; display: flex; align-items: center; 
+         justify-content: center; font: Work Sans Bold 14px; }
+```
+
+### 版面：HTML artifact 輸出標準
+所有小程式以 **HTML artifact** 形式輸出（可即時預覽），確保：
+- Google Fonts 載入：Work Sans + Noto Sans TC
+- CSS token 完整定義（:root 變數）
+- 響應式設計（max-width: 720px 居中）
+- 微調模式支援：用戶說「換主色」只更新 --primary 變數
+
+---
+
+---
+
 ## Step 0：讀取必要文件
 
 1. `references/mini_app_types.md` — 常見教學小程式類型與規格

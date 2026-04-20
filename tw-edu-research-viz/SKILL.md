@@ -21,6 +21,42 @@ disable-model-invocation: true
 
 ---
 
+## 設計系統 V2.0：Academic Clean
+
+> 基於 Claude Design（2026-04-17）+ canvas-design 字型庫（Instrument Sans + Lora）
+
+### Academic Clean 皮膚
+```css
+--bg: #faf9f5;   --text: #141413;
+--primary: #6a9bcc;  --accent: #d97757;  --success: #788c5d;
+--font-heading: 'Instrument Sans', sans-serif;
+--font-body: 'Lora', 'Georgia', serif;  /* canvas-design 官方推薦 */
+--font-mono: 'IBM Plex Mono', monospace;
+```
+
+### 學術圖表色彩系統（V2.0 升級）
+```
+主要節點:   #6a9bcc（Academic Blue，取代原深藍 #1A5276）
+次要節點:   #2471A3（保留）
+強調節點:   #d97757（暖橙，Academic Accent）
+成果節點:   #788c5d（綠，Academic Green）
+背景色:     #faf9f5（Academic Light，取代純白）
+文字:       #141413（Academic Dark）
+```
+
+### 字型規格（canvas-design Lora 配對）
+```
+節點主標題:   Instrument Sans Bold 14px
+節點副文字:   Instrument Sans Regular 12px
+路徑標注:    Instrument Sans Regular 12px / italic
+圖注標題:    Instrument Sans Bold 14px（Figure X）
+圖注說明:    Lora Regular 12px（body text for captions）
+```
+
+---
+
+---
+
 ## Step 0：讀取必要文件
 
 1. `references/academic_viz_types.md` — 學術圖表類型與規範

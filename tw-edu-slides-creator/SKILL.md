@@ -20,6 +20,45 @@ allowed-tools: "Bash, Read, Write, WebFetch, WebSearch"
 
 ---
 
+## 設計系統 V2.0：Edu Warm × Claude Design
+
+> 基於 Claude Design（2026-04-17）+ canvas-design 官方字型規格升級
+
+### 設計皮膚：Edu Warm（教育溫暖）
+```css
+--bg: #fffbf5;      --text: #141413;
+--primary: #d97757; --secondary: #6a9bcc;
+--accent: #788c5d;
+--font-heading: 'Work Sans', 'Noto Sans TC', sans-serif;
+--font-body: 'Noto Sans TC', sans-serif;
+```
+
+### Edu Warm 字型層級
+```
+H1（投影片主標）: Work Sans Bold 30px / color: #d97757
+H2（小節標題）:  Work Sans SemiBold 22px
+內文要點:        Noto Sans TC Regular 18px / line-height: 1.75
+強調文字:        Work Sans Medium 18px / color: #d97757
+備注說明:        Noto Sans TC Regular 14px / color: #6B6B6B
+```
+
+### 16:9 簡報格線系統（1280×720px）
+```
+外邊距: 64px 四周
+頁首帶: top 80px  — 課程主題（Work Sans Bold）
+主內容: 592px 高  / 12欄格線 gutter 16px
+頁尾帶: bottom 48px — 頁碼 + 108課綱對應
+```
+
+### canvas-design 設計原則（簡報適用版）
+- **內容密度**：依年級規格限制字數（見 Step 2 年級對應表）
+- **視覺主導**：每張投影片的視覺元素（圖形/圖示/色塊）應佔 ≥40%
+- **最少裝飾**：視覺服務概念理解，而非妝點頁面
+
+---
+
+---
+
 ## Step 0：讀取必要參考文件
 
 依序讀取以下四個文件，作為後續步驟的知識基礎：
@@ -236,8 +275,25 @@ generate-design(
 
 ---
 
+## 微調模式（Delta-Update）
+
+生成簡報後，用戶輸入以下動詞開頭時，只修改指定部分：
+
+| 動詞 | 動作 | 範例 |
+|------|------|------|
+| 換 | 替換內容/樣式 | 「換第3張標題」→ 只更新第3張 headline |
+| 改 | 修改屬性 | 「改色盤為深色沉穩」→ 只更新 CSS 色彩變數 |
+| 加 | 插入投影片 | 「在第4張後加一張討論題」→ 插入 discussion 版型 |
+| 刪 | 移除投影片 | 「刪掉第7張」→ 從 JSON 中移除該 slide |
+| 調 | 微調數值 | 「調字體更大」→ 依年級規格上調 font-size |
+
+---
+
 ## Step 5：品質確認清單
 
+- [ ] 設計皮膚是否為 Edu Warm（Work Sans 標題 + Noto Sans TC 內文）？
+- [ ] 16:9 格線：頁首帶 80px / 主內容 592px / 頁尾帶 48px
+- [ ] 視覺元素（圖形/圖示/色塊）是否佔每頁 ≥40%？
 - [ ] 封面有完整資訊（主題/科目/年級）
 - [ ] 學習目標頁使用布魯姆動詞
 - [ ] 每頁字數符合年級規格
