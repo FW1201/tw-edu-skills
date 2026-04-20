@@ -34,12 +34,16 @@ disable-model-invocation: true
 頁碼:                Noto Sans TC Regular 10pt
 ```
 
+> **禁用字型**：Inter、Roboto、Arial — 缺乏教育溫感，改用 Work Sans + Noto Sans TC  
+> **禁用模式**：每題加邊框裝飾色條、漸層背景 — 學習單以留白與對齊勝出
+
 ### HTML artifact 輸出（A4 可列印版）
 學習單優先輸出為 **HTML artifact**（A4 比例，可直接列印）：
 ```css
 .worksheet { width: 595px; min-height: 842px; padding: 72pt;
              font-family: 'Noto Sans TC', sans-serif;
              background: white; }
+.worksheet p, .worksheet li { text-wrap: pretty; }  /* 防止孤字 */
 @media print { .worksheet { page-break-inside: avoid; } }
 ```
 

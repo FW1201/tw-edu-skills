@@ -33,6 +33,10 @@ allowed-tools: "Bash, Read, Write, WebFetch, WebSearch"
 --font-body: 'Noto Sans TC', sans-serif;
 ```
 
+> **禁用字型**：Inter、Roboto、Arial — 缺乏教育溫感，系統字體不可控  
+> **禁止模式**：漸層轟炸（aggressive gradients）、每頁 Emoji 裝飾、SVG 插圖嘗試  
+> **色彩延伸**：需要額外色階時用 `oklch()`（如 `oklch(75% 0.12 55)` 衍生暖橙色系）
+
 ### Edu Warm 字型層級
 ```
 H1（投影片主標）: Work Sans Bold 30px / color: #d97757
@@ -54,6 +58,7 @@ H2（小節標題）:  Work Sans SemiBold 22px
 - **內容密度**：依年級規格限制字數（見 Step 2 年級對應表）
 - **視覺主導**：每張投影片的視覺元素（圖形/圖示/色塊）應佔 ≥40%
 - **最少裝飾**：視覺服務概念理解，而非妝點頁面
+- **文字品質**：所有文字元素加 `text-wrap: pretty`，每個元素必須有存在理由（no filler）
 
 ---
 
@@ -304,6 +309,8 @@ generate-design(
 - [ ] 至少一張互動/提問投影片（discussion）
 - [ ] 結尾頁有重點整理（summary）
 - [ ] 無「相關概念一」等通用佔位符
+- [ ] 無漸層轟炸、無 SVG 插圖嘗試（改用 CSS 色塊）？
+- [ ] 每個元素有存在理由（no filler — 不加裝飾性文字/圖示）？
 
 ---
 

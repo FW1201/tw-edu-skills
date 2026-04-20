@@ -37,6 +37,10 @@ disable-model-invocation: true
 }
 ```
 
+> **禁用字型**：Inter、Roboto、Arial — 改用 Work Sans（標題）+ Noto Sans TC（內文）  
+> **禁用模式**：border-left accent callout（視覺陳腐）、漸層轟炸、SVG 插圖嘗試  
+> **色彩延伸**：`oklch(72% 0.13 50)` 可衍生 Edu Warm 暖色中間色
+
 ### Edu Warm 元件規格（canvas-design 共用元件庫）
 ```css
 /* 按鈕 */
@@ -63,6 +67,33 @@ disable-model-invocation: true
 - CSS token 完整定義（:root 變數）
 - 響應式設計（max-width: 720px 居中）
 - 微調模式支援：用戶說「換主色」只更新 --primary 變數
+- `text-wrap: pretty` 用於所有段落文字，防止孤字
+
+### React HTML artifact 技術規格（固定版本）
+使用 React 時，CDN 版本必須固定，避免外部變動影響：
+```html
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+```
+**樣式物件命名規則**（避免 Babel scope 衝突）：
+```javascript
+// ❌ 錯誤：const styles = {...} 在多個 Babel 腳本中會衝突
+// ✅ 正確：使用唯一名稱
+const quizStyles = { container: {...}, question: {...} };
+const timerStyles = { display: {...}, controls: {...} };
+// 組件跨腳本共享
+Object.assign(window, { QuizCard, TimerDisplay });
+```
+
+### 狀態持久化（LocalStorage）
+需要記憶進度的工具（測驗/學習卡/計時設定）必須加 LocalStorage：
+```javascript
+// 儲存狀態
+localStorage.setItem('app_state', JSON.stringify({ score, currentQ, settings }));
+// 恢復狀態（頁面重載後繼續）
+const saved = JSON.parse(localStorage.getItem('app_state') || '{}');
+```
 
 ---
 
@@ -301,6 +332,11 @@ echo "請將資料夾推送到 GitHub，並在 Settings > Pages 啟用部署"
 - [ ] 無需帳號即可使用（學生端）
 - [ ] 中文顯示正常（字型已嵌入或指定備用字型）
 - [ ] 部署成功並測試連結可訪問
+- [ ] React 版本已固定（18.3.1 + Babel 7.29.0）？
+- [ ] 樣式物件名稱唯一（非 `const styles`）？
+- [ ] 需要記憶進度的工具已加 LocalStorage？
+- [ ] 無漸層轟炸、無 SVG 插圖嘗試、無 border-left accent callout？
+- [ ] `text-wrap: pretty` 已套用？
 
 ---
 

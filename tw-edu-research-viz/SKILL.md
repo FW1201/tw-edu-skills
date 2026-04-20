@@ -34,6 +34,10 @@ disable-model-invocation: true
 --font-mono: 'IBM Plex Mono', monospace;
 ```
 
+> **禁用字型**：Inter、Roboto、Times New Roman（LLM 預設）——改用 Instrument Sans + Lora 學術配對  
+> **色覺無障礙**：使用 Okabe-Ito 色盤（#0072B2 / #E69F00 / #009E73 / #CC79A7）確保色盲友善  
+> **色彩延伸**：用 `oklch()` 衍生中間色階（如 `oklch(65% 0.10 230)` 衍生學術藍灰）
+
 ### 學術圖表色彩系統（V2.0 升級）
 ```
 主要節點:   #6a9bcc（Academic Blue，取代原深藍 #1A5276）
@@ -330,3 +334,5 @@ Conceptual Framework of Teacher AI Competency and Student Learning Outcomes
 - [ ] 有 APA 7th 格式的圖注
 - [ ] 高解析度輸出（≥ 300 DPI 印刷用，≥ 150 DPI 螢幕用）
 - [ ] Excalidraw 版本可供後續編輯（若 MCP 可用）
+- [ ] 色彩是否通過 Okabe-Ito 色盲測試（多色圖表必做）？
+- [ ] 無 SVG 插圖嘗試（圖表元素用 Excalidraw/matplotlib 生成，非手繪 SVG）？
