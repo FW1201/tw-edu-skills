@@ -384,12 +384,13 @@ Claude.ai 使用者建議：
 2. 使用者手動上傳到 Vercel / Netlify / GitHub Pages
 ```
 
-### 其他平台（Codex / gemini-cli）
-```
-支援 Vercel CLI 和 GitHub Pages 部署腳本生成，
-但需使用者手動執行部署指令。
-Claude 會生成完整的 deploy.sh 腳本。
-```
+### Codex 平台
+支援 Vercel CLI 和 GitHub Pages 部署腳本生成，Vercel MCP 透過 `~/.codex/config.toml` 設定後可自動部署。
+未設定 Vercel MCP 時，Claude 生成完整的 `deploy.sh` 腳本，使用者手動執行。
+
+### Antigravity 平台（Google AI IDE）
+MCP 透過 MCP Server Hub 設定 Vercel Connector 後可自動部署。
+未設定時，Claude 生成 `deploy.sh` 腳本，使用者手動執行。
 
 ### 部署 MCP 調用範例（Claude Code）
 

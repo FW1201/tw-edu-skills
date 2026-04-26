@@ -1,6 +1,6 @@
 # tw-edu-skills MCP 整合策略全域指南
 # MCP Integration Strategy — All 19 Skills
-# 版本：3.0
+# 版本：3.1（2026-04-26 更新：新增 Codex / Antigravity 平台支援說明）
 
 ---
 
@@ -8,16 +8,44 @@
 
 | MCP 名稱 | 端點 | 核心能力 | 支援平台 |
 |---------|------|---------|---------|
-| **Excalidraw** | excalidraw-mcp-app.vercel.app/mcp | 手繪風格互動圖表 | Claude Code / Claude.ai |
-| **Gmail** | gmail.mcp.claude.com/mcp | 草擬/讀取郵件 | Claude Code / Claude.ai |
-| **Canva** | mcp.canva.com/mcp | 設計簡報/視覺材料 | Claude Code / Claude.ai |
-| **Figma** | mcp.figma.com/mcp | 精確設計稿/標注 | Claude Code / Claude.ai |
-| **Vercel** | mcp.vercel.com | 部署靜態/動態網站 | Claude Code |
-| **Google Calendar** | gcal.mcp.claude.com/mcp | 行事曆建立/查詢 | Claude Code / Claude.ai |
-| **Consensus** | mcp.consensus.app/mcp | 學術論文搜尋 | Claude Code / Claude.ai |
-| **Three.js 3D Viewer** | — | 3D 互動視覺化 | Claude Code / Claude.ai |
+| **Excalidraw** | excalidraw-mcp-app.vercel.app/mcp | 手繪風格互動圖表 | Claude Code / Claude.ai / Codex / Antigravity |
+| **Gmail** | gmail.mcp.claude.com/mcp | 草擬/讀取郵件 | Claude Code / Claude.ai / Codex / Antigravity |
+| **Canva** | mcp.canva.com/mcp | 設計簡報/視覺材料 | Claude Code / Claude.ai / Codex / Antigravity |
+| **Figma** | mcp.figma.com/mcp | 精確設計稿/標注 | Claude Code / Claude.ai / Codex / Antigravity |
+| **Vercel** | mcp.vercel.com | 部署靜態/動態網站 | Claude Code / Codex / Antigravity |
+| **Google Calendar** | gcal.mcp.claude.com/mcp | 行事曆建立/查詢 | Claude Code / Claude.ai / Codex / Antigravity |
+| **Consensus** | mcp.consensus.app/mcp | 學術論文搜尋 | Claude Code / Claude.ai / Codex / Antigravity |
+| **Three.js 3D Viewer** | — | 3D 互動視覺化 | Claude Code / Claude.ai / Codex / Antigravity |
 | **WebSearch** | (內建) | 網路搜尋 | 全平台 |
-| **Google Drive** | (需另外設定) | 雲端儲存/讀取 | Claude Code / Claude.ai |
+| **Google Drive** | (需另外設定) | 雲端儲存/讀取 | 全平台 |
+
+> **注意**：Codex 透過 `~/.codex/config.toml` 設定 MCP servers；Antigravity 透過 MCP Server Hub（1,500+ servers）或 `~/.gemini/antigravity/mcp_config.json` 設定。三個平台均使用相同的 MCP 協議。
+
+---
+
+## 平台 MCP 設定速查
+
+### Codex 設定方式
+```toml
+# ~/.codex/config.toml
+[mcp_servers.canva]
+url = "https://mcp.canva.com/mcp"
+headers = { Authorization = "Bearer ${CANVA_TOKEN}" }
+
+[mcp_servers.excalidraw]
+url = "https://excalidraw-mcp-app.vercel.app/mcp"
+
+[mcp_servers.notion]
+command = "npx"
+args = ["-y", "@notionhq/notion-mcp-server"]
+env = { NOTION_API_KEY = "${NOTION_API_KEY}" }
+```
+
+指令行新增：`codex mcp add <server-name> --url <endpoint>`
+
+### Antigravity 設定方式
+透過 **MCP Server Hub** 介面直接搜尋並啟用，或編輯 `~/.gemini/antigravity/mcp_config.json`。
+Antigravity 特有優勢：支援 Jupyter Notebook 原生整合，研究類 Skills 效果最佳。
 
 ---
 

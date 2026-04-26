@@ -9,7 +9,11 @@ description: >
   「把這份資料做成簡報」「簡報製作」「製作投影片」時觸發。
 version: 2.0.0
 author: 奇老師・數位敘事力社群
-allowed-tools: "Bash, Read, Write, WebFetch, WebSearch"
+allowed-tools: "Bash, Read, Write, WebFetch"
+# Bash: 執行 Python 生成腳本 (Step 3A)
+# Read: 讀取 references/ 參考文件
+# Write: 輸出 /tmp/slides_content.json
+# WebFetch: 處理網址教材
 ---
 
 # 教材轉視覺化教學簡報 v2.0
@@ -26,11 +30,18 @@ allowed-tools: "Bash, Read, Write, WebFetch, WebSearch"
 
 ### 設計皮膚：Edu Warm（教育溫暖）
 ```css
---bg: #fffbf5;      --text: #141413;
---primary: #d97757; --secondary: #6a9bcc;
---accent: #788c5d;
---font-heading: 'Work Sans', 'Noto Sans TC', sans-serif;
---font-body: 'Noto Sans TC', sans-serif;
+/* 命名空間變數（跨 skill 安全，不與 Neon Circuit 衝突） */
+--edu-warm-bg: #fffbf5;      --edu-warm-text: #141413;
+--edu-warm-primary: #d97757; --edu-warm-secondary: #6a9bcc;
+--edu-warm-accent: #788c5d;
+--edu-warm-font-heading: 'Work Sans', 'Noto Sans TC', sans-serif;
+--edu-warm-font-body: 'Noto Sans TC', sans-serif;
+/* 向下相容別名 */
+--bg: var(--edu-warm-bg);      --text: var(--edu-warm-text);
+--primary: var(--edu-warm-primary); --secondary: var(--edu-warm-secondary);
+--accent: var(--edu-warm-accent);
+--font-heading: var(--edu-warm-font-heading);
+--font-body: var(--edu-warm-font-body);
 ```
 
 > **禁用字型**：Inter、Roboto、Arial — 缺乏教育溫感，系統字體不可控  

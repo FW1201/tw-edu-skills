@@ -137,8 +137,13 @@ Google Drive（若已連接，Settings → Connectors）：
   完成後直接儲存輸出文件到 Drive
 ```
 
-### 其他平台（Codex / gemini-cli）
-MCP 不可用，Claude 使用訓練知識執行，並提示使用者手動儲存。
+### Codex 平台
+MCP Connectors 透過 `~/.codex/config.toml` 設定（`codex mcp add` 指令或手動編輯）。
+未設定時自動降級：請參閱上方降級方案。
+
+### Antigravity 平台（Google AI IDE）
+MCP 透過 MCP Server Hub（1,500+ servers）或 `~/.gemini/antigravity/mcp_config.json` 設定。
+支援 Jupyter Notebook 整合。未設定時自動降級：請參閱上方降級方案。
 
 ---
 
