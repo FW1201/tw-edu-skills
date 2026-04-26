@@ -92,27 +92,57 @@ npx skills update -a claude-code
 
 ### Codex CLI
 
-```bash
-# 安裝（需先有 Codex CLI 環境）
-npx skills add FW1201/tw-edu-skills --all -a codex
+Codex 原生支援 MCP 協議，透過 `~/.codex/config.toml` 設定 Connectors。
+
+**Skills 安裝路徑**：
+```
+<your-project>/.agents/skills/<skill-name>/SKILL.md   ← 專案層（推薦）
+~/.codex/skills/<skill-name>/SKILL.md                  ← 全域層
 ```
 
-> ⚠️ **Codex 限制**：
-> - `Bash` 工具不支援（無法執行 Python/R 程式碼）
-> - MCP Connectors（Notion、Google Drive、Gmail、Google Calendar、Canva）**不可用**
-> - 涉及 `.docx` / `.pdf` 生成的功能需搭配 `docx`、`pdf` Skill
-
-### Antigravity
-
 ```bash
-# 安裝
-npx skills add FW1201/tw-edu-skills --all -a antigravity
+# Clone 後複製到專案目錄
+git clone https://github.com/FW1201/tw-edu-skills.git
+mkdir -p <your-project>/.agents/skills
+cp -r tw-edu-skills/tw-edu-*/ <your-project>/.agents/skills/
 ```
 
-> ⚠️ **Antigravity 限制**：
-> - MCP Connectors 支援程度依個人環境而定
-> - 互動式 HTML Artifact（`tw-edu-mini-app`）需確認瀏覽器預覽功能已啟用
-> - 部分 `WebSearch` 功能依連線狀態而定
+**MCP Connectors 設定**（`~/.codex/config.toml`）：
+```toml
+[mcp_servers.google-drive]
+command = "npx"
+args = ["-y", "@google/mcp-server-googledrive"]
+
+[mcp_servers.canva]
+url = "https://mcp.canva.com/mcp"
+headers = { Authorization = "Bearer ${CANVA_TOKEN}" }
+
+[mcp_servers.notion]
+command = "npx"
+args = ["-y", "@notionhq/notion-mcp-server"]
+env = { NOTION_API_KEY = "${NOTION_API_KEY}" }
+```
+
+> 詳細設定請參閱 [docs/non-claude-setup.md](docs/non-claude-setup.md)
+
+### Antigravity（Google AI IDE）
+
+Antigravity 完整支援 MCP，內建 MCP Server Hub（1,500+ Connectors）。
+
+**Skills 安裝路徑**（注意：路徑是 `.agent` 單數）：
+```
+~/.gemini/antigravity/skills/<skill-name>/SKILL.md   ← 全域層
+<project>/.agent/skills/<skill-name>/SKILL.md         ← 專案層
+```
+
+```bash
+mkdir -p ~/.gemini/antigravity/skills
+cp -r tw-edu-skills/tw-edu-*/ ~/.gemini/antigravity/skills/
+```
+
+**MCP Connectors 設定**：透過 MCP Server Hub 介面直接搜尋啟用（推薦），或編輯 `~/.gemini/antigravity/mcp_config.json`。
+
+> 詳細設定請參閱 [docs/non-claude-setup.md](docs/non-claude-setup.md)
 
 ---
 
