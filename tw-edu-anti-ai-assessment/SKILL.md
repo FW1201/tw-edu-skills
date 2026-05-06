@@ -7,7 +7,7 @@ description: >
   當使用者提及「抗AI」「防作弊」「AI無法代做」「評量改進」「題目太簡單被AI」
   「學生都用ChatGPT交作業」「評量設計」「真實性評量」「無法複製貼上的題目」
   「AI代寫的問題」「學習評量改革」「真正測能力」時觸發。
-version: 1.0.0
+version: 1.1.0
 author: 奇老師・數位敘事力社群
 allowed-tools: "Bash, Read, Write, WebSearch"
 disable-model-invocation: true
@@ -123,11 +123,53 @@ D. 「您最不願意犧牲的學習目標是什麼？
 ### AI 可答性總分判定
 
 ```
-總分 0-5   ｜ 🔴 極高風險：AI 可以幾乎完美作答
-總分 6-10  ｜ 🟠 高風險：AI 能輕易生成合格答案
-總分 11-14 ｜ 🟡 中度風險：AI 能生成，但品質有限
-總分 15-18 ｜ 🟢 低風險：AI 答案明顯不足
-總分 19-20 ｜ ✅ 極低風險：AI 基本無法有效代答
+總分 0-5   ｜ critical  極高風險：AI 可以幾乎完美作答
+總分 6-10  ｜ high      高風險：AI 能輕易生成合格答案
+總分 11-14 ｜ medium    中度風險：AI 能生成，但品質有限
+總分 15-18 ｜ low       低風險：AI 答案明顯不足
+總分 19-20 ｜ minimal   極低風險：AI 基本無法有效代答
+```
+
+### 結構化評分輸出（JSON）
+
+完成五維度評估後，輸出以下 JSON 供後續處理與比較：
+
+```json
+{
+  "item_id": "Q1",
+  "overall_risk": "high",
+  "total_score": 8,
+  "dimensions": {
+    "context_specificity": 2,
+    "output_uniqueness": 1,
+    "process_visibility": 2,
+    "temporal_immediacy": 2,
+    "integration_complexity": 1
+  },
+  "main_weakness": "無個人情境，AI 可套用通用模板",
+  "recommended_strategies": [1, 2, 6],
+  "corrected_score_estimate": 15
+}
+```
+
+整批評量完成後輸出摘要 JSON：
+
+```json
+{
+  "summary": {
+    "total_items": 10,
+    "critical": 2,
+    "high": 3,
+    "medium": 3,
+    "low": 2,
+    "avg_score": 9.4,
+    "overall_risk": "high"
+  },
+  "items": [
+    {"item_id": "Q1", "overall_risk": "high",   "total_score": 8},
+    {"item_id": "Q2", "overall_risk": "critical","total_score": 4}
+  ]
+}
 ```
 
 ---

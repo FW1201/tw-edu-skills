@@ -6,7 +6,7 @@ description: >
   「幫我設計教案」「生成教案」「製作課文教案」「課文學習設計」
   「lesson plan」「備課」「教學設計」時觸發。
   支援所有學習領域：國語文、英語、數學、社會、自然、藝術、體育、綜合、資訊。
-version: 2.0.0
+version: 2.1.0
 author: 奇老師・數位敘事力社群
 allowed-tools: "Bash, Read, Write, WebSearch"
 disable-model-invocation: true
@@ -123,9 +123,9 @@ python scripts/generate_lesson_plan.py \
 | 代碼+說明 | 代碼+說明 | 代碼+說明 |
 
 #### 表格三：學習目標
-- 認知面：學生能理解……
-- 情意面：學生能感受……
-- 技能面：學生能運用……
+- 認知：學生能理解……
+- 情意：學生能感受……
+- 態度：學生能養成/培養/展現……
 
 #### 表格四：課文分析（文學類）/ 概念結構（理科）
 
@@ -174,6 +174,35 @@ python scripts/generate_lesson_plan.py \
 
 ---
 
+## Step 4.5：視覺渲染驗證（交付前必做）
+
+生成 .docx 後，用 LibreOffice 轉 PDF → pdftoppm 轉 PNG → 逐頁 Read 確認排版：
+
+```bash
+# 轉 PDF（需安裝 LibreOffice）
+soffice --headless --convert-to pdf \
+  "/mnt/user-data/outputs/[課文名稱]_教案.docx" \
+  --outdir /tmp/
+
+# 轉第一頁 PNG（解析度 150 dpi 足夠確認排版）
+pdftoppm -png -r 150 -f 1 -l 1 \
+  "/tmp/[課文名稱]_教案.pdf" /tmp/lesson_preview
+
+# 讀取確認
+Read /tmp/lesson_preview-1.png
+```
+
+**確認項目**：
+- [ ] 表格框線完整，無斷裂或移位
+- [ ] 注音符號（ㄅㄆㄇ）正確顯示，非亂碼
+- [ ] 中文字型為標楷體（非系統替代字型）
+- [ ] 表格不跨頁斷裂（每節課表格盡量在同頁）
+- [ ] 字體大小視覺正常（內文 12pt 可閱讀）
+
+若渲染失敗或 LibreOffice 不可用，輸出時加注：「建議用 LibreOffice/Word 開啟後確認排版。」
+
+---
+
 ## Step 5：文件樣式規範
 
 文件使用 `scripts/generate_lesson_plan.py` 產出，樣式如下：
@@ -190,6 +219,19 @@ python scripts/generate_lesson_plan.py \
 1. 核心素養選取理由（3句）
 2. 教案設計亮點（2-3點）
 3. 建議調整方向（針對不同班級特性）
+
+---
+
+## 禁止事項（負規則）
+
+| 禁止 | 原因 |
+|------|------|
+| `學生能學習到……` | 非布魯姆行為動詞，無法評量 |
+| `學習目標：了解課文` | 太模糊，需改為可觀察行為 |
+| 注音用漢語拼音（ㄅ→b）| 台灣課綱明定 ㄅㄆㄇ 注音符號 |
+| 每節課只寫「教師講解」| 缺乏具體師生互動，違反品質標準 |
+| 學習目標超過 6 個 | 無法在有限時間達成 |
+| 課綱代碼學段錯誤（國中用 -E-）| 誤導教師，代碼必須對應年級 |
 
 ---
 

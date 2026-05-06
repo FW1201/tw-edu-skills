@@ -236,7 +236,7 @@ def add_table2_curriculum(doc, competencies: list, performance: list, content: l
         make_data_cell(table.rows[i].cells[1], text, row_idx=i)
     doc.add_paragraph()
 
-def add_table3_objectives(doc, obj_cog: str, obj_aff: str, obj_ski: str):
+def add_table3_objectives(doc, obj_cog: str, obj_aff: str, obj_att: str):
     """表格三：學習目標"""
     add_section_title(doc, '表格三：學習目標')
     table = doc.add_table(rows=4, cols=2)
@@ -245,7 +245,7 @@ def add_table3_objectives(doc, obj_cog: str, obj_aff: str, obj_ski: str):
     table.columns[1].width = Cm(13.5)
     make_header_cell(table.rows[0].cells[0], '面向')
     make_header_cell(table.rows[0].cells[1], '學習目標')
-    rows_data = [('認知面', obj_cog), ('情意面', obj_aff), ('技能面', obj_ski)]
+    rows_data = [('認知', obj_cog), ('情意', obj_aff), ('態度', obj_att)]
     for i, (label, text) in enumerate(rows_data, 1):
         make_data_cell(table.rows[i].cells[0], label, row_idx=i, center=True)
         make_data_cell(table.rows[i].cells[1], text, row_idx=i)
@@ -415,7 +415,7 @@ def build_sample_data(args) -> dict:
         # 學習目標
         'obj_cog': f'1. 學生能正確說出《{args.title}》中 10 個生難字詞的注音與字義。\n2. 學生能分析課文的篇章結構與記敘脈絡。\n3. 學生能辨識並說明課文中的修辭手法與表達技巧。',
         'obj_aff': f'1. 學生能感受作者透過細節描寫傳達的情感。\n2. 學生能連結個人生命經驗，反思親情意涵。',
-        'obj_ski': f'1. 學生能模仿課文的動作描寫方式，寫出 100 字以上的記敘片段。\n2. 學生能在小組討論中清楚表達個人觀點。',
+        'obj_att': f'1. 學生能養成細心觀察身邊人物的習慣。\n2. 學生能在小組討論中展現傾聽與尊重他人觀點的態度。',
 
         # 課文分析
         'text_type': '現代散文・記敘文',
@@ -620,7 +620,7 @@ def generate_lesson_plan(args):
     add_table1_basic(doc, data)
     add_table2_curriculum(doc, data['competencies'],
                           data['performance'], data['content'])
-    add_table3_objectives(doc, data['obj_cog'], data['obj_aff'], data['obj_ski'])
+    add_table3_objectives(doc, data['obj_cog'], data['obj_aff'], data['obj_att'])
     add_table4_analysis(doc, data['text_type'], data['theme'],
                         data['structure'], data['technique'], data['culture'])
     add_table5_vocab(doc, data['vocab'])

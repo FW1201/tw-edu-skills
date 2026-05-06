@@ -2,400 +2,140 @@
 name: tw-edu-slides-creator
 description: >
   上傳任何教材（Word/PDF/文字/網址）後，自動生成視覺化精美教學簡報（.pptx）。
-  依年級自動調整字體大小、資訊密度與視覺風格。支援 25 種版型 × 8 種色盤。
-  提供 Claude 內建（.pptx 直接下載）與 Canva 高設計感兩條路徑。
+  依年級自動調整字體大小、資訊密度與視覺風格。11 種版型 × 9 種教育色盤。
+  純 Python stdlib，無外部依賴，品質穩定。
   當使用者提及「幫我做簡報」「上傳教材做簡報」「把文件轉成投影片」
   「製作教學簡報」「做PPT」「做投影片」「教學PPT」「課程簡報」
   「把這份資料做成簡報」「簡報製作」「製作投影片」時觸發。
-version: 2.1.0
+version: 3.0.0
 author: 奇老師・數位敘事力社群
 allowed-tools: "Bash, Read, Write, WebFetch, WebSearch"
-# Bash: 執行 Python 生成腳本 (Step 3A) + thumbnail QA
-# Read: 讀取 references/ 參考文件 + 縮圖 PNG
-# Write: 輸出 /tmp/slides_content.json
-# WebFetch: 處理網址教材
-# WebSearch: 搜尋補充素材
 ---
 
-# 教材轉視覺化教學簡報 v2.1
-
-## 哲學定位
-「好的教學簡報不是把文字搬上投影片，而是把複雜知識視覺化。」
-→ 25 種版型 × 8 種色盤 × 智慧內容分析，讓每張投影片都有最適合的呈現方式。
+# 教材轉視覺化教學簡報 V3.0
 
 ---
 
-## 設計系統 V2.1：Edu Warm × Claude Design
+## Step 1：資訊收集（最多問 3 個）
 
-> 基於 Claude Design（2026-04-17）+ canvas-design 官方字型規格升級
+| 問題 | 必填 |
+|------|------|
+| 教學主題或課文是什麼？ | ✅ |
+| 給哪個年級的學生？ | ✅ |
+| 有現成教材嗎？（文字/Word/PDF/網址） | 選填 |
 
-### 設計皮膚：Edu Warm（教育溫暖）
-```css
-/* 命名空間變數（跨 skill 安全，不與 Neon Circuit 衝突） */
---edu-warm-bg: #fffbf5;      --edu-warm-text: #141413;
---edu-warm-primary: #d97757; --edu-warm-secondary: #6a9bcc;
---edu-warm-accent: #788c5d;
---edu-warm-font-heading: 'Work Sans', 'Noto Sans TC', sans-serif;
---edu-warm-font-body: 'Noto Sans TC', sans-serif;
-/* 向下相容別名 */
---bg: var(--edu-warm-bg);      --text: var(--edu-warm-text);
---primary: var(--edu-warm-primary); --secondary: var(--edu-warm-secondary);
---accent: var(--edu-warm-accent);
---font-heading: var(--edu-warm-font-heading);
---font-body: var(--edu-warm-font-body);
-```
-
-> **禁用字型**：Inter、Roboto、Arial — 缺乏教育溫感，系統字體不可控  
-> **禁止模式**：漸層轟炸（aggressive gradients）、Emoji 裝飾、SVG 插圖嘗試  
-> **禁止 Emoji**：所有版型一律使用全形括號標記（如【目標】【討論】）或 Unicode 幾何符號  
-> **色彩延伸**：需要額外色階時用 `oklch()`（如 `oklch(75% 0.12 55)` 衍生暖橙色系）
-
-### Edu Warm 字型三層架構（參考 guizang-ppt-skill 設計原則）
-```
-第一層（視覺錨點）: Work Sans Bold        → 投影片主標 H1（標題色 primary）
-第二層（資訊載體）: Noto Sans TC Regular  → 內文要點、說明文字（line-height 1.75）
-第三層（後設資料）: 微軟正黑體 Italic 12pt → 頁碼、圖片說明、來源標注、課綱對應碼
-
-H1（投影片主標）: Work Sans Bold 28-40pt（依年級）/ color: primary
-H2（小節標題）:  Work Sans SemiBold 22-32pt（依年級）
-內文要點:        Noto Sans TC Regular 20-28pt（依年級）/ line-height: 1.75
-強調文字:        Work Sans Medium / color: primary
-後設資料:        微軟正黑體 Italic 12pt / color: #6B6B6B（頁碼、說明文、課綱碼）
-```
-
-### 16:9 簡報格線系統（33.87cm × 19.05cm）
-```
-外邊距: 約 1.1cm 四周（_SW 縮放後自動計算）
-頁首帶: top 1.8cm  — 課程主題（Work Sans Bold，白字）
-主內容: 約 15.4cm 高 / 可用寬度約 31.7cm
-頁尾帶: bottom 約 2.05cm — 頁碼 + 108課綱對應
-```
-
-### canvas-design 設計原則（簡報適用版）
-- **內容密度**：依年級規格限制字數（見 Step 2 年級對應表）
-- **視覺主導**：每張投影片的視覺元素（圖形/圖示/色塊）應佔 ≥40%
-- **最少裝飾**：視覺服務概念理解，而非妝點頁面
-- **文字品質**：所有文字元素加 `text-wrap: pretty`，每個元素必須有存在理由（no filler）
-
-### 影響學習效果的簡報設計原則
-
-**文字與圖像永遠同頁同側**
-說明文字與對應圖像必須放在**同一張投影片、相鄰位置**，不可一張放圖、下一張才放說明。學生在圖片和說明之間切換頁面會增加認知負擔，干擾理解而非幫助理解。
-
-**講解新概念：先示例，再解析**
-引入新概念的投影片請遵循順序：先呈現「這個概念看起來是什麼樣子」（完整示例），再進入「為什麼這樣運作」（分析解釋），而不是直接拋問題要學生猜。對尚未掌握概念的學生，問題引導比示例引導更容易造成困惑。
-
-**裝飾性元素一律省略**
-無意義的圖示、邊框動畫、純裝飾插圖會分散學生注意力而非幫助理解。每個視覺元素都需要有「它在傳達什麼知識？」的答案，答不出來就刪掉。
+收集後輸出確認摘要：主題、年級、色盤、約幾張。
 
 ---
 
----
+## Step 2：年級規格 + 色盤選擇
 
-## Step 0：讀取必要參考文件
+### 年級對應表
+| 學習階段 | grade 參數 | 標題 pt | 內文 pt | 每頁上限 |
+|---------|-----------|--------|--------|---------|
+| 國小低年級 1-2 | elementary_low | 40 | 28 | 3 條 |
+| 國小中高年 3-6 | elementary_high | 36 | 24 | 4 條 |
+| 國中 7-9 | junior（預設） | 32 | 22 | 5 條 |
+| 高中 10-12 | senior | 28 | 20 | 6 條 |
 
-依序讀取以下四個文件，作為後續步驟的知識基礎：
-
-1. `references/slide_design_principles.md` — 25 種版型庫 + 選版型規則 + 色盤配對指南
-2. `../../tw_edu_grade_adapter.md` — 年級偵測與內容難度適應系統
-3. `../../tw_edu_guided_collection.md` — 引導式資訊收集框架
-4. `../../tw_edu_concept_alignment.md` — 概念對齊協議（確認方向一致再執行）
-
----
-
-## Step 1：年級偵測 + 路徑選擇 + 引導式資訊收集
-
-### 1-A. 雙路徑選擇（第一個問題）
-```
-請問您想用哪種方式製作簡報？
-
-[A] Claude 內建（直接生成 .pptx 檔案，可立即下載，適合快速製作）
-[B] Canva 路徑（呼叫 Canva 生成高設計感版本，視覺效果更精美）
-
-→ 請輸入 A 或 B，或直接描述您的需求（我會自動判斷）
-```
-
-### 1-B. 核心資訊收集（最多 3 個必填問題）
-```
-Q1: 「這份簡報的教學主題或課文是什麼？」
-Q2: 「給哪個年級的學生使用？」（若未偵測到）
-Q3: 「您有現成的教材想提供嗎？（可貼文字、上傳 Word/PDF、提供網址）」
-
-提示：您可以直接貼上文字內容、上傳 Word 或 PDF、
-      提供網頁連結，或用文字描述想要什麼內容。
-```
-
-### 1-C. 風格選擇（選填）
-```
-Q4: 「想要哪種色盤？
-    A. 簡約現代（白底深藍，正式課堂）
-    B. 活潑彩色（鮮明藍橘，低年級互動）
-    C. 深色沉穩（深藍底，高中/程式/專業）
-    D. 台灣特色（棕紅米色，本土文化課）
-    E. 自然清新（綠色系，自然/環境/健康）
-    F. 科技感 （靛青深底，資訊/AI課程）
-    G. 溫暖橙調（橙色系，藝術/社會/SEL）
-    H. 學術紫  （深紫系，文學/哲學/研究）」
-
-Q5: 「標記符號風格？
-    A. 括號標記（預設，如【目標】【討論】[+][-]）
-    B. 純文字（無任何標記符號）」
-
-Q6: 「幾張投影片？（預設依內容自動判斷，通常 12-18 張）」
-```
-
-### 1-D. 確認摘要（執行前輸出）
-```
-[確認] 主題：{主題}
-[年級] {年級}（→ 字體/密度已自動調整）
-[路徑] {A. Claude 內建 / B. Canva}
-[色盤] {色盤選擇}
-[符號] {括號標記 / 純文字}
-[張數] 約 {N} 張（含封面/目標/內容/結尾）
-[輸出] {主題}_教學簡報.pptx
-```
+### 色盤選擇
+| edu_theme | 適用情境 |
+|-----------|---------|
+| edu-warm（預設）| 人文/國語文/溫暖教室 |
+| modern | 正式課堂/全校公開課 |
+| colorful | 低年級/互動課 |
+| dark | 高中/程式/電競課 |
+| local | 本土文化/歷史/鄉土 |
+| nature | 自然/環境/健康 |
+| tech | 資訊/AI/STEM |
+| warm | 藝術/社會/SEL |
+| purple | 文學/哲學/研究 |
 
 ---
 
-## Step 2：年級對應簡報規格
+## Step 3：生成 JSON 規格並執行腳本
 
-| 學習階段 | 每頁字數上限 | 圖文比例 | 字體大小 | 動畫建議 |
-|---------|------------|---------|---------|---------|
-| 國小低年級（1-2年）| 20字 | 圖 70% | 標題 40pt / 內文 28pt | 多（出現動畫）|
-| 國小中高年級（3-6年）| 40字 | 圖 55% | 標題 36pt / 內文 24pt | 適中 |
-| 國中（7-9年）| 80字 | 圖 40% | 標題 32pt / 內文 22pt | 少 |
-| 高中（10-12年）| 120字 | 圖 30% | 標題 28pt / 內文 20pt | 無或極少 |
-
----
-
-## Step 2.3：投影片節奏規劃（生成前必做）
-
-在進入 JSON 生成之前，先輸出節奏規劃表，確保視覺節奏多樣：
-
-```
-投影片節奏規劃
-────────────────────────────────────────────
-#   版型              視覺重量    說明
-1   title_slide       重（封面）  primary 滿版
-2   objectives        輕          header + 條列
-3   hero_message      重（視覺）  primary 大字（≥10 張必有）
-4   content           輕          白底條列
-5   content           輕          白底條列
-6   discussion        中（互動）  計時提問
-7   two_column        輕          雙欄對比
-8   summary           中          重點格
-9   closing           重（結尾）  primary 滿版
-────────────────────────────────────────────
-```
-
-**節奏規則**：
-- 不得 3 張以上連續同版型
-- 每 5 張內容至少 1 張視覺重的版型（hero_message / section_cover / discussion）
-- 10 張以上須包含 ≥1 hero_message 或 section_cover
-
----
-
-## Step 2.5：內容智慧分析（核心步驟）
-
-**依輸入素材類型，先做前處理：**
-
-| 輸入類型 | 前處理方式 |
-|---------|-----------|
-| 直接貼入文字/課文 | 直接進入分析 |
-| Word/PDF 上傳 | `python3 -m markitdown /mnt/user-data/uploads/[檔名]` 轉成文字後分析 |
-| 只給主題（無素材）| 依主題＋年級＋108課綱脈絡自行生成完整內容 |
-| 網頁 URL | WebFetch 抓取正文後分析 |
-
-**內容分析輸出（JSON 格式）：**
-
-根據輸入素材與 `references/slide_design_principles.md` 的版型選擇規則，
-輸出以下結構化 JSON（存為 `/tmp/slides_content.json`）：
+### 3-A. 輸出 JSON 規格存為 `/tmp/slides_spec.json`
 
 ```json
 {
-  "title": "課文/主題名稱",
-  "subject": "科目",
-  "grade": "年級",
-  "objectives": [
-    "能（布魯姆動詞）...",
-    "能（布魯姆動詞）...",
-    "能（布魯姆動詞）..."
-  ],
+  "meta": {"title": "課文名稱", "subject": "科目", "grade": "年級"},
+  "edu_theme": "edu-warm",
+  "grade_stage": "junior",
   "slides": [
-    {
-      "layout": "hero_message",
-      "headline": "開場大標語",
-      "subtext": "副標題或引導語"
-    },
-    {
-      "layout": "content",
-      "title": "概念標題",
-      "bullets": ["重點一", "重點二", "重點三"],
-      "note": "教師提示"
-    },
-    {
-      "layout": "two_column",
-      "title": "比較標題",
-      "left_title": "左欄標題",
-      "left_bullets": ["..."],
-      "right_title": "右欄標題",
-      "right_text": "..."
-    }
-    // ... 依內容自動選擇最適版型
-  ],
-  "discussion_question": "思考提問句",
-  "summary": [
-    ["關鍵詞一", "說明一"],
-    ["關鍵詞二", "說明二"],
-    ["關鍵詞三", "說明三"],
-    ["關鍵詞四", "說明四"]
-  ],
-  "homework": "課後任務說明"
+    {"layout": "cover",       "title": "...", "subtitle": "...", "meta": "年級・設計者"},
+    {"layout": "objectives",  "title": "學習目標", "bullets": ["認知：能...", "情意：能...", "態度：能養成..."]},
+    {"layout": "section",     "title": "章節名稱", "subtitle": "副標"},
+    {"layout": "bullets",     "title": "...", "bullets": ["重點一", "重點二"]},
+    {"layout": "two-column",  "title": "...", "left_title": "...", "left": [...], "right_title": "...", "right": [...]},
+    {"layout": "compare",     "title": "...", "left_title": "...", "left": [...], "right_title": "...", "right": [...]},
+    {"layout": "vocab",       "title": "詞彙", "items": [{"word":"蹣跚","reading":"ㄆㄢˊㄕㄢ","definition":"行走困難"}]},
+    {"layout": "activity",    "title": "活動", "steps": ["步驟1", "步驟2"]},
+    {"layout": "discussion",  "question": "思考問題句...？", "timer_min": 5, "hint": "提示（選填）"},
+    {"layout": "hero",        "headline": "大標語", "subline": "副標（選填）"},
+    {"layout": "summary",     "title": "重點整理", "pairs": [["詞", "說明"], ["詞", "說明"]]}
+  ]
 }
 ```
 
-**版型多樣性要求**：一份簡報應包含 ≥4 種不同版型，
-避免連續 3 張以上使用相同版型。
+**版型節奏規則**：
+- 不得 3 張以上連續同版型
+- 每 5 張至少 1 張重版型（cover / section / hero / discussion）
+- 10 張以上須有 ≥1 hero 或 section
 
----
+### 3-B. 執行腳本
 
-## Step 3：路徑分歧
-
-### 路徑 A：Claude 內建 .pptx
-
-執行腳本：
 ```bash
-python scripts/generate_slides.py \
-  --title "[主題名稱]" \
-  --subject "[科目]" \
-  --grade "[年級]" \
-  --stage "[elementary_low|elementary_high|junior|senior]" \
-  --style "[modern|colorful|dark|local|nature|tech|warm|purple]" \
-  --icons "[symbol|none]" \
-  --content_file "/tmp/slides_content.json" \
-  --slides_count [張數] \
+python3 scripts/generate_slides.py \
+  --spec /tmp/slides_spec.json \
+  --edu_theme edu-warm \
+  --grade junior \
   --output "/mnt/user-data/outputs/[主題]_教學簡報.pptx"
 ```
 
-生成後執行縮圖 QA（視覺確認投影片結構）：
-```bash
-python scripts/thumbnail.py \
-  --input "/mnt/user-data/outputs/[主題]_教學簡報.pptx" \
-  --output "/tmp/[主題]_thumbnail.png" \
-  --cols 4
-```
-然後：`Read /tmp/[主題]_thumbnail.png` 確認每張投影片的版型與色彩佈局正確。
+---
 
-### 路徑 B：Canva 高設計感版本
+## Step 4：品質確認
 
-若 Canva MCP 可用：
-```
-呼叫 Canva MCP：
-generate-design(
-  design_type="presentation",
-  query="[主題] [年級]教學簡報，[色盤風格]，共[N]頁，
-         包含：[slide titles 列表]"
-)
-```
+**P0（不達到不交付）**
+- [ ] 無 Emoji（一律用全形括號【】或 Unicode 幾何符號）
+- [ ] layout 值必須在 11 種版型內（cover/section/bullets/two-column/compare/objectives/vocab/activity/discussion/hero/summary）
+- [ ] 年級字體規格已套用
+- [ ] 輸出 .pptx 可正常解壓（unzip -l 驗證有 ppt/slides/slide*.xml）
 
-若 Canva MCP 不可用：
-```
-[注意] 偵測到 Canva MCP 未連線
-
-→ 請至 Claude Code 設定 → Connectors → 啟用 Canva
-→ 或切換到「路徑 A - Claude 內建」繼續製作
-  （內容分析已完成，可直接執行 .pptx 生成）
-```
+**P1（影響教學效果）**
+- [ ] 版型種類 ≥ 4 種
+- [ ] 學習目標使用認知／情意／態度三維格式
+- [ ] 注音使用 ㄅㄆㄇ 符號（vocab 版型）
 
 ---
 
-## Step 4：25 種版型說明（摘要）
+## Step 5：輸出摘要
 
-詳細版型規格見 `references/slide_design_principles.md`。
-
-| 版型 | 用途摘要 |
-|------|---------|
-| `content` | 條列文字（預設）|
-| `discussion` | 思考提問 + 計時器 |
-| `two_column` | 左右雙欄說明 |
-| `activity` | 步驟卡 + 時間/分組 |
-| `vocab` | 詞彙格子（注音+釋義）|
-| `timeline` | 橫向時間軸節點 |
-| `comparison` | 雙色對照欄 |
-| `big_quote` | 大字金句居中 |
-| `data_highlight` | 大數字統計卡 |
-| `image_focus` | 圖片佔位框 + 說明 |
-| `process_flow` | 橫向箭頭流程 |
-| `kanban` | 三欄 KWL 分類 |
-| `concept_web` | 放射狀概念圖 |
-| `pros_cons` | [+]優/[-]缺 雙欄 |
-| `section_cover` | 章節分隔頁 |
-| `hero_message` | 全版大標語 |
-| `three_cards` | 三卡並列 |
-| `four_quadrants` | 四象限矩陣 |
-| `icon_list` | 圖示條列清單 |
-| `stat_bar` | 文字進度條比較 |
-| `pyramid` | 金字塔層次 |
-| `agenda` | 議程目錄 |
-| `testimonial` | 人物引言卡 |
-| `split_screen` | 非對稱分割 |
-| `blank_canvas` | 空白模板 |
+交付時提供：
+1. 下載連結（.pptx）
+2. 版型清單（#張 × 版型名）
+3. 建議調整方向（針對班級特性）
 
 ---
 
-## 微調模式（Delta-Update）
+## Canva 路徑（高設計感版本）
 
-生成簡報後，用戶輸入以下動詞開頭時，只修改指定部分：
-
-| 動詞 | 動作 | 範例 |
-|------|------|------|
-| 換 | 替換內容/樣式 | 「換第3張標題」→ 只更新第3張 headline |
-| 改 | 修改屬性 | 「改色盤為深色沉穩」→ 只更新 CSS 色彩變數 |
-| 加 | 插入投影片 | 「在第4張後加一張討論題」→ 插入 discussion 版型 |
-| 刪 | 移除投影片 | 「刪掉第7張」→ 從 JSON 中移除該 slide |
-| 調 | 微調數值 | 「調字體更大」→ 依年級規格上調 font-size |
+使用者說「Canva 版」或「更精美的」時，若 Canva MCP 已連線：
+```
+canva: generate-design(design_type="presentation", query="[主題] [年級]教學簡報 [色盤風格]，共[N]頁")
+```
+未連線時：告知需啟用 Canva Connector，並切換路徑 A 繼續。
 
 ---
 
-## Step 5：品質核查（P0-P3 分級）
+## 微調模式
 
-### P0 嚴重（輸出前必修，否則不得交付）
-- [ ] 投影片尺寸 = 33.87cm × 19.05cm（16:9 寬螢幕，非 4:3）
-- [ ] 無 Emoji（所有版型使用全形括號標記或 Unicode 幾何符號）
-- [ ] layout key 必須存在於 LAYOUT_MAP（不可自創版型名稱）
-- [ ] 字型 = 微軟正黑體 / Work Sans（禁用 Inter / Roboto / Arial）
-- [ ] 縮圖格線已確認（thumbnail.py 執行並視覺檢查通過）
+生成後，用一字動詞觸發 delta 更新：
 
-### P1 重要（影響教學效果）
-- [ ] 節奏規劃通過：無 3 張以上連續同版型
-- [ ] 每 5 張內容至少 1 張視覺重版型（hero_message / section_cover / discussion）
-- [ ] 年級字體規格已套用（小學低年 40pt → 高中 28pt）
-- [ ] 封面完整（主題 / 科目 / 年級 / 108課綱標記）
-- [ ] 學習目標頁使用布魯姆動詞
-- [ ] 版型種類 ≥ 4 種（視覺多樣性）
-
-### P2 精修（視覺品質）
-- [ ] 色盤 primary / accent / light 使用比例適當
-- [ ] 每頁字數符合年級規格（國中 ≤80 字 / 高中 ≤120 字）
-- [ ] 重要概念有視覺化呈現（圖形/圖示/色塊 ≥40%）
-- [ ] 備注欄（note_box）文字 < 50 字
-- [ ] 無「相關概念一」等通用佔位符
-
-### P3 清理（最終輸出）
-- [ ] 輸出路徑正確，檔名含主題名稱
-- [ ] JSON 暫存檔 /tmp/slides_content.json 已清除
-- [ ] thumbnail PNG 確認後可刪除
-
----
-
-## MCP 整合說明
-
-### Canva MCP（路徑 B）
-- 連線方式：Claude Code 設定 → Connectors → Canva
-- 呼叫方式：`generate-design(design_type="presentation", query="...")`
-- 適合需要精美設計感的簡報（品牌感、行銷型）
-
-### Google Drive MCP（若已連接）
-- 直接讀取 Drive 中的教材文件
-- 完成後直接儲存回 Drive
-- 觸發：使用者提供 Google Drive 連結
+| 動詞 | 動作 |
+|------|------|
+| 換 | 替換指定張次的 layout/內容 |
+| 改 | 修改色盤（--edu_theme）或年級（--grade） |
+| 加 | 插入新投影片到指定位置 |
+| 刪 | 移除指定張次 |
