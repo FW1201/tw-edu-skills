@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""教材轉精美教學簡報生成腳本 V2.0
-25 種版型 × 8 種色盤 × Emoji/SVG 圖示
+"""教材轉精美教學簡報生成腳本 V2.1
+25 種版型 × 8 種色盤 × 16:9 寬螢幕（33.87cm × 19.05cm）
 """
 import argparse, sys, json, urllib.request
 from pathlib import Path
@@ -10,6 +10,11 @@ from pptx import Presentation
 from pptx.util import Cm, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
+
+# 16:9 寬螢幕尺寸常數（PowerPoint Widescreen 標準）
+SLIDE_W_CM = 33.867
+SLIDE_H_CM = 19.05
+_SW = SLIDE_W_CM / 25.4  # ≈ 1.3333，水平縮放因子（相對舊 4:3 基準）
 
 # ══════════════════════════════════════════════════════════════
 # 年級字體規格
@@ -38,16 +43,18 @@ STYLES = {
 }
 
 # ══════════════════════════════════════════════════════════════
-# Emoji 圖示對照
+# 符號標記（無 Emoji，使用全形括號或 Unicode 幾何符號）
 # ══════════════════════════════════════════════════════════════
 ICONS = {
-    'objectives':'🎯','vocab':'📖','activity':'🛠️','timeline':'📅',
-    'discussion':'💬','summary':'📝','section':'📌','image':'🖼️',
-    'data':'📊','quote':'"','process':'⚙️','concept':'🧠',
-    'pros':'✅','cons':'❌','agenda':'📋','closing':'🎉',
-    'hero':'🌟','card':'▪','chart':'📈','funnel':'▲',
-    'person':'👤','bullet':'▸','check':'✓','arrow':'→',
-    'star':'★','info':'ℹ️','idea':'💡','warn':'⚠️',
+    'objectives': '【目標】', 'vocab': '【詞彙】', 'activity': '【活動】',
+    'timeline':   '【時間軸】', 'discussion': '【討論】', 'summary': '【整理】',
+    'section':    '【章節】', 'image': '【圖片】', 'data': '【數據】',
+    'quote':      '“', 'process': '【流程】', 'concept': '【概念】',
+    'pros':       '[+]', 'cons': '[-]', 'agenda': '【目錄】',
+    'closing':    '', 'hero': '', 'card': '▪',
+    'chart':      '【圖表】', 'funnel': '▲', 'person': '【人物】',
+    'bullet':     '▸', 'check': '✓', 'arrow': '→',
+    'star':       '★', 'info': '[i]', 'idea': '[!]', 'warn': '[!]',
 }
 
 # ══════════════════════════════════════════════════════════════
@@ -74,7 +81,9 @@ def add_bg(slide, prs, color):
     s.fill.solid(); s.fill.fore_color.rgb = color; s.line.fill.background()
     return s
 
-def add_rect(slide, x_cm, y_cm, w_cm, h_cm, fill_color, border_color=None):
+def add_rect(slide, x_cm, y_cm, w_cm, h_cm, fill_color, border_color=None, _raw=False):
+    if not _raw:
+        x_cm, w_cm = x_cm * _SW, w_cm * _SW
     s = slide.shapes.add_shape(1, Cm(x_cm), Cm(y_cm), Cm(w_cm), Cm(h_cm))
     s.fill.solid(); s.fill.fore_color.rgb = fill_color
     if border_color: s.line.color.rgb = border_color
@@ -82,15 +91,17 @@ def add_rect(slide, x_cm, y_cm, w_cm, h_cm, fill_color, border_color=None):
     return s
 
 def add_tb(slide, x_cm, y_cm, w_cm, h_cm, text, size, bold=False,
-           color=None, align=PP_ALIGN.LEFT, wrap=True):
+           color=None, align=PP_ALIGN.LEFT, wrap=True, _raw=False):
     if color is None: color = rgb('1C2A35')
+    if not _raw:
+        x_cm, w_cm = x_cm * _SW, w_cm * _SW
     tb = slide.shapes.add_textbox(Cm(x_cm), Cm(y_cm), Cm(w_cm), Cm(h_cm))
     tb.text_frame.word_wrap = wrap
     sf(tb.text_frame, text, size, bold=bold, color=color, align=align)
     return tb
 
 def topbar(slide, prs, color, h=1.8):
-    add_rect(slide, 0, 0, prs.slide_width.cm, h, color)
+    add_rect(slide, 0, 0, prs.slide_width.cm, h, color, _raw=True)
 
 def header_title(slide, prs, title, spec, c, icon=''):
     topbar(slide, prs, c['primary'])
@@ -98,7 +109,9 @@ def header_title(slide, prs, title, spec, c, icon=''):
     add_tb(slide, 0.8, 0.3, 23, 1.2, label,
            spec['title_size']-8, bold=True, color=rgb('FFFFFF'))
 
-def bullet_block(slide, x_cm, y_cm, w_cm, h_cm, bullets, spec, c, prefix='▸  '):
+def bullet_block(slide, x_cm, y_cm, w_cm, h_cm, bullets, spec, c, prefix='▸  ', _raw=False):
+    if not _raw:
+        x_cm, w_cm = x_cm * _SW, w_cm * _SW
     tb = slide.shapes.add_textbox(Cm(x_cm), Cm(y_cm), Cm(w_cm), Cm(h_cm))
     tb.text_frame.word_wrap = True
     for i, b in enumerate(bullets):
@@ -110,7 +123,7 @@ def bullet_block(slide, x_cm, y_cm, w_cm, h_cm, bullets, spec, c, prefix='▸  '
 
 def note_box(slide, y_cm, note, spec, c):
     add_rect(slide, 1.2, y_cm, 22.6, 1.0, rgb('F0F4F8'), c['primary'])
-    add_tb(slide, 1.5, y_cm+0.1, 22, 0.8, f'💡 {note}',
+    add_tb(slide, 1.5, y_cm+0.1, 22, 0.8, f'[!] {note}',
            spec['body_size']-4, color=c['primary'])
 
 # ══════════════════════════════════════════════════════════════
@@ -120,10 +133,10 @@ def add_title_slide(prs, title, subject, grade, style_name='modern'):
     c = STYLES[style_name]
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    add_rect(slide, 0, 0, prs.slide_width.cm, 2.5, c['primary'])
-    add_rect(slide, 0, 16.5, prs.slide_width.cm, 2.5, c['primary'])
+    add_rect(slide, 0, 0, prs.slide_width.cm, 2.5, c['primary'], _raw=True)
+    add_rect(slide, 0, 16.5, prs.slide_width.cm, 2.5, c['primary'], _raw=True)
     for y in [2.5, 2.7]:
-        add_rect(slide, 0, y, prs.slide_width.cm, 0.08, c['accent'])
+        add_rect(slide, 0, y, prs.slide_width.cm, 0.08, c['accent'], _raw=True)
     add_tb(slide, 1.5, 4, 22, 4, title, 38, bold=True,
            color=c['primary'], align=PP_ALIGN.CENTER)
     add_tb(slide, 1.5, 8.5, 22, 2, f'{subject}｜{grade}', 20,
@@ -138,7 +151,7 @@ def add_objectives_slide(prs, objectives, stage, style_name='modern'):
     c = STYLES[style_name]; spec = GRADE_SPECS[stage]
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, '本節學習目標', spec, c, '🎯')
+    header_title(slide, prs, '本節學習目標', spec, c)
     bullet_block(slide, 1.5, 2.5, 22, 12, objectives, spec, c, prefix='  ➤  ')
 
 # ══════════════════════════════════════════════════════════════
@@ -160,10 +173,10 @@ def add_discussion_slide(prs, question, thinking_time='2', stage='junior', style
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
     topbar(slide, prs, rgb('1E8449'))
-    add_tb(slide, 0.8, 0.3, 18, 1.2, '💬 思考時間', spec['title_size']-8,
+    add_tb(slide, 0.8, 0.3, 18, 1.2, '[討論] 思考時間', spec['title_size']-8,
            bold=True, color=rgb('FFFFFF'))
     add_rect(slide, 20, 0.2, 4.5, 1.2, c['accent'])
-    add_tb(slide, 20.2, 0.4, 4.1, 0.8, f'⏱ {thinking_time} 分鐘', 14,
+    add_tb(slide, 20.2, 0.4, 4.1, 0.8, f'{thinking_time} 分鐘', 14,
            bold=True, color=c['primary'], align=PP_ALIGN.CENTER)
     add_tb(slide, 2, 4, 21, 6, question, spec['title_size']-2,
            bold=True, color=c['text'], align=PP_ALIGN.CENTER, wrap=True)
@@ -176,7 +189,7 @@ def add_summary_slide(prs, title, key_points, stage='junior', style_name='modern
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
     topbar(slide, prs, rgb('D4AC0D'))
-    add_tb(slide, 0.8, 0.3, 23, 1.2, f'📝 {title} — 重點整理',
+    add_tb(slide, 0.8, 0.3, 23, 1.2, f'{title} — 重點整理',
            spec['title_size']-8, bold=True, color=rgb('1C2A35'))
     colors_bg = [rgb('EBF5FB'), rgb('EAF3DE'), rgb('FAEEDA'), rgb('FBEAF0')]
     for i, (key, val) in enumerate(key_points[:4]):
@@ -222,7 +235,7 @@ def add_activity_slide(prs, title, steps=None, time_min='5',
     steps = steps or []
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, f'🛠️  {title}', spec, c)
+    header_title(slide, prs, f'【活動】  {title}', spec, c)
     # 步驟卡片
     step_colors = [c['primary'], c['accent'], rgb('2E7D32'), rgb('6A1B9A')]
     card_w = min(22.4 / max(len(steps), 1), 5.5)
@@ -237,9 +250,9 @@ def add_activity_slide(prs, title, steps=None, time_min='5',
                align=PP_ALIGN.LEFT, wrap=True)
     # 底部資訊列
     add_rect(slide, 1.0, 13.5, 22.4, 1.3, c['light'])
-    add_tb(slide, 1.5, 13.6, 11, 1.0, f'⏱  時間：{time_min} 分鐘',
+    add_tb(slide, 1.5, 13.6, 11, 1.0, f'時間：{time_min} 分鐘',
            spec['body_size']-2, color=c['primary'])
-    add_tb(slide, 13, 13.6, 10.5, 1.0, f'👥  形式：{grouping}',
+    add_tb(slide, 13, 13.6, 10.5, 1.0, f'形式：{grouping}',
            spec['body_size']-2, color=c['primary'])
 
 # ══════════════════════════════════════════════════════════════
@@ -250,7 +263,7 @@ def add_vocab_slide(prs, title, vocab_list=None, stage='junior', style_name='mod
     vocab_list = (vocab_list or [])[:6]
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, f'📖  {title}', spec, c)
+    header_title(slide, prs, f'【詞彙】  {title}', spec, c)
     cols = 2; rows = (len(vocab_list) + 1) // 2
     cell_w = 11.3; cell_h = min(12.5 / max(rows, 1), 6.0)
     for i, v in enumerate(vocab_list):
@@ -282,7 +295,7 @@ def add_timeline_slide(prs, title, events=None, stage='junior', style_name='mode
     n = max(len(events), 1)
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, f'📅  {title}', spec, c)
+    header_title(slide, prs, f'【時間軸】  {title}', spec, c)
     # 主軸線
     axis_y = 9.5
     add_rect(slide, 1.0, axis_y-0.06, 23.0, 0.12, c['primary'])
@@ -367,13 +380,13 @@ def add_data_highlight_slide(prs, title='', data_points=None,
     n = max(len(data_points), 1)
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, f'📊  {title}', spec, c)
+    header_title(slide, prs, f'【數據】  {title}', spec, c)
     card_w = 23.0 / n - 0.4
     dp_colors = [c['primary'], c['accent'], rgb('2E7D32'), rgb('6A1B9A')]
     for i, dp in enumerate(data_points):
         x = 0.8 + i * (card_w + 0.4)
         add_rect(slide, x, 2.4, card_w, 12, dp_colors[i % 4])
-        icon = dp.get('icon', '📊')
+        icon = dp.get('icon', '[#]')
         add_tb(slide, x+0.2, 3.0, card_w-0.4, 1.8, icon, 32,
                color=rgb('FFFFFF'), align=PP_ALIGN.CENTER)
         add_tb(slide, x+0.2, 4.8, card_w-0.4, 3.5, dp.get('value', ''),
@@ -394,7 +407,7 @@ def add_image_focus_slide(prs, title='', caption='', image_hint='',
     header_title(slide, prs, title, spec, c)
     # 圖片佔位框
     add_rect(slide, 1.0, 2.2, 15.0, 12.5, c['light'], c['primary'])
-    hint_text = image_hint if image_hint else '🖼️  請在此插入圖片'
+    hint_text = image_hint if image_hint else '[在此插入圖片]'
     add_tb(slide, 3.5, 7.5, 10, 2.0, hint_text,
            spec['body_size'], color=c['primary'], align=PP_ALIGN.CENTER)
     # 右側說明欄
@@ -414,7 +427,7 @@ def add_process_flow_slide(prs, title='', steps=None,
     n = max(len(steps), 1)
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, f'⚙️  {title}', spec, c)
+    header_title(slide, prs, f'【流程】  {title}', spec, c)
     box_w = (23.0 - (n-1)*1.0) / n
     step_colors = [c['primary'], c['accent'], rgb('1E8449'), rgb('7B241C'), rgb('1A5276')]
     for i, st in enumerate(steps):
@@ -514,7 +527,7 @@ def add_pros_cons_slide(prs, title='', pros=None, cons=None,
     # 優點欄（綠）
     add_rect(slide, 0.8, 2.2, 11.6, 12.5, rgb('E8F5E9'))
     add_rect(slide, 0.8, 2.2, 11.6, 1.8, rgb('2E7D32'))
-    add_tb(slide, 1.0, 2.3, 11.2, 1.4, '✅  優點 / 支持',
+    add_tb(slide, 1.0, 2.3, 11.2, 1.4, '[+]  優點 / 支持',
            spec['body_size'], bold=True, color=rgb('FFFFFF'), align=PP_ALIGN.CENTER)
     for i, p in enumerate(pros[:spec['max_bullets']]):
         add_tb(slide, 1.2, 4.3+i*1.8, 11.0, 1.6, f'✓  {p}',
@@ -522,7 +535,7 @@ def add_pros_cons_slide(prs, title='', pros=None, cons=None,
     # 缺點欄（紅）
     add_rect(slide, 13.0, 2.2, 11.6, 12.5, rgb('FFEBEE'))
     add_rect(slide, 13.0, 2.2, 11.6, 1.8, rgb('C62828'))
-    add_tb(slide, 13.2, 2.3, 11.2, 1.4, '❌  缺點 / 反對',
+    add_tb(slide, 13.2, 2.3, 11.2, 1.4, '[-]  缺點 / 反對',
            spec['body_size'], bold=True, color=rgb('FFFFFF'), align=PP_ALIGN.CENTER)
     for i, co in enumerate(cons[:spec['max_bullets']]):
         add_tb(slide, 13.4, 4.3+i*1.8, 11.0, 1.6, f'✗  {co}',
@@ -537,8 +550,8 @@ def add_section_cover_slide(prs, section_num='', section_title='',
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['primary'])
     # 裝飾條
-    add_rect(slide, 0, 8.5, prs.slide_width.cm, 0.2, c['accent'])
-    add_rect(slide, 0, 8.7, prs.slide_width.cm, 0.2, rgb('FFFFFF') if c['bg'] != rgb('0D1117') else c['light'])
+    add_rect(slide, 0, 8.5, prs.slide_width.cm, 0.2, c['accent'], _raw=True)
+    add_rect(slide, 0, 8.7, prs.slide_width.cm, 0.2, rgb('FFFFFF') if c['bg'] != rgb('0D1117') else c['light'], _raw=True)
     add_tb(slide, 2, 4.5, 20, 2.5, section_num, 28,
            color=c['accent'], align=PP_ALIGN.CENTER)
     add_tb(slide, 2, 7.0, 20, 3.5, section_title, 36,
@@ -712,7 +725,7 @@ def add_agenda_slide(prs, title='本節課程大綱', items=None,
     items = (items or [])[:6]
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['bg'])
-    header_title(slide, prs, f'📋  {title}', spec, c)
+    header_title(slide, prs, f'【目錄】  {title}', spec, c)
     item_h = 12.0 / max(len(items), 1)
     for i, it in enumerate(items):
         y = 2.3 + i * (item_h + 0.2)
@@ -749,7 +762,7 @@ def add_testimonial_slide(prs, quote='', person='', role='', context='',
     # 人物資訊卡
     add_rect(slide, 7.5, 11.0, 9.4, 3.5, c['primary'])
     add_rect(slide, 7.5, 11.0, 2.8, 3.5, c['accent'])
-    add_tb(slide, 7.6, 11.5, 2.6, 2.5, '👤', 28,
+    add_tb(slide, 7.6, 11.5, 2.6, 2.5, '[ ]', 28,
            color=rgb('FFFFFF'), align=PP_ALIGN.CENTER)
     add_tb(slide, 10.5, 11.2, 6.2, 1.2, person,
            spec['body_size'], bold=True, color=rgb('FFFFFF'))
@@ -808,8 +821,8 @@ def add_closing_slide(prs, homework='', style_name='modern'):
     c = STYLES[style_name]
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, prs, c['primary'])
-    add_rect(slide, 0, 8.5, prs.slide_width.cm, 0.15, c['accent'])
-    add_tb(slide, 1.5, 4.5, 21.4, 2.5, '課後任務 🎉', 30,
+    add_rect(slide, 0, 8.5, prs.slide_width.cm, 0.15, c['accent'], _raw=True)
+    add_tb(slide, 1.5, 4.5, 21.4, 2.5, '課後任務', 30,
            bold=True, color=rgb('FFFFFF'), align=PP_ALIGN.CENTER)
     add_tb(slide, 1.5, 8.0, 21.4, 4, homework, 18,
            color=c['accent'], align=PP_ALIGN.CENTER, wrap=True)
@@ -857,7 +870,7 @@ def main():
                         choices=['elementary_low','elementary_high','junior','senior',''])
     parser.add_argument('--style',        default='modern',
                         choices=list(STYLES.keys()))
-    parser.add_argument('--icons',        default='emoji', choices=['emoji','svg','none'])
+    parser.add_argument('--icons',        default='symbol', choices=['symbol','none'])
     parser.add_argument('--content_file', default='')
     parser.add_argument('--slides_count', type=int, default=0)
     parser.add_argument('--output',       default='教學簡報.pptx')
@@ -871,11 +884,11 @@ def main():
         try:
             content_data = json.loads(Path(args.content_file).read_text(encoding='utf-8'))
         except Exception as e:
-            print(f'⚠️  content_file 解析失敗：{e}，使用預設內容', file=sys.stderr)
+            print(f'[警告]  content_file 解析失敗：{e}，使用預設內容', file=sys.stderr)
 
     prs = Presentation()
-    prs.slide_width  = Cm(25.4)
-    prs.slide_height = Cm(19.05)
+    prs.slide_width  = Cm(SLIDE_W_CM)   # 33.867cm（16:9 寬螢幕）
+    prs.slide_height = Cm(SLIDE_H_CM)   # 19.05cm
 
     style = args.style
 
@@ -914,7 +927,7 @@ def main():
         try:
             fn(prs, stage=stage, style_name=style, **{k: v for k, v in slide_data.items() if k != 'layout'})
         except Exception as e:
-            print(f'⚠️  版型 {layout} 生成失敗：{e}，改用 content', file=sys.stderr)
+            print(f'[警告]  版型 {layout} 生成失敗：{e}，改用 content', file=sys.stderr)
             add_content_slide(prs,
                 title=slide_data.get('title', ''),
                 bullets=slide_data.get('bullets', [str(e)]),

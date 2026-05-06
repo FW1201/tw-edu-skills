@@ -7,16 +7,17 @@ description: >
   當使用者提及「幫我做簡報」「上傳教材做簡報」「把文件轉成投影片」
   「製作教學簡報」「做PPT」「做投影片」「教學PPT」「課程簡報」
   「把這份資料做成簡報」「簡報製作」「製作投影片」時觸發。
-version: 2.0.0
+version: 2.1.0
 author: 奇老師・數位敘事力社群
-allowed-tools: "Bash, Read, Write, WebFetch"
-# Bash: 執行 Python 生成腳本 (Step 3A)
-# Read: 讀取 references/ 參考文件
+allowed-tools: "Bash, Read, Write, WebFetch, WebSearch"
+# Bash: 執行 Python 生成腳本 (Step 3A) + thumbnail QA
+# Read: 讀取 references/ 參考文件 + 縮圖 PNG
 # Write: 輸出 /tmp/slides_content.json
 # WebFetch: 處理網址教材
+# WebSearch: 搜尋補充素材
 ---
 
-# 教材轉視覺化教學簡報 v2.0
+# 教材轉視覺化教學簡報 v2.1
 
 ## 哲學定位
 「好的教學簡報不是把文字搬上投影片，而是把複雜知識視覺化。」
@@ -24,7 +25,7 @@ allowed-tools: "Bash, Read, Write, WebFetch"
 
 ---
 
-## 設計系統 V2.0：Edu Warm × Claude Design
+## 設計系統 V2.1：Edu Warm × Claude Design
 
 > 基於 Claude Design（2026-04-17）+ canvas-design 官方字型規格升級
 
@@ -45,24 +46,29 @@ allowed-tools: "Bash, Read, Write, WebFetch"
 ```
 
 > **禁用字型**：Inter、Roboto、Arial — 缺乏教育溫感，系統字體不可控  
-> **禁止模式**：漸層轟炸（aggressive gradients）、每頁 Emoji 裝飾、SVG 插圖嘗試  
+> **禁止模式**：漸層轟炸（aggressive gradients）、Emoji 裝飾、SVG 插圖嘗試  
+> **禁止 Emoji**：所有版型一律使用全形括號標記（如【目標】【討論】）或 Unicode 幾何符號  
 > **色彩延伸**：需要額外色階時用 `oklch()`（如 `oklch(75% 0.12 55)` 衍生暖橙色系）
 
-### Edu Warm 字型層級
+### Edu Warm 字型三層架構（參考 guizang-ppt-skill 設計原則）
 ```
-H1（投影片主標）: Work Sans Bold 30px / color: #d97757
-H2（小節標題）:  Work Sans SemiBold 22px
-內文要點:        Noto Sans TC Regular 18px / line-height: 1.75
-強調文字:        Work Sans Medium 18px / color: #d97757
-備注說明:        Noto Sans TC Regular 14px / color: #6B6B6B
+第一層（視覺錨點）: Work Sans Bold        → 投影片主標 H1（標題色 primary）
+第二層（資訊載體）: Noto Sans TC Regular  → 內文要點、說明文字（line-height 1.75）
+第三層（後設資料）: 微軟正黑體 Italic 12pt → 頁碼、圖片說明、來源標注、課綱對應碼
+
+H1（投影片主標）: Work Sans Bold 28-40pt（依年級）/ color: primary
+H2（小節標題）:  Work Sans SemiBold 22-32pt（依年級）
+內文要點:        Noto Sans TC Regular 20-28pt（依年級）/ line-height: 1.75
+強調文字:        Work Sans Medium / color: primary
+後設資料:        微軟正黑體 Italic 12pt / color: #6B6B6B（頁碼、說明文、課綱碼）
 ```
 
-### 16:9 簡報格線系統（1280×720px）
+### 16:9 簡報格線系統（33.87cm × 19.05cm）
 ```
-外邊距: 64px 四周
-頁首帶: top 80px  — 課程主題（Work Sans Bold）
-主內容: 592px 高  / 12欄格線 gutter 16px
-頁尾帶: bottom 48px — 頁碼 + 108課綱對應
+外邊距: 約 1.1cm 四周（_SW 縮放後自動計算）
+頁首帶: top 1.8cm  — 課程主題（Work Sans Bold，白字）
+主內容: 約 15.4cm 高 / 可用寬度約 31.7cm
+頁尾帶: bottom 約 2.05cm — 頁碼 + 108課綱對應
 ```
 
 ### canvas-design 設計原則（簡報適用版）
@@ -101,10 +107,10 @@ H2（小節標題）:  Work Sans SemiBold 22px
 
 ### 1-A. 雙路徑選擇（第一個問題）
 ```
-🛤️ 請問您想用哪種方式製作簡報？
+請問您想用哪種方式製作簡報？
 
-A. 🖥️ Claude 內建（直接生成 .pptx 檔案，可立即下載，適合快速製作）
-B. 🎨 Canva 路徑（呼叫 Canva 生成高設計感版本，視覺效果更精美）
+[A] Claude 內建（直接生成 .pptx 檔案，可立即下載，適合快速製作）
+[B] Canva 路徑（呼叫 Canva 生成高設計感版本，視覺效果更精美）
 
 → 請輸入 A 或 B，或直接描述您的需求（我會自動判斷）
 ```
@@ -131,23 +137,22 @@ Q4: 「想要哪種色盤？
     G. 溫暖橙調（橙色系，藝術/社會/SEL）
     H. 學術紫  （深紫系，文學/哲學/研究）」
 
-Q5: 「圖示風格？
-    A. Emoji（輕量預設，零依賴）
-    B. SVG 圖示（需要網路，下載 Iconify 公開資源）
-    C. 純文字（無圖示）」
+Q5: 「標記符號風格？
+    A. 括號標記（預設，如【目標】【討論】[+][-]）
+    B. 純文字（無任何標記符號）」
 
 Q6: 「幾張投影片？（預設依內容自動判斷，通常 12-18 張）」
 ```
 
 ### 1-D. 確認摘要（執行前輸出）
 ```
-✅ 主題：{主題}
-🎓 年級：{年級}（→ 字體/密度已自動調整）
-🛤️ 路徑：{A. Claude 內建 / B. Canva}
-🎨 色盤：{色盤選擇}
-🖼️ 圖示：{emoji / svg / none}
-📊 張數：約 {N} 張（含封面/目標/內容/結尾）
-📄 輸出：{主題}_教學簡報.pptx
+[確認] 主題：{主題}
+[年級] {年級}（→ 字體/密度已自動調整）
+[路徑] {A. Claude 內建 / B. Canva}
+[色盤] {色盤選擇}
+[符號] {括號標記 / 純文字}
+[張數] 約 {N} 張（含封面/目標/內容/結尾）
+[輸出] {主題}_教學簡報.pptx
 ```
 
 ---
@@ -160,6 +165,33 @@ Q6: 「幾張投影片？（預設依內容自動判斷，通常 12-18 張）」
 | 國小中高年級（3-6年）| 40字 | 圖 55% | 標題 36pt / 內文 24pt | 適中 |
 | 國中（7-9年）| 80字 | 圖 40% | 標題 32pt / 內文 22pt | 少 |
 | 高中（10-12年）| 120字 | 圖 30% | 標題 28pt / 內文 20pt | 無或極少 |
+
+---
+
+## Step 2.3：投影片節奏規劃（生成前必做）
+
+在進入 JSON 生成之前，先輸出節奏規劃表，確保視覺節奏多樣：
+
+```
+投影片節奏規劃
+────────────────────────────────────────────
+#   版型              視覺重量    說明
+1   title_slide       重（封面）  primary 滿版
+2   objectives        輕          header + 條列
+3   hero_message      重（視覺）  primary 大字（≥10 張必有）
+4   content           輕          白底條列
+5   content           輕          白底條列
+6   discussion        中（互動）  計時提問
+7   two_column        輕          雙欄對比
+8   summary           中          重點格
+9   closing           重（結尾）  primary 滿版
+────────────────────────────────────────────
+```
+
+**節奏規則**：
+- 不得 3 張以上連續同版型
+- 每 5 張內容至少 1 張視覺重的版型（hero_message / section_cover / discussion）
+- 10 張以上須包含 ≥1 hero_message 或 section_cover
 
 ---
 
@@ -239,11 +271,20 @@ python scripts/generate_slides.py \
   --grade "[年級]" \
   --stage "[elementary_low|elementary_high|junior|senior]" \
   --style "[modern|colorful|dark|local|nature|tech|warm|purple]" \
-  --icons "[emoji|svg|none]" \
+  --icons "[symbol|none]" \
   --content_file "/tmp/slides_content.json" \
   --slides_count [張數] \
   --output "/mnt/user-data/outputs/[主題]_教學簡報.pptx"
 ```
+
+生成後執行縮圖 QA（視覺確認投影片結構）：
+```bash
+python scripts/thumbnail.py \
+  --input "/mnt/user-data/outputs/[主題]_教學簡報.pptx" \
+  --output "/tmp/[主題]_thumbnail.png" \
+  --cols 4
+```
+然後：`Read /tmp/[主題]_thumbnail.png` 確認每張投影片的版型與色彩佈局正確。
 
 ### 路徑 B：Canva 高設計感版本
 
@@ -259,7 +300,7 @@ generate-design(
 
 若 Canva MCP 不可用：
 ```
-⚠️ 偵測到 Canva MCP 未連線
+[注意] 偵測到 Canva MCP 未連線
 
 → 請至 Claude Code 設定 → Connectors → 啟用 Canva
 → 或切換到「路徑 A - Claude 內建」繼續製作
@@ -287,7 +328,7 @@ generate-design(
 | `process_flow` | 橫向箭頭流程 |
 | `kanban` | 三欄 KWL 分類 |
 | `concept_web` | 放射狀概念圖 |
-| `pros_cons` | ✅優/❌缺 雙欄 |
+| `pros_cons` | [+]優/[-]缺 雙欄 |
 | `section_cover` | 章節分隔頁 |
 | `hero_message` | 全版大標語 |
 | `three_cards` | 三卡並列 |
@@ -316,23 +357,34 @@ generate-design(
 
 ---
 
-## Step 5：品質確認清單
+## Step 5：品質核查（P0-P3 分級）
 
-- [ ] 設計皮膚是否為 Edu Warm（Work Sans 標題 + Noto Sans TC 內文）？
-- [ ] 16:9 格線：頁首帶 80px / 主內容 592px / 頁尾帶 48px
-- [ ] 視覺元素（圖形/圖示/色塊）是否佔每頁 ≥40%？
-- [ ] 封面有完整資訊（主題/科目/年級）
+### P0 嚴重（輸出前必修，否則不得交付）
+- [ ] 投影片尺寸 = 33.87cm × 19.05cm（16:9 寬螢幕，非 4:3）
+- [ ] 無 Emoji（所有版型使用全形括號標記或 Unicode 幾何符號）
+- [ ] layout key 必須存在於 LAYOUT_MAP（不可自創版型名稱）
+- [ ] 字型 = 微軟正黑體 / Work Sans（禁用 Inter / Roboto / Arial）
+- [ ] 縮圖格線已確認（thumbnail.py 執行並視覺檢查通過）
+
+### P1 重要（影響教學效果）
+- [ ] 節奏規劃通過：無 3 張以上連續同版型
+- [ ] 每 5 張內容至少 1 張視覺重版型（hero_message / section_cover / discussion）
+- [ ] 年級字體規格已套用（小學低年 40pt → 高中 28pt）
+- [ ] 封面完整（主題 / 科目 / 年級 / 108課綱標記）
 - [ ] 學習目標頁使用布魯姆動詞
-- [ ] 每頁字數符合年級規格
 - [ ] 版型種類 ≥ 4 種（視覺多樣性）
-- [ ] 無連續 3 張相同版型
-- [ ] 主色調一致，最多使用 3 種顏色
-- [ ] 重要概念有視覺化呈現
-- [ ] 至少一張互動/提問投影片（discussion）
-- [ ] 結尾頁有重點整理（summary）
+
+### P2 精修（視覺品質）
+- [ ] 色盤 primary / accent / light 使用比例適當
+- [ ] 每頁字數符合年級規格（國中 ≤80 字 / 高中 ≤120 字）
+- [ ] 重要概念有視覺化呈現（圖形/圖示/色塊 ≥40%）
+- [ ] 備注欄（note_box）文字 < 50 字
 - [ ] 無「相關概念一」等通用佔位符
-- [ ] 無漸層轟炸、無 SVG 插圖嘗試（改用 CSS 色塊）？
-- [ ] 每個元素有存在理由（no filler — 不加裝飾性文字/圖示）？
+
+### P3 清理（最終輸出）
+- [ ] 輸出路徑正確，檔名含主題名稱
+- [ ] JSON 暫存檔 /tmp/slides_content.json 已清除
+- [ ] thumbnail PNG 確認後可刪除
 
 ---
 
