@@ -3,17 +3,17 @@ name: tw-edu-slides-creator
 description: >
   上傳任何教材（Word/PDF/文字/網址）後，自動生成視覺化教學簡報（.html）。
   依年段自動調整字體大小與資訊密度，使用者輸入風格描述詞，Claude 動態解讀為 CSS 設計系統。
-  11 種 HTML 版型，純 CSS 動畫，無外部依賴，任何瀏覽器直接開啟投影。
+  17 種 HTML 版型，純 CSS 動畫，無外部依賴，任何瀏覽器直接開啟投影。
   保留 Canva 高設計感路徑（Canva MCP）。
   當使用者提及「幫我做簡報」「上傳教材做簡報」「把文件轉成投影片」
   「製作教學簡報」「做PPT」「做投影片」「教學PPT」「課程簡報」
   「把這份資料做成簡報」「簡報製作」「製作投影片」時觸發。
-version: 4.0.0
+version: 4.1.0
 author: 奇老師・數位敘事力社群
 allowed-tools: "Read, Write, WebFetch, WebSearch"
 ---
 
-# 教材轉視覺化教學簡報 V4.0
+# 教材轉視覺化教學簡報 V4.1
 
 ---
 
@@ -88,7 +88,7 @@ allowed-tools: "Read, Write, WebFetch, WebSearch"
 
 ### 3-B. 版型分配
 
-依 `references/slide_design_principles.md` 的「內容特徵 → 版型映射規則」，將內容分配到以下 **11 個 HTML 版型**。
+依 `references/slide_design_principles.md` 的「內容特徵 → 版型映射規則」，將內容分配到以下 **17 個 HTML 版型**。
 詳細 CSS class 與 HTML 骨架請參照 `references/html-layout-templates.md`。
 
 | 版型 key | 用途 | 對應舊版型 |
@@ -101,9 +101,15 @@ allowed-tools: "Read, Write, WebFetch, WebSearch"
 | `vocab` | 詞彙定義（含注音） | vocab |
 | `activity` | 課堂活動步驟 | activity / process_flow |
 | `discussion` | 思考討論題 | discussion |
-| `hero` | 核心訊息大字 | hero_message / big_quote |
+| `hero` | 核心訊息大字 | hero_message |
 | `data` | 數據/統計亮點 | data_highlight / three_cards |
 | `summary` | 重點整理 | summary / kanban |
+| `timeline` | 時間軸（歷史/傳記/事件，≥3 時間點） | timeline |
+| `quote` | 大字金句（名言/課文精華/人物引言） | big_quote / testimonial |
+| `three-column` | 三欄並列（三要素/三特徵） | three_cards / kanban |
+| `image-hero` | 圖片全版（地圖/插圖/視覺引導） | image_focus |
+| `pros-cons` | 優劣分析（正反立場/優缺點） | pros_cons |
+| `checklist` | 學習清單（任務確認/評量項目） | blank_canvas |
 
 **版型節奏規則：**
 - 不得 3 張以上連續同版型
@@ -570,7 +576,7 @@ allowed-tools: "Read, Write, WebFetch, WebSearch"
 **P0（不達到不輸出）：**
 - [ ] 所有 CSS 變數已定義，對比度符合 WCAG AA
 - [ ] 年段字級已套用（sz-title / sz-h2 / sz-body 對應表格）
-- [ ] 11 個版型的 CSS class 完整定義於 `<style>` 內
+- [ ] 使用的版型 CSS class 完整定義於 `<style>` 內（17 種版型：cover/objectives/section/bullets/two-column/vocab/activity/discussion/hero/data/summary/timeline/quote/three-column/image-hero/pros-cons/checklist）
 - [ ] `<script>` 導航功能語法正確
 - [ ] 無 Emoji（用全形【】或 ▪ ★ ◆ 等 Unicode 幾何符號代替）
 - [ ] 版型種類 ≥ 4 種
