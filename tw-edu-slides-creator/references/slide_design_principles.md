@@ -1,6 +1,8 @@
 # 教學簡報設計原則與版型庫 v2.0
 # tw-edu-slides-creator 參考文件
 
+> **v2.0 更新（2026-05-23）**：本檔案原有的「HTML layout key」（如 `layout-bullets`、CSS class 選擇器）已遷移為 TSX 元件對應（如 `04-bullets/index.tsx`）。所有 17 種版型的完整 TSX 程式碼範例見 `tsx-layout-templates.md`；Tailwind 色值與字型對照見 `tailwind-themes.md`。
+
 > Claude 在 Step 2.5 內容分析時讀取此文件，作為版型選擇與設計判斷的依據。
 
 ---

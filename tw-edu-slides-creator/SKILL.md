@@ -1,749 +1,211 @@
 ---
 name: tw-edu-slides-creator
-description: >
-  上傳任何教材（Word/PDF/文字/網址）後，自動生成視覺化教學簡報（.html）。
-  依年段自動調整字體大小與資訊密度，使用者輸入風格描述詞，Claude 動態解讀為 CSS 設計系統。
-  17 種 HTML 版型，純 CSS 動畫，無外部依賴，任何瀏覽器直接開啟投影。
-  支援三套預設主題（Edu Warm / Tech Dark / Academic Clean）與 Presenter 演講稿模式。
-  保留 Canva 高設計感路徑（Canva MCP）。
-  當使用者提及「幫我做簡報」「上傳教材做簡報」「把文件轉成投影片」
-  「製作教學簡報」「做PPT」「做投影片」「教學PPT」「課程簡報」
-  「把這份資料做成簡報」「簡報製作」「製作投影片」時觸發。
-version: 5.0.0
-author: 奇老師・數位敘事力社群
-allowed-tools: "Read, Write, WebFetch, WebSearch"
+description: |
+  台灣 K-12 教育簡報生成器（v2.0）。使用 open-slide 框架（React + TypeScript + Tailwind CSS，1920×1080 畫布），
+  支援 17 種教學版型、3 主題色系、Bloom 分層設計。輸出可直接 pnpm dev 預覽、pnpm build 匯出 HTML/PDF。
+  由 Claude Code 負責生成 TSX 投影片元件，open-slide 框架處理縮放與演示。
+version: 2.0
+tags: [education, slides, Taiwan, React, TypeScript, open-slide, Tailwind, K-12]
+capabilities:
+  - open-slide 專案自動建立（npx @open-slide/cli init）
+  - 17 種 TSX 投影片版型
+  - 3 Tailwind CSS 主題（Edu Warm / Tech Dark / Academic Clean）
+  - 年級自適應字型大小（國小低/中高/國中/高中/大學）
+  - Bloom 分類法版型選擇邏輯
+  - 演示者模式（open-slide 內建）
+  - HTML/PDF 匯出（pnpm build）
+  - Delta 更新模式（換N / 改風格 / 加N / 刪N / 加稿N）
+references:
+  - references/tsx-layout-templates.md
+  - references/tailwind-themes.md
+  - references/slide_design_principles.md
 ---
 
-# 教材轉視覺化教學簡報 V5.0
+# tw-edu-slides-creator v2.0
 
-> **技術參考**：版型 CSS 詳見 `references/html-layout-templates.md`；設計原則與版型映射詳見 `references/slide_design_principles.md`；預設主題詳見 `references/themes/`。
-
----
-
-## Step 0：主題選擇（可跳過）
-
-讀取 `references/themes/` 目錄，列出可用主題供選擇：
-
-```
-可用主題（選一個或選「自訂」）：
-  A. Edu Warm     — 溫暖橙調，適合一般教學、國語文、藝術、SEL
-  B. Tech Dark    — 深色科技，適合 AI 課程、程式設計、期末發表
-  C. Academic Clean — 學術清爽，適合研究報告、高中學術課程
-  D. 自訂         — 進入 Step 2 自行描述風格
-```
-
-- 選 A/B/C → 讀取對應主題 `.md`，套用其 CSS 變數與字型，**跳過 Step 2 的顏色描述**（仍詢問頁數與其他問題）
-- 選 D → 進入完整 Step 2
+台灣 K-12 教育簡報生成 Skill，使用 open-slide 框架。
+Claude Code 負責生成 TSX 元件；open-slide 負責預覽、縮放、PDF 匯出。
 
 ---
 
-## Step 1：資訊收集
+## 📋 工作流程（5 步驟）
 
-| 問題 | 必填 | 備注 |
-|------|------|------|
-| 教學主題或課文是什麼？有現成教材嗎？（文字/Word/PDF/網址） | ✅ | |
-| 給哪個年段的學生？ | ✅ | |
-| 預計幾張投影片？ | ✅ | 短場景 5–8 張 / 標準一節課 10–15 張 / 深度 16–25 張 |
-| 文字密度？ | ✅ | 極簡（大字/數據）/ 輕量（標題+2–3點）/ 標準（標題+4–5點）/ 詳細（多欄） |
-| 需要演講稿（Presenter 模式）嗎？ | ✅ | 有 → 生成時每頁附 data-notes；按 P 鍵顯示演講稿浮層 |
+### 步驟 0：確認環境
 
-若已選預設主題（Step 0 A/B/C），跳過風格描述問題，改用主題 CSS。  
-收集後輸出確認摘要：主題、年段、風格、頁數、密度、演講稿 Y/N。
+檢查使用者環境：
+- Node.js 是否安裝（`node --version`）
+- 當前目錄是否已有 open-slide 專案（`package.json` 含 `@open-slide/core`）
+- 若無專案：提示將自動 `npx @open-slide/cli init <slug>` 建立
 
----
+### 步驟 1：收集資訊
 
-## Step 2：風格解讀 + CSS 設計系統配置
+詢問以下資訊（可一次問完）：
 
-> 若已在 Step 0 選定預設主題，直接套用主題 CSS 變數，**跳過 2-A**，從 2-B 繼續。
+| 欄位 | 說明 | 預設值 |
+|------|------|--------|
+| 課程/主題名稱 | 投影片標題 | 必填 |
+| 年級 | 國小低（1-2）/ 國小中高（3-6）/ 國中 / 高中 / 大學 | 國中 |
+| 張數 | 預計投影片總數（含封面） | 10 |
+| 主題色系 | Edu Warm / Tech Dark / Academic Clean | Edu Warm |
+| 講稿模式 | 是否需要演講備註（speaker notes） | 否 |
+| 輸出目錄名稱 | open-slide 專案資料夾名稱 | slides-`<課程slug>` |
 
-### 2-A. 風格描述詞解讀
+### 步驟 2：規劃投影片結構
 
-根據使用者的描述詞，自行判斷並決定以下 CSS 變數值。
-**不得使用固定預設色盤**——每次都要根據描述詞做原創判斷。
-
-**常見描述詞 → CSS 配置參考（僅供啟發，非窮舉）：**
-
-| 描述詞範例 | --bg | --primary | --accent | --text |
-|-----------|------|-----------|---------|--------|
-| 科技感 深色 未來 | #0D1117 | #00D4FF | #7B2FFF | #E6EDF3 |
-| 溫暖 活潑 色彩 | #FFFAF0 | #FF8C42 | #FFD166 | #2D2D2D |
-| 簡約 專業 清晰 | #FFFFFF | #1A73E8 | #34A853 | #202124 |
-| 清新 自然 生態 | #F0FAF4 | #2D9E6B | #7BC67E | #1A2E25 |
-| 典雅 學術 沉穩 | #F8F6F2 | #2C3E6D | #C0392B | #1A1A2E |
-| 活潑 低年級 遊戲 | #FFF8E1 | #E91E8C | #FF9800 | #212121 |
-| 沉穩 高中 深灰 | #1C1C1E | #F5F5F5 | #FF9F0A | #EBEBEB |
-| 台灣本土 文化 | #FEF3E2 | #C0392B | #E67E22 | #2C1A0E |
-
-**完整 CSS 變數宣告範本：**
-```css
-:root {
-  --bg: #...;         /* 背景色（投影片底色） */
-  --surface: #...;    /* 卡片/區塊底色（比 bg 調深或淺 10-15%） */
-  --primary: #...;    /* 主色（標題、重點強調） */
-  --accent: #...;     /* 強調色（按鈕、highlight、圓點） */
-  --text: #...;       /* 正文主色 */
-  --muted: #...;      /* 次要文字（副標、提示） */
-  --border: #...;     /* 分隔線（text 的 15% opacity 參考值） */
-}
-```
-
-**對比度規則：**
-- `--text` 對 `--bg` 的對比度必須 ≥ 4.5:1（WCAG AA）
-- 深色背景配淺色文字；淺色背景配深色文字
-- `--surface` 比 `--bg` 明度差 10–15%，確保區塊可辨
-
-### 2-B. 年段字級配置
-
-在 `:root` 中加入年段字級變數：
-
-| 年段 | --sz-title | --sz-h2 | --sz-body | --sz-small | --max-bullets |
-|------|-----------|---------|-----------|-----------|--------------|
-| 國小低 (1-2) | 3.2rem | 2.4rem | 2.0rem | 1.4rem | 3 |
-| 國小中高 (3-6) | 2.8rem | 2.0rem | 1.7rem | 1.3rem | 4 |
-| 國中 (7-9) | 2.4rem | 1.8rem | 1.5rem | 1.1rem | 5 |
-| 高中 (10-12) | 2.0rem | 1.6rem | 1.3rem | 1.0rem | 6 |
-
----
-
-## Step 3：內容分析 + 投影片規劃
-
-### 3-A. 讀取教材
-
-讀取使用者提供的素材（文字輸入、Read 工具讀取檔案、或 WebFetch 抓取網址）。
-
-### 3-B. 版型分配
-
-依 `references/slide_design_principles.md` 的「內容特徵 → 版型映射規則」，將內容分配到以下 **17 個 HTML 版型**。
-詳細 CSS class 與 HTML 骨架請參照 `references/html-layout-templates.md`。
-
-| 版型 key | 用途 | 對應舊版型 |
-|---------|------|----------|
-| `cover` | 封面（課名・年段・教師） | cover |
-| `objectives` | 學習目標（三維格式） | objectives |
-| `section` | 段落分隔（編號 + 主題） | section_cover |
-| `bullets` | 條列重點 | content / icon_list |
-| `two-column` | 雙欄比較 | two_column / comparison |
-| `vocab` | 詞彙定義（含注音） | vocab |
-| `activity` | 課堂活動步驟 | activity / process_flow |
-| `discussion` | 思考討論題 | discussion |
-| `hero` | 核心訊息大字 | hero_message |
-| `data` | 數據/統計亮點 | data_highlight / three_cards |
-| `summary` | 重點整理 | summary / kanban |
-| `timeline` | 時間軸（歷史/傳記/事件，≥3 時間點） | timeline |
-| `quote` | 大字金句（名言/課文精華/人物引言） | big_quote / testimonial |
-| `three-column` | 三欄並列（三要素/三特徵） | three_cards / kanban |
-| `image-hero` | 圖片全版（地圖/插圖/視覺引導） | image_focus |
-| `pros-cons` | 優劣分析（正反立場/優缺點） | pros_cons |
-| `checklist` | 學習清單（任務確認/評量項目） | blank_canvas |
-
-**版型節奏規則：**
-- 不得 3 張以上連續同版型
-- 每 5 張至少 1 張重版型（cover / section / hero / discussion）
-- 10 張以上須有 ≥1 hero 或 section
-
-### 3-C. 輸出大綱供確認
-
-**生成 HTML 前，先輸出文字大綱給教師確認：**
+依據「25 種內容類型 → 17 種版型」對應規則（見 `slide_design_principles.md`），
+加上 Bloom 分類年級規則，生成投影片大綱：
 
 ```
-投影片大綱（共 N 張）
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- #1  [cover]       課程名稱             📝 演講稿：歡迎詞...（有需求時顯示）
- #2  [objectives]  學習目標（認知・情意・態度）
- #3  [section]     第一部分名稱
- #4  [bullets]     重點一標題
- ...
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-垂直預算估算：最高密度頁 = #X（預計 N 個元素），確認不溢出。
-確認後請說「生成」，我就輸出完整 HTML 檔。若需調整，請指示後再生成。
+投影片大綱（國中・10張・Edu Warm）
+01 cover      ← 封面（必有）
+02 objectives ← 學習目標（必有）
+03 section    ← 第一章
+04 bullets    ← 核心重點
+05 vocab      ← 詞彙卡
+06 activity   ← 課堂活動
+07 discussion ← 討論提示
+08 summary    ← 重點回顧
+09 checklist  ← 學習自評
+10 hero       ← 結語強調
 ```
 
-**垂直預算自檢**（大綱確認後、生成前執行）：
+向使用者確認大綱後繼續。
 
-```
-可用高度 ≈ 100svh - 上下 padding（clamp 4rem–8rem，約 8–12%）
-估算最高密度頁的元素高度總和：
-  - 每個標題（sz-h2）：約 sz-h2 × 1.3 × 行數
-  - 每個條列項：約 sz-body × 1.6 × 行數 + 0.9rem gap
-  - 整體估算 ≤ 可用高度 → 繼續生成
-  - 超出 → 拆分為兩張，不用 overflow 隱藏
-```
-
----
-
-## Step 4：生成完整 HTML
-
-收到「生成」指令後，用 `Write` 工具輸出完整自含式 HTML：
-```
-/tmp/{主題slug}_教學簡報.html
-```
-
-### 4-A. HTML 完整架構
-
-```html
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{課程標題}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* === 1. Reset === */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* === 2. CSS 變數（Step 2 風格解讀） === */
-    :root {
-      --bg: #...;
-      --surface: #...;
-      --primary: #...;
-      --accent: #...;
-      --text: #...;
-      --muted: #...;
-      --border: #...;
-      --sz-title: ...rem;
-      --sz-h2: ...rem;
-      --sz-body: ...rem;
-      --sz-small: ...rem;
-      --font-tc: 'Noto Sans TC', sans-serif;
-    }
-
-    /* === 3. 投影片容器 === */
-    html, body { height: 100%; overflow: hidden; background: var(--bg); }
-    .deck {
-      height: 100svh;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-      scrollbar-width: none;
-    }
-    .deck::-webkit-scrollbar { display: none; }
-    .slide {
-      height: 100svh;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: clamp(2rem, 5vw, 4rem);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-tc);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* === 4. 共用元件 === */
-    .slide-title {
-      font-size: var(--sz-h2);
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 1.5rem;
-      align-self: flex-start;
-      max-width: 90%;
-      line-height: 1.3;
-    }
-    .surface-card {
-      background: var(--surface);
-      border-radius: 1rem;
-      padding: 1.5rem 2rem;
-    }
-    .tag {
-      display: inline-block;
-      padding: 0.2em 0.6em;
-      border-radius: 0.4em;
-      font-size: var(--sz-small);
-      font-weight: 700;
-      background: var(--accent);
-      color: var(--bg);
-    }
-
-    /* === 5. 11 個版型（參照 html-layout-templates.md 貼入完整 CSS） === */
-
-    /* layout-cover */
-    .layout-cover { justify-content: center; align-items: flex-start; }
-    .layout-cover .cover-meta {
-      font-size: var(--sz-small); color: var(--muted);
-      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
-    }
-    .layout-cover .cover-title {
-      font-size: var(--sz-title); font-weight: 900; color: var(--primary);
-      line-height: 1.15; max-width: 80%; margin-bottom: 1rem;
-    }
-    .layout-cover .cover-subtitle {
-      font-size: var(--sz-body); color: var(--text); margin-bottom: 2rem;
-    }
-    .layout-cover .cover-author {
-      font-size: var(--sz-small); color: var(--muted);
-    }
-    .layout-cover::after {
-      content: '';
-      position: absolute; bottom: -5%; right: -5%;
-      width: 40vw; height: 40vw;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.08;
-      pointer-events: none;
-    }
-
-    /* layout-objectives */
-    .layout-objectives { align-items: flex-start; }
-    .objectives-list { list-style: none; width: 100%; display: flex; flex-direction: column; gap: 1rem; }
-    .objectives-list li {
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      font-size: var(--sz-body); background: var(--surface);
-      border-radius: 0.75rem; padding: 1rem 1.25rem;
-    }
-    .obj-tag {
-      flex-shrink: 0; font-size: var(--sz-small); font-weight: 700;
-      padding: 0.15em 0.5em; border-radius: 0.35em;
-      background: var(--accent); color: var(--bg);
-    }
-
-    /* layout-section */
-    .layout-section { justify-content: center; align-items: center; text-align: center; }
-    .section-num {
-      font-size: clamp(5rem, 18vw, 12rem); font-weight: 900;
-      color: var(--accent); opacity: 0.18; line-height: 1;
-      position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none; user-select: none;
-    }
-    .section-inner { position: relative; z-index: 1; text-align: center; }
-    .section-label {
-      font-size: var(--sz-small); color: var(--muted);
-      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem;
-    }
-    .section-title {
-      font-size: var(--sz-title); font-weight: 900; color: var(--primary); line-height: 1.2;
-    }
-    .section-sub { font-size: var(--sz-body); color: var(--muted); margin-top: 0.75rem; }
-
-    /* layout-bullets */
-    .layout-bullets { align-items: flex-start; }
-    .bullets-list { list-style: none; width: 100%; display: flex; flex-direction: column; gap: 0.9rem; }
-    .bullets-list li {
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      font-size: var(--sz-body); line-height: 1.5;
-    }
-    .bullets-list li::before {
-      content: ''; flex-shrink: 0;
-      width: 0.5rem; height: 0.5rem; border-radius: 50%;
-      background: var(--accent); margin-top: 0.5em;
-    }
-
-    /* layout-two-column */
-    .layout-two-column { align-items: flex-start; }
-    .col-wrap {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1.5rem; width: 100%;
-    }
-    .col { background: var(--surface); border-radius: 0.75rem; padding: 1.25rem; }
-    .col-title {
-      font-size: var(--sz-small); font-weight: 700; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;
-    }
-    .col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-    .col ul li { font-size: var(--sz-body); padding-left: 1em; position: relative; line-height: 1.5; }
-    .col ul li::before {
-      content: '▸'; position: absolute; left: 0; color: var(--accent);
-    }
-
-    /* layout-vocab */
-    .layout-vocab { align-items: flex-start; }
-    .vocab-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-      gap: 1rem; width: 100%;
-    }
-    .vocab-card {
-      background: var(--surface); border-radius: 0.75rem; padding: 1rem 1.25rem;
-      border-left: 4px solid var(--accent);
-    }
-    .vocab-word { font-size: var(--sz-h2); font-weight: 900; color: var(--primary); }
-    .vocab-phonetic { font-size: var(--sz-small); color: var(--muted); margin: 0.2rem 0 0.5rem; }
-    .vocab-def { font-size: var(--sz-body); line-height: 1.6; }
-    .vocab-example { font-size: var(--sz-small); color: var(--muted); margin-top: 0.4rem; }
-
-    /* layout-activity */
-    .layout-activity { align-items: flex-start; }
-    .activity-meta {
-      font-size: var(--sz-small); color: var(--accent);
-      font-weight: 700; margin-bottom: 1.25rem; margin-top: -0.75rem;
-    }
-    .steps-list { list-style: none; width: 100%; display: flex; flex-direction: column; gap: 0.85rem; }
-    .steps-list li {
-      display: flex; align-items: flex-start; gap: 1rem;
-      background: var(--surface); border-radius: 0.75rem; padding: 1rem 1.25rem;
-      font-size: var(--sz-body);
-    }
-    .step-num {
-      flex-shrink: 0; width: 2em; height: 2em;
-      border-radius: 50%; background: var(--accent); color: var(--bg);
-      font-weight: 900; font-size: var(--sz-small);
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    /* layout-discussion */
-    .layout-discussion { justify-content: center; align-items: center; text-align: center; }
-    .discussion-inner { max-width: 80%; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-    .discussion-timer {
-      font-size: var(--sz-small); color: var(--accent);
-      font-weight: 700; letter-spacing: 0.1em;
-      border: 2px solid var(--accent); padding: 0.3em 0.8em; border-radius: 2em;
-    }
-    .discussion-question {
-      font-size: var(--sz-h2); font-weight: 900; color: var(--primary);
-      line-height: 1.4;
-    }
-    .discussion-hint {
-      font-size: var(--sz-body); color: var(--muted); line-height: 1.6;
-    }
-
-    /* layout-hero */
-    .layout-hero { justify-content: center; align-items: center; text-align: center; }
-    .hero-inner { max-width: 85%; }
-    .hero-headline {
-      font-size: var(--sz-title); font-weight: 900; color: var(--primary);
-      line-height: 1.2; margin-bottom: 1.25rem;
-    }
-    .hero-subline { font-size: var(--sz-body); color: var(--muted); line-height: 1.7; }
-    .hero-bar {
-      width: 4rem; height: 4px; background: var(--accent);
-      margin: 0 auto 1.5rem; border-radius: 2px;
-    }
-
-    /* layout-data */
-    .layout-data { align-items: flex-start; }
-    .data-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
-      gap: 1.25rem; width: 100%;
-    }
-    .data-item {
-      background: var(--surface); border-radius: 0.75rem; padding: 1.25rem 1.5rem;
-      display: flex; flex-direction: column; gap: 0.4rem;
-    }
-    .data-value {
-      font-size: var(--sz-title); font-weight: 900; color: var(--accent);
-      line-height: 1;
-    }
-    .data-label { font-size: var(--sz-small); color: var(--muted); }
-    .data-desc { font-size: var(--sz-body); color: var(--text); line-height: 1.5; }
-
-    /* layout-summary */
-    .layout-summary { align-items: flex-start; }
-    .summary-list { width: 100%; display: flex; flex-direction: column; gap: 0.75rem; }
-    .summary-item {
-      display: grid; grid-template-columns: auto 1fr;
-      gap: 1rem; align-items: center;
-      background: var(--surface); border-radius: 0.65rem; padding: 0.9rem 1.25rem;
-    }
-    .summary-key {
-      font-weight: 900; color: var(--accent); font-size: var(--sz-body);
-      white-space: nowrap;
-    }
-    .summary-val { font-size: var(--sz-body); color: var(--text); line-height: 1.5; }
-
-    /* === 6. 進場動畫（純 CSS） === */
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(1.5rem); }
-      to   { opacity: 1; transform: none; }
-    }
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    .slide > * { opacity: 0; }
-    .slide.active > * { animation: slideUp 0.45s ease forwards; }
-    .slide.active > *:nth-child(1) { animation-delay: 0s; }
-    .slide.active > *:nth-child(2) { animation-delay: 0.08s; }
-    .slide.active > *:nth-child(3) { animation-delay: 0.16s; }
-    .slide.active > *:nth-child(4) { animation-delay: 0.24s; }
-    .slide.active > *:nth-child(n+5) { animation-delay: 0.3s; }
-
-    /* === 7. 導航 UI === */
-    .nav-dots {
-      position: fixed; right: 1.5rem; top: 50%;
-      transform: translateY(-50%);
-      display: flex; flex-direction: column; gap: 0.5rem; z-index: 100;
-    }
-    .nav-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--muted); cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      border: none; padding: 0;
-    }
-    .nav-dot.active { background: var(--accent); transform: scale(1.5); }
-    .slide-counter {
-      position: fixed; bottom: 1.5rem; right: 1.5rem;
-      font-size: 0.8rem; color: var(--muted); z-index: 100;
-      font-family: monospace; letter-spacing: 0.05em;
-    }
-    /* G 鍵縮圖預覽 */
-    .grid-preview {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.92); z-index: 200;
-      padding: 2rem;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 0.75rem; overflow-y: auto;
-    }
-    .grid-preview.visible { display: grid; }
-    .grid-thumb {
-      background: var(--surface); border-radius: 0.5rem;
-      aspect-ratio: 16/9; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      cursor: pointer; padding: 0.75rem; gap: 0.4rem;
-      transition: outline 0.15s;
-    }
-    .grid-thumb:hover { outline: 2px solid var(--accent); }
-    .grid-thumb-num { font-size: 0.65rem; color: var(--muted); font-family: monospace; }
-    .grid-thumb-title { font-size: 0.7rem; color: var(--text); text-align: center; line-height: 1.4; }
-  </style>
-</head>
-<body>
-  <div class="deck" id="deck">
-
-    <!-- === 封面 === -->
-    <div class="slide layout-cover" id="slide-1">
-      <p class="cover-meta">{年段} ・ {科目}</p>
-      <h1 class="cover-title">{課程標題}</h1>
-      <p class="cover-subtitle">{副標題（選填）}</p>
-      <p class="cover-author">{教師姓名（選填）}</p>
-    </div>
-
-    <!-- === 學習目標 === -->
-    <div class="slide layout-objectives" id="slide-2">
-      <h2 class="slide-title">學習目標</h2>
-      <ul class="objectives-list animate-list">
-        <li><span class="obj-tag">認知</span>能{動詞}...</li>
-        <li><span class="obj-tag">情意</span>能{動詞}...</li>
-        <li><span class="obj-tag">態度</span>能養成{習慣/態度}...</li>
-      </ul>
-    </div>
-
-    <!-- === 其他投影片依大綱生成 === -->
-
-  </div>
-
-  <nav class="nav-dots" id="navDots"></nav>
-  <div class="slide-counter" id="counter">1 / N</div>
-  <div class="grid-preview" id="gridPreview"></div>
-
-  <script>
-    const deck = document.getElementById('deck');
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const dotsContainer = document.getElementById('navDots');
-    const counter = document.getElementById('counter');
-    const gridPreview = document.getElementById('gridPreview');
-    const total = slides.length;
-    let current = 0;
-
-    // 建立導航點
-    slides.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', `投影片 ${i+1}`);
-      dot.addEventListener('click', () => goTo(i));
-      dotsContainer.appendChild(dot);
-    });
-
-    // 建立縮圖預覽
-    slides.forEach((s, i) => {
-      const thumb = document.createElement('div');
-      thumb.className = 'grid-thumb';
-      const title = s.querySelector('h1,h2,.slide-title,.cover-title,.section-title,.hero-headline,.discussion-question');
-      thumb.innerHTML = `<span class="grid-thumb-num">#${i+1}</span><span class="grid-thumb-title">${title ? title.textContent.slice(0,30) : ''}</span>`;
-      thumb.addEventListener('click', () => { goTo(i); toggleGrid(false); });
-      gridPreview.appendChild(thumb);
-    });
-
-    function goTo(n) {
-      current = Math.max(0, Math.min(n, total - 1));
-      slides[current].scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function toggleGrid(force) {
-      const show = force !== undefined ? force : !gridPreview.classList.contains('visible');
-      gridPreview.classList.toggle('visible', show);
-    }
-
-    // IntersectionObserver 追蹤當前頁
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.intersectionRatio >= 0.5) {
-          const idx = slides.indexOf(e.target);
-          current = idx;
-          document.querySelectorAll('.nav-dot').forEach((d, i) =>
-            d.classList.toggle('active', i === idx));
-          counter.textContent = `${idx + 1} / ${total}`;
-          // 觸發進場動畫
-          if (!e.target.classList.contains('active')) {
-            e.target.classList.remove('active');
-            void e.target.offsetWidth; // reflow
-            e.target.classList.add('active');
-          }
-        }
-      });
-    }, { threshold: 0.5 });
-
-    slides.forEach(s => io.observe(s));
-    slides[0].classList.add('active');
-
-    // 鍵盤導航
-    document.addEventListener('keydown', e => {
-      if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) {
-        e.preventDefault(); goTo(current + 1);
-      } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) {
-        e.preventDefault(); goTo(current - 1);
-      } else if (e.key === 'g' || e.key === 'G') {
-        toggleGrid();
-      } else if (e.key === 'p' || e.key === 'P') {
-        togglePresenter();
-      } else if (e.key === 'Escape') {
-        toggleGrid(false);
-        togglePresenter(false);
-      }
-    });
-
-    // === Presenter Mode（P 鍵）===
-    // 僅當投影片含 data-notes 屬性時顯示
-    const hasNotes = slides.some(s => s.dataset.notes);
-    const presenterPanel = document.createElement('div');
-    presenterPanel.id = 'presenterPanel';
-    presenterPanel.style.cssText = `
-      display:none; position:fixed; bottom:0; left:0; right:0;
-      background:rgba(0,0,0,0.88); color:#f0f0f0;
-      padding:1rem 2rem; z-index:300;
-      display:none; flex-direction:row; gap:2rem; align-items:flex-start;
-      border-top:2px solid var(--accent);
-      font-family:var(--font-tc); font-size:0.9rem; max-height:30vh; overflow-y:auto;
-    `;
-    if (hasNotes) {
-      presenterPanel.innerHTML = `
-        <div style="flex:1">
-          <div style="font-size:0.7rem;color:var(--muted);margin-bottom:0.3rem">【當前頁演講稿】</div>
-          <div id="presenterNotes" style="line-height:1.7"></div>
-        </div>
-        <div style="flex:0 0 auto;min-width:120px;text-align:right">
-          <div style="font-size:0.7rem;color:var(--muted);margin-bottom:0.3rem">下一頁</div>
-          <div id="presenterNext" style="color:var(--muted);font-size:0.8rem;line-height:1.5"></div>
-        </div>
-        <button onclick="togglePresenter(false)" style="
-          background:none;border:none;color:var(--muted);cursor:pointer;
-          font-size:1.2rem;align-self:flex-start;flex-shrink:0
-        ">✕</button>
-      `;
-      document.body.appendChild(presenterPanel);
-    }
-
-    function updatePresenter() {
-      if (!hasNotes) return;
-      const notes = slides[current]?.dataset.notes || '（本頁無演講稿）';
-      const nextTitle = slides[current + 1]?.querySelector('h1,h2,.slide-title,.cover-title,.section-title,.hero-headline')?.textContent?.slice(0, 30) || '（最後一頁）';
-      document.getElementById('presenterNotes').textContent = notes;
-      document.getElementById('presenterNext').textContent = nextTitle;
-    }
-
-    function togglePresenter(force) {
-      if (!hasNotes) return;
-      const show = force !== undefined ? force : presenterPanel.style.display === 'none';
-      presenterPanel.style.display = show ? 'flex' : 'none';
-      if (show) updatePresenter();
-    }
-
-    // 換頁時同步更新 presenter
-    const origIo = io;
-    slides.forEach(s => {
-      const origObserve = s;
-    });
-    // 在 IntersectionObserver callback 後呼叫 updatePresenter
-    deck.addEventListener('scroll', () => { if (presenterPanel.style.display !== 'none') updatePresenter(); });
-  </script>
-</body>
-</html>
-```
-
-### 4-B. 品質自檢（輸出前）
-
-**P0（不達到不輸出）：**
-- [ ] 所有 CSS 變數已定義，對比度符合 WCAG AA（text 對 bg ≥ 4.5:1）
-- [ ] 年段字級已套用（sz-title / sz-h2 / sz-body 對應表格）
-- [ ] 使用的版型 CSS class 完整定義於 `<style>` 內（17 種版型：cover/objectives/section/bullets/two-column/vocab/activity/discussion/hero/data/summary/timeline/quote/three-column/image-hero/pros-cons/checklist）
-- [ ] `<script>` 導航功能語法正確
-- [ ] 無 Emoji（用全形【】或 ▪ ★ ◆ 等 Unicode 幾何符號代替）
-- [ ] 版型種類 ≥ 4 種
-- [ ] **垂直預算**：每張投影片元素高度總和 ≤ 可用視窗高度（不得用 overflow:hidden 遮掩）
-- [ ] **條列不換行**：每條 ≤ 版心寬度，換行時縮短文字或拆頁
-- [ ] **正文字體**：sz-body ≥ 1.5rem；低年級（1–2年）≥ 2.0rem
-
-**P1（影響教學效果）：**
-- [ ] 版型具多樣性（非連續 3 張以上相同版型）
-- [ ] 學習目標使用認知／情意／態度三維格式
-- [ ] vocab 版型包含注音（ㄅㄆㄇ 符號）
-- [ ] 若有演講稿需求：每張 `.slide` 含 `data-notes="..."` 屬性，且 Presenter Script 完整
-
----
-
-## Step 5：交付 + 微調
-
-交付時提供：
-1. 下載連結（.html 檔）
-2. 投影片清單（#編號 × [版型] × 標題）
-3. 使用提示：「在瀏覽器開啟後按 ← → 或空格換頁，按 G 鍵查看縮圖總覽」
-
----
-
-## Canva 路徑（高設計感版本）
-
-使用者說「Canva 版」「更精美的」「用 Canva 做」時，若 Canva MCP 已連線：
-```
-canva: generate-design(design_type="presentation", query="[主題] [年段]教學簡報 [風格描述]，共[N]頁")
-```
-未連線時：告知需啟用 Canva Connector，並切換 HTML 路徑繼續。
-
----
-
-## 微調模式
-
-生成後，用一字動詞觸發 delta 更新（直接用 `Write` 修改 HTML 檔）：
-
-| 動詞 | 動作 |
-|------|------|
-| 換 N | 替換第 N 張的版型或內容 |
-| 改 風格 | 重新解讀風格描述詞，更新 `:root` CSS 變數 |
-| 加 N | 在第 N 張後插入新投影片 |
-| 刪 N | 移除第 N 張 |
-| 加稿 N | 在第 N 張補上 data-notes 演講稿內容 |
-
----
-
-## 反模式清單（Anti-Patterns）
-
-> 借鑒 open-slide slide-authoring 規範，適配教師場景。
-
-- ❌ **文字牆**：單張超過 120 字 → 拆為兩張
-- ❌ **用 overflow:hidden 遮住溢出**：溢出部分在投影時消失，教師看不到
-- ❌ **連續 3 張以上相同版型**：破壞視覺節奏，學生注意力下降
-- ❌ **條列項換行**：字級調太大或文字太長，應縮短或降字級
-- ❌ **圖片佔位符用 Emoji 替代**：用 `[在此插入圖片]` 純文字佔位 + 色塊背景
-- ❌ **直接輸出 HTML 不先確認大綱**：跳過確認步驟的簡報返工率極高
-- ❌ **正文字體 < 1.5rem**：小螢幕或投影機投影時後排學生看不清
-- ❌ **所有投影片同一主色、無層次**：確保 primary / accent / muted 三色各有用途
-- ❌ **vocab 版型缺少注音**：國語文課必須附 ㄅㄆㄇ 符號
-
----
-
-## open-slide 替代路徑（進階使用者）
-
-若使用者有 Node.js 環境且需要**即時 HMR 編輯、瀏覽器 Inspector、或部署至 Vercel**：
+### 步驟 3：建立 open-slide 專案
 
 ```bash
-npx @open-slide/cli init my-edu-slides --locale zh-TW
-cd my-edu-slides && pnpm dev
-# 然後使用 /create-slide 指令在 React TSX 環境中生成簡報
+# 若無現有 open-slide 專案：
+npx @open-slide/cli init <目錄名稱>
+cd <目錄名稱>
+pnpm install
 ```
 
-open-slide 優勢：瀏覽器內點擊修改、演講者模式（含計時器）、靜態 HTML/PDF 匯出。  
-本 skill（tw-edu-slides-creator）優勢：零依賴、瀏覽器直開、Google Drive 即分享、離線可用、教育版型特化（vocab/objectives/三維目標）。
+若已有 open-slide 專案，直接在 `slides/` 目錄下新增。
+
+### 步驟 4：生成 TSX 投影片元件
+
+為每張投影片建立獨立檔案：
+
+```
+slides/
+  01-cover/index.tsx
+  02-objectives/index.tsx
+  03-section/index.tsx
+  ...
+```
+
+每個檔案格式（完整版型範例見 `references/tsx-layout-templates.md`）：
+
+```tsx
+// slides/01-cover/index.tsx
+import type { Page } from '@open-slide/core';
+
+const Cover: Page = () => (
+  <div className="relative flex h-full w-full flex-col items-center justify-center bg-[#fffbf5]">
+    {/* 主題色系底線裝飾 */}
+    <div className="absolute inset-x-0 bottom-0 h-3 bg-[#d97757]" />
+    {/* 科目標籤 */}
+    <span className="mb-4 text-[32px] font-medium tracking-widest text-[#987b63] uppercase">
+      七年級國文
+    </span>
+    {/* 課程標題 */}
+    <h1 className="text-[72px] font-bold leading-tight text-[#2d1a0e] text-center max-w-[1400px]">
+      課程名稱
+    </h1>
+    {/* 講師與日期 */}
+    <p className="mt-8 text-[40px] text-[#987b63]">吳老師 ｜ 2026/05/23</p>
+  </div>
+);
+
+export default [Cover];
+export const meta = { title: '01 封面' };
+```
+
+### 步驟 5：完成提示
+
+```
+✅ 已生成 {N} 張投影片
+
+📁 專案路徑：./{project-name}/
+▶  預覽：pnpm dev
+📤 匯出 HTML/PDF：pnpm build
+
+🎨 主題：{theme}  ｜  📐 畫布：1920×1080px
+```
+
+---
+
+## 🎨 主題系統（Tailwind CSS）
+
+完整色值與 utility class 對照見 `references/tailwind-themes.md`。
+
+### Edu Warm（教育暖色）
+適用：語文、社會、SEL、一般教學（所有年級）
+```
+bg-[#fffbf5]  text-[#2d1a0e]  primary: #d97757  accent: #6a9bcc
+heading font: Work Sans
+```
+
+### Tech Dark（科技深色）
+適用：AI、資訊、程式、科技主題（不建議國小低年級）
+```
+bg-[#0D1117]  text-[#E6EDF3]  primary: #00D4FF  accent: #7B2FFF
+heading font: Tektur
+```
+
+### Academic Clean（學術清爽）
+適用：研究、論文、正式報告（高中/大學）
+```
+bg-[#faf9f5]  text-[#1a1814]  primary: #6a9bcc  accent: #d97757
+heading font: Instrument Sans
+```
+
+---
+
+## 📐 年級自適應字型（px，1920×1080 畫布）
+
+| 年級 | 標題 Title | 副標 H2 | 內文 Body | 說明 Small | max bullets |
+|------|-----------|---------|----------|-----------|-------------|
+| 國小低（1-2） | 96px | 72px | 56px | 40px | 3 |
+| 國小中高（3-6） | 84px | 60px | 48px | 36px | 4 |
+| 國中 | 72px | 52px | 40px | 32px | 5 |
+| 高中 | 64px | 48px | 36px | 28px | 6 |
+| 大學 | 56px | 44px | 32px | 24px | 6 |
+
+Tailwind 用法：`text-[72px]`（國中標題）、`text-[40px]`（國中內文）
+
+> 1920×1080 畫布由 open-slide 自動處理縮放，px 值即為實際設計值，無需轉換 rem。
+
+---
+
+## 🔄 Delta 更新模式
+
+生成後可用單字指令修改，無需重新生成整份簡報：
+
+| 指令 | 說明 | 範例 |
+|------|------|------|
+| `換N` | 替換第 N 張版型 | `換3`（改用 quote 版型）|
+| `改風格` | 切換主題色系 | `改風格 → Tech Dark` |
+| `加N` | 在第 N 張後插入新投影片 | `加5` |
+| `刪N` | 刪除第 N 張 | `刪7` |
+| `加稿N` | 為第 N 張加入演講備註 | `加稿2 備註內容...` |
+
+---
+
+## 🚫 常見問題（Anti-Patterns）
+
+1. **內容溢出畫布**：1920×1080 是固定畫布，所有內容必須在框架內。bullets 版型最多 5 條（國中）
+2. **字型過小**：最小字型 24px（大學 Small），低年級請用 40px 以上
+3. **連續同版型**：超過 3 張連續同版型，改用 section 分割
+4. **中文字型缺失**：open-slide 預設支援 Noto Sans TC，無需額外設定
+5. **圖片路徑錯誤**：圖片使用相對路徑或完整 URL；open-slide 不自動處理本機絕對路徑
+
+---
+
+## 🔗 相關資源
+
+- open-slide GitHub：https://github.com/1weiho/open-slide
+- open-slide 文檔：https://open-slide.vercel.app
+- 版型完整範例：`references/tsx-layout-templates.md`（17 種版型 TSX 程式碼）
+- 主題 Tailwind 對照：`references/tailwind-themes.md`
+- 內容設計原則：`references/slide_design_principles.md`
