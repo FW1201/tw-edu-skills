@@ -1,211 +1,228 @@
 ---
 name: tw-edu-slides-creator
 description: |
-  台灣 K-12 教育簡報生成器（v2.0）。使用 open-slide 框架（React + TypeScript + Tailwind CSS，1920×1080 畫布），
-  支援 17 種教學版型、3 主題色系、Bloom 分層設計。輸出可直接 pnpm dev 預覽、pnpm build 匯出 HTML/PDF。
-  由 Claude Code 負責生成 TSX 投影片元件，open-slide 框架處理縮放與演示。
-version: 2.0
-tags: [education, slides, Taiwan, React, TypeScript, open-slide, Tailwind, K-12]
-capabilities:
-  - open-slide 專案自動建立（npx @open-slide/cli init）
-  - 17 種 TSX 投影片版型
-  - 3 Tailwind CSS 主題（Edu Warm / Tech Dark / Academic Clean）
-  - 年級自適應字型大小（國小低/中高/國中/高中/大學）
-  - Bloom 分類法版型選擇邏輯
-  - 演示者模式（open-slide 內建）
-  - HTML/PDF 匯出（pnpm build）
-  - Delta 更新模式（換N / 改風格 / 加N / 刪N / 加稿N）
+  台灣 K-12 教育簡報生成器。採用 codex-ppt-style 工作流：先確認教學大綱與視覺風格，
+  再生成一張樣張，樣張通過後逐頁生成完整 16:9 投影片圖片，寫入講者備註並組裝成 PPTX。
+  保留台灣教學脈絡、年級自適應、Bloom 分層、108 課綱、課堂活動與教學 QA。
+  觸發詞：簡報、投影片、PPT、slides、上課簡報、教學簡報、課程簡報、做一份簡報。
+version: 4.0.0
+author: 奇老師・數位敘事力社群
+allowed-tools: "Read, Write, Edit, Bash, Task"
+tags: [education, slides, pptx, Taiwan, K-12, codex-ppt-style, image-deck]
 references:
-  - references/tsx-layout-templates.md
-  - references/tailwind-themes.md
+  - docs/workflow-gates-and-progress.md
+  - docs/outline-style-sample.md
+  - docs/slide-generation-state.md
+  - docs/project-assembly-and-reporting.md
+  - references/presentation-style-library.md
+  - references/pptx-layout-templates.md
+  - references/palette-library.md
+  - references/layout-grid.md
   - references/slide_design_principles.md
 ---
 
-# tw-edu-slides-creator v2.0
+# tw-edu-slides-creator v4.0
 
-台灣 K-12 教育簡報生成 Skill，使用 open-slide 框架。
-Claude Code 負責生成 TSX 元件；open-slide 負責預覽、縮放、PDF 匯出。
+台灣 K-12 教育簡報生成 Skill。這版採用 `codex-ppt-skill` 的工作形式：每張投影片先生成為完整 16:9 圖片，再組裝成 `.pptx`，並把 `speech.md` 寫入 PowerPoint 講者備註。
 
----
+本 skill 的差異不在輸出形式，而在內容框架：它仍負責把教材、課文、活動設計或教學目標轉成適合台灣課堂的簡報節奏，包含年級自適應、Bloom 分層、108 課綱對齊、示例優先、活動安排與教師講稿。
 
-## 📋 工作流程（5 步驟）
+## Hard Constraints
 
-### 步驟 0：確認環境
+- 使用 `codex-ppt-style` gate：來源整理 -> `outline.md` -> 視覺風格 -> 單頁樣張 -> 全量逐頁生成 -> QA -> `speech.md` -> PPTX 組裝。
+- 未完成 outline / style / sample gate 前，不建立 final `deck_spec.json`、`speech.md`、正式 prompts、完整 slide images 或 `.pptx`，除非使用者明確要求跳過確認。
+- 每張 final slide 都是一張完整 16:9 投影片圖片，放在 `origin_image/slide_XX.png`。
+- 逐頁生成，不得把多張投影片塞進同一張圖片。
+- 樣張通過後維持同一視覺身份；版面可以依教學目的變化。
+- 所有中文字必須清楚、正確、可讀。若出現亂碼、截斷、過小或重疊，必須修復再組裝。
+- 教學簡報不應只是教材摘錄。每張投影片都要服務一個教學行為：引入、示例、解析、練習、討論、統整、延伸。
+- 對尚未掌握概念的學生，先示例再解析；不要直接用問題取代教學。
+- 說明文字與對應圖像必須同頁相鄰，避免跨頁造成認知負擔。
+- 裝飾性視覺一律降到最低；每個視覺元素都要回答「它幫助學生理解什麼？」
 
-檢查使用者環境：
-- Node.js 是否安裝（`node --version`）
-- 當前目錄是否已有 open-slide 專案（`package.json` 含 `@open-slide/core`）
-- 若無專案：提示將自動 `npx @open-slide/cli init <slug>` 建立
+## Project Structure
 
-### 步驟 1：收集資訊
-
-詢問以下資訊（可一次問完）：
-
-| 欄位 | 說明 | 預設值 |
-|------|------|--------|
-| 課程/主題名稱 | 投影片標題 | 必填 |
-| 年級 | 國小低（1-2）/ 國小中高（3-6）/ 國中 / 高中 / 大學 | 國中 |
-| 張數 | 預計投影片總數（含封面） | 10 |
-| 主題色系 | Edu Warm / Tech Dark / Academic Clean | Edu Warm |
-| 講稿模式 | 是否需要演講備註（speaker notes） | 否 |
-| 輸出目錄名稱 | open-slide 專案資料夾名稱 | slides-`<課程slug>` |
-
-### 步驟 2：規劃投影片結構
-
-依據「25 種內容類型 → 17 種版型」對應規則（見 `slide_design_principles.md`），
-加上 Bloom 分類年級規則，生成投影片大綱：
-
-```
-投影片大綱（國中・10張・Edu Warm）
-01 cover      ← 封面（必有）
-02 objectives ← 學習目標（必有）
-03 section    ← 第一章
-04 bullets    ← 核心重點
-05 vocab      ← 詞彙卡
-06 activity   ← 課堂活動
-07 discussion ← 討論提示
-08 summary    ← 重點回顧
-09 checklist  ← 學習自評
-10 hero       ← 結語強調
+```text
+{base_dir}/{deck_name}/
+├── origin_image/
+│   ├── slide_01.png
+│   ├── slide_02.png
+│   └── ...
+├── prompts/
+│   ├── slide_01.json
+│   └── ...
+├── deck_spec.json
+├── outline.md
+├── speech.md
+├── slide_jobs.json
+├── slide_run_state.json
+└── {deck_name}.pptx
 ```
 
-向使用者確認大綱後繼續。
+If the user does not specify a destination, use `artifacts/教師/{deck_slug}/` inside the LLM Wiki workspace.
 
-### 步驟 3：建立 open-slide 專案
+## Default Workflow
 
-```bash
-# 若無現有 open-slide 專案：
-npx @open-slide/cli init <目錄名稱>
-cd <目錄名稱>
-pnpm install
+1. **Collect teaching context**
+   - Topic / 課文 / 教材 source.
+   - Grade band: 國小低 / 國小中高 / 國中 / 高中 / 大學.
+   - Subject and class duration.
+   - Learning objective, prior knowledge, assessment or activity needs.
+   - Whether teacher notes are needed. Default: yes.
+
+2. **Read required references**
+   - `docs/workflow-gates-and-progress.md`
+   - `docs/outline-style-sample.md`
+   - `references/slide_design_principles.md`
+   - `references/presentation-style-library.md`
+   - Existing grade / concept alignment references when available in the parent repo.
+
+3. **Create `outline.md` for confirmation**
+   - Use Bloom progression:
+     - remember / understand -> concept framing, vocab, example
+     - apply / analyze -> comparison, process, practice, error analysis
+     - evaluate / create -> discussion, task, reflection, output
+   - For each slide, define:
+     - slide number and title,
+     - teaching purpose,
+     - student-facing on-slide text,
+     - teacher explanation need,
+     - visual idea,
+     - activity / question / assessment,
+     - grade-density check.
+   - Stop for confirmation unless the user explicitly skips it.
+
+4. **Confirm visual style**
+   - Offer 2-3 concrete style choices when the user has not specified one.
+   - Recommended default is `Edu Warm Classroom` for general K-12 teaching.
+   - Use `Academic Clean` for high-school or research-heavy topics, `Neon Circuit` for AI / technology topics, and `Hand-drawn Explainer` for concept explanation.
+
+5. **Generate and approve one sample slide**
+   - Pick a representative content slide, not merely the cover.
+   - Save as the final filename, such as `origin_image/slide_04.png`.
+   - Ask the user to confirm:
+     - grade-appropriate density,
+     - Chinese legibility,
+     - visual explanation quality,
+     - teaching usefulness,
+     - style consistency.
+
+6. **Create final deck artifacts**
+   - Write `deck_spec.json` with teaching context, confirmed style, approved sample, and slide specs.
+   - Write one self-contained `prompts/slide_XX.json` per slide.
+   - Initialize state:
+
+     ```bash
+     python3 scripts/init_slide_jobs.py {deck_dir} --slide-count {N} --backend-label "Codex imagegen" --sample-slide slide_04
+     ```
+
+7. **Generate final slide images**
+   - Use `imagegen` one slide at a time, or slide subagents when available.
+   - Each prompt must include:
+     - `Slide NN of TOTAL, independent 16:9 teaching slide image`
+     - exact Traditional Chinese on-slide text,
+     - grade band and reading density,
+     - learning objective,
+     - visual explanation role,
+     - no watermark, no unrelated logos, no slide number unless requested.
+   - Record accepted images:
+
+     ```bash
+     python3 scripts/record_slide_result.py {deck_dir} --slide slide_02 --backend-used "Codex imagegen" --selected-source /path/to/generated.png --qa-note "Readable; grade density OK."
+     ```
+
+8. **QA and repair**
+   - Read `docs/project-assembly-and-reporting.md`.
+   - Check each final image for:
+     - Traditional Chinese correctness,
+     - grade-appropriate density,
+     - one teaching purpose,
+     - text-image proximity,
+     - no decorative clutter,
+     - visible examples before analysis,
+     - no invented curriculum codes or fake sources.
+
+9. **Write `speech.md`**
+   - Use `## Slide N: Title` headings.
+   - Write teacher-facing speaker notes in Traditional Chinese.
+   - Include `注意點：` for pacing, student misconceptions, board-work cues, and interaction prompts.
+
+10. **Assemble `.pptx`**
+
+    ```bash
+    python3 scripts/assemble_image_pptx.py {base_dir} {deck_name}.pptx --aspect-ratio 16:9
+    unzip -l {base_dir}/{deck_name}/{deck_name}.pptx | rg "ppt/slides/slide"
+    python3 scripts/slide_job_status.py {base_dir}/{deck_name}
+    ```
+
+11. **Report**
+    - Return project directory, PPTX path, slide count, image directory, `outline.md`, `speech.md`, backend label, and QA status.
+
+## Grade Density Rules
+
+| Grade band | On-slide text density | Visual ratio | Teaching rhythm |
+|---|---:|---:|---|
+| 國小低 | 20-40 Chinese chars per content slide | 60-70% visual | concrete example, picture, oral prompt |
+| 國小中高 | 40-70 chars | 50-60% visual | example -> rule -> quick check |
+| 國中 | 70-110 chars | 40-50% visual | concept -> comparison -> guided practice |
+| 高中 | 100-160 chars | 30-45% visual | claim -> evidence -> analysis -> transfer |
+| 大學 / 研習 | 120-220 chars | depends on purpose | framework, case, discussion, implementation |
+
+If content exceeds density, split the slide. Do not shrink text below readability.
+
+## Slide Role Library
+
+Use roles as planning vocabulary. Do not force a fixed template.
+
+- `cover`: topic, class, hook.
+- `learning-goals`: 2-4 concrete objectives.
+- `entry-example`: concrete example before abstraction.
+- `concept-explain`: definition, diagram, example.
+- `vocab`: term, meaning, example sentence.
+- `compare`: two concepts, texts, strategies, or errors.
+- `process`: step-by-step method.
+- `guided-practice`: task, scaffold, expected output.
+- `discussion`: question, evidence, sentence starter.
+- `misconception`: common error and correction.
+- `exit-ticket`: quick formative assessment.
+- `summary`: 3-5 takeaways.
+- `homework`: output requirement and rubric cue.
+
+## Prompt Pattern
+
+```text
+Slide NN of TOTAL, independent 16:9 teaching slide image.
+Audience: {grade band}, {subject}.
+Learning purpose: {one teaching purpose}.
+Style: {confirmed visual style; inspect approved sample if available}.
+Title: 「...」
+Text, render verbatim in Traditional Chinese:
+- 「...」
+- 「...」
+Visual explanation: {diagram, comparison, example, activity card, timeline, concept map}.
+Teaching constraints: text and image must be on the same slide and visually adjacent; example before analysis when introducing new concepts; grade-appropriate text density.
+Avoid: decorative filler, emoji, tiny text, fake screenshots, invented curriculum codes, unrelated logos, slide numbers unless requested.
 ```
 
-若已有 open-slide 專案，直接在 `slides/` 目錄下新增。
+## Delta Updates
 
-### 步驟 4：生成 TSX 投影片元件
+- `換第 N 張`: revise only that slide prompt/image, record result, reassemble.
+- `改風格`: regenerate one sample first, then apply the approved style to affected slides.
+- `加活動`: insert one `guided-practice` or `discussion` slide and update state.
+- `加講稿`: update `speech.md`, then reassemble PPTX.
+- `降低難度`: revise on-slide text and speaker notes for the target grade, regenerate affected images.
 
-為每張投影片建立獨立檔案：
+## Relationship To Existing Renderer
 
-```
-slides/
-  01-cover/index.tsx
-  02-objectives/index.tsx
-  03-section/index.tsx
-  ...
-```
+The existing `assets/slides-kit/` renderer remains in the repo as a structured reference and fallback for schema validation ideas, layout vocabulary, and older editable-deck work. The v4.0 operating flow in this `SKILL.md` is image-based PPTX assembly modeled after `codex-ppt-skill`.
 
-每個檔案格式（完整版型範例見 `references/tsx-layout-templates.md`）：
+## Reference Map
 
-```tsx
-// slides/01-cover/index.tsx
-import type { Page } from '@open-slide/core';
-
-const Cover: Page = () => (
-  <div className="relative flex h-full w-full flex-col items-center justify-center bg-[#fffbf5]">
-    {/* 主題色系底線裝飾 */}
-    <div className="absolute inset-x-0 bottom-0 h-3 bg-[#d97757]" />
-    {/* 科目標籤 */}
-    <span className="mb-4 text-[32px] font-medium tracking-widest text-[#987b63] uppercase">
-      七年級國文
-    </span>
-    {/* 課程標題 */}
-    <h1 className="text-[72px] font-bold leading-tight text-[#2d1a0e] text-center max-w-[1400px]">
-      課程名稱
-    </h1>
-    {/* 講師與日期 */}
-    <p className="mt-8 text-[40px] text-[#987b63]">吳老師 ｜ 2026/05/23</p>
-  </div>
-);
-
-export default [Cover];
-export const meta = { title: '01 封面' };
-```
-
-### 步驟 5：完成提示
-
-```
-✅ 已生成 {N} 張投影片
-
-📁 專案路徑：./{project-name}/
-▶  預覽：pnpm dev
-📤 匯出 HTML/PDF：pnpm build
-
-🎨 主題：{theme}  ｜  📐 畫布：1920×1080px
-```
-
----
-
-## 🎨 主題系統（Tailwind CSS）
-
-完整色值與 utility class 對照見 `references/tailwind-themes.md`。
-
-### Edu Warm（教育暖色）
-適用：語文、社會、SEL、一般教學（所有年級）
-```
-bg-[#fffbf5]  text-[#2d1a0e]  primary: #d97757  accent: #6a9bcc
-heading font: Work Sans
-```
-
-### Tech Dark（科技深色）
-適用：AI、資訊、程式、科技主題（不建議國小低年級）
-```
-bg-[#0D1117]  text-[#E6EDF3]  primary: #00D4FF  accent: #7B2FFF
-heading font: Tektur
-```
-
-### Academic Clean（學術清爽）
-適用：研究、論文、正式報告（高中/大學）
-```
-bg-[#faf9f5]  text-[#1a1814]  primary: #6a9bcc  accent: #d97757
-heading font: Instrument Sans
-```
-
----
-
-## 📐 年級自適應字型（px，1920×1080 畫布）
-
-| 年級 | 標題 Title | 副標 H2 | 內文 Body | 說明 Small | max bullets |
-|------|-----------|---------|----------|-----------|-------------|
-| 國小低（1-2） | 96px | 72px | 56px | 40px | 3 |
-| 國小中高（3-6） | 84px | 60px | 48px | 36px | 4 |
-| 國中 | 72px | 52px | 40px | 32px | 5 |
-| 高中 | 64px | 48px | 36px | 28px | 6 |
-| 大學 | 56px | 44px | 32px | 24px | 6 |
-
-Tailwind 用法：`text-[72px]`（國中標題）、`text-[40px]`（國中內文）
-
-> 1920×1080 畫布由 open-slide 自動處理縮放，px 值即為實際設計值，無需轉換 rem。
-
----
-
-## 🔄 Delta 更新模式
-
-生成後可用單字指令修改，無需重新生成整份簡報：
-
-| 指令 | 說明 | 範例 |
-|------|------|------|
-| `換N` | 替換第 N 張版型 | `換3`（改用 quote 版型）|
-| `改風格` | 切換主題色系 | `改風格 → Tech Dark` |
-| `加N` | 在第 N 張後插入新投影片 | `加5` |
-| `刪N` | 刪除第 N 張 | `刪7` |
-| `加稿N` | 為第 N 張加入演講備註 | `加稿2 備註內容...` |
-
----
-
-## 🚫 常見問題（Anti-Patterns）
-
-1. **內容溢出畫布**：1920×1080 是固定畫布，所有內容必須在框架內。bullets 版型最多 5 條（國中）
-2. **字型過小**：最小字型 24px（大學 Small），低年級請用 40px 以上
-3. **連續同版型**：超過 3 張連續同版型，改用 section 分割
-4. **中文字型缺失**：open-slide 預設支援 Noto Sans TC，無需額外設定
-5. **圖片路徑錯誤**：圖片使用相對路徑或完整 URL；open-slide 不自動處理本機絕對路徑
-
----
-
-## 🔗 相關資源
-
-- open-slide GitHub：https://github.com/1weiho/open-slide
-- open-slide 文檔：https://open-slide.vercel.app
-- 版型完整範例：`references/tsx-layout-templates.md`（17 種版型 TSX 程式碼）
-- 主題 Tailwind 對照：`references/tailwind-themes.md`
-- 內容設計原則：`references/slide_design_principles.md`
+- `docs/workflow-gates-and-progress.md`: approval gates and completion evidence.
+- `docs/outline-style-sample.md`: teaching outline, style, and sample slide rules.
+- `docs/slide-generation-state.md`: prompt jobs and state files.
+- `docs/project-assembly-and-reporting.md`: QA, notes, PPTX assembly, and final report.
+- `references/presentation-style-library.md`: education-focused visual style systems.
+- `references/sample-approval-template.md`: sample review checklist.
+- `references/slide_design_principles.md`: established education slide design doctrine.
+- `assets/slides-kit/`: legacy / reference renderer and layout vocabulary.

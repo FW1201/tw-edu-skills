@@ -1,0 +1,18 @@
+{
+  "name": "tw-edu-slides-kit",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "tw-edu-slides-creator v3.0 渲染套件：投影片結構 schema → 原生可編輯 .pptx（PptxGenJS）。零 build，純 node 執行。",
+  "bin": {
+    "slides-build": "./build.mjs"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "validate": "node validate-deck.mjs",
+    "preview": "node render-preview.mjs"
+  },
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}

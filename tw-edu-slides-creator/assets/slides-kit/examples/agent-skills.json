@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "course": "Agent Skills 入門",
+    "grade": "大學",
+    "theme": "科技",
+    "instructor": "Claude Code",
+    "date": "2026/06/18"
+  },
+  "slides": [
+    { "layout": "cover", "subject": "AI 工程・技能系統",
+      "title": "Agent Skills 入門\n讓 AI 學會專業技能",
+      "instructor": "Claude Code", "date": "2026/06/18" },
+
+    { "layout": "objectives", "title": "本場重點", "items": [
+      { "kind": "是什麼", "text": "理解 Agent Skill 的定義與檔案結構" },
+      { "kind": "為什麼", "text": "知道 Skill 相較 prompt、MCP 的價值" },
+      { "kind": "怎麼做", "text": "能規劃並寫出一個可觸發的 Skill" }
+    ] },
+
+    { "layout": "hero", "kicker": "核心觀念",
+      "text": "Skill＝給 AI 的一份「專業作業手冊」" },
+
+    { "layout": "bullets", "kicker": "定義", "title": "什麼是 Agent Skill？", "items": [
+      "一個資料夾，封裝特定任務的知識與步驟",
+      "由 SKILL.md（含 frontmatter）描述觸發時機與流程",
+      "AI 偵測到相關任務時自動載入並依指示執行",
+      "可附帶腳本、範本、參考文件供 AI 取用",
+      "讓同一套專業做法可重複、可分享、可版本控管"
+    ] },
+
+    { "layout": "three-column", "kicker": "結構", "title": "一個 Skill 的三個組成", "cards": [
+      { "icon": "📄", "title": "SKILL.md", "body": "主檔。frontmatter 寫 name／description／觸發詞，內文寫工作流程。" },
+      { "icon": "⚙️", "title": "scripts/", "body": "可執行腳本。把繁瑣或精確的步驟交給程式，AI 只負責編排。" },
+      { "icon": "📚", "title": "references/", "body": "參考文件。需要時才載入的規格與範例，避免一次塞爆脈絡。" }
+    ] },
+
+    { "layout": "two-column", "kicker": "釐清", "title": "Skill 不等於 MCP、也不等於 prompt", "columns": [
+      { "heading": "Agent Skill", "items": [
+        "封裝「怎麼做」的流程與知識", "純檔案，跟著 repo 走", "按需載入，省脈絡" ] },
+      { "heading": "MCP / 單次 prompt", "items": [
+        "MCP 提供「對外連線」的工具能力", "prompt 是一次性指令，不可重用", "兩者可與 Skill 搭配" ] }
+    ] },
+
+    { "layout": "process-flow", "kicker": "運作", "title": "一個 Skill 如何被執行", "steps": [
+      { "label": "偵測：使用者語句命中觸發詞" },
+      { "label": "載入：讀入 SKILL.md 指示" },
+      { "label": "執行：依流程呼叫腳本／讀 references" },
+      { "label": "產出：回傳結果並自我驗證" }
+    ] },
+
+    { "layout": "pros-cons", "kicker": "取捨", "title": "什麼時候該寫成 Skill？",
+      "prosLabel": "適合", "consLabel": "不適合",
+      "pros": [ "重複性高的專業流程", "需要精確、可驗證的步驟", "想跨專案/團隊共用做法" ],
+      "cons": [ "一次性的臨時任務", "純對話、無固定流程", "邏輯極簡，prompt 就夠" ] },
+
+    { "layout": "checklist", "kicker": "實作", "title": "寫好一個 Skill 的檢核", "items": [
+      "description 寫清楚觸發詞，AI 才召得出來",
+      "流程分步驟，繁瑣處交給 scripts",
+      "大型規格放 references，按需載入",
+      "內建自我驗證（測試／品質閘門）",
+      "用真實任務跑過一輪並修正"
+    ], "reflect": "我的下一個 Skill 想解決哪個重複性任務？" },
+
+    { "layout": "closing", "kicker": "開始動手",
+      "title": "謝謝聆聽", "subtitle": "挑一個你最常重複的任務，把它寫成 Skill" }
+  ]
+}

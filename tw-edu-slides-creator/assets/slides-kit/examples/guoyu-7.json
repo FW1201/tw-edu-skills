@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "course": "七年級國文・〈背影〉",
+    "grade": "國中",
+    "theme": "語文",
+    "instructor": "吳老師",
+    "date": "2026/06/18"
+  },
+  "slides": [
+    { "layout": "cover", "subject": "七年級國文", "title": "朱自清〈背影〉\n父愛的凝視", "instructor": "吳老師", "date": "2026/06/18" },
+    { "layout": "objectives", "title": "本課學習目標", "items": [
+      { "kind": "認知", "text": "理解〈背影〉以細節描寫傳達情感的手法" },
+      { "kind": "情意", "text": "體會親情中含蓄而深沉的表達方式" },
+      { "kind": "技能", "text": "能運用細節描寫寫一段親情短文" }
+    ] },
+    { "layout": "section", "number": 1, "kicker": "第一章", "title": "走進朱自清的世界" },
+    { "layout": "bullets", "kicker": "作者介紹", "title": "朱自清其人", "items": [
+      "現代散文家、詩人、學者", "文字樸實清新，情感真摯", "代表作〈背影〉〈荷塘月色〉", "以白話散文見長"
+    ] },
+    { "layout": "vocab", "kicker": "詞語學習", "title": "課文重點詞語", "items": [
+      { "word": "蹣跚", "zhuyin": "ㄆㄢˊ ㄕㄢ", "def": "走路緩慢搖晃的樣子" },
+      { "word": "頹唐", "zhuyin": "ㄊㄨㄟˊ ㄊㄤˊ", "def": "精神萎靡不振" },
+      { "word": "瑣屑", "zhuyin": "ㄙㄨㄛˇ ㄒㄧㄝˋ", "def": "細小而繁雜的事物" },
+      { "word": "躊躇", "zhuyin": "ㄔㄡˊ ㄔㄨˊ", "def": "猶豫不決" }
+    ] },
+    { "layout": "activity", "kicker": "課堂活動", "title": "細節描寫小練習", "time": "15 分鐘", "group": "兩人一組", "steps": [
+      "回想一個家人為你做的小動作", "用三句話描寫那個動作的細節", "與同伴分享並互相回饋"
+    ] },
+    { "layout": "discussion", "kicker": "想一想", "question": "為什麼作者要反覆描寫父親「背影」\n而不是正面的臉？", "thinkTime": "3 分鐘" },
+    { "layout": "two-column", "kicker": "對比閱讀", "title": "正面描寫 vs 側面烘托", "columns": [
+      { "heading": "正面描寫", "items": ["直接刻畫人物外貌", "明白點出情感", "讀者一目了然"] },
+      { "heading": "側面烘托", "items": ["藉背影暗示父愛", "情感含蓄深沉", "留給讀者想像"] }
+    ] },
+    { "layout": "summary", "kicker": "重點回顧", "title": "本課重點", "items": [
+      { "key": "主題", "value": "藉「背影」傳達深沉父愛" },
+      { "key": "手法", "value": "細節描寫、側面烘托" },
+      { "key": "語言", "value": "樸實清新、情感真摯" },
+      { "key": "啟發", "value": "親情往往藏在不起眼的小動作裡" }
+    ] },
+    { "layout": "checklist", "kicker": "學習自評", "title": "我學會了嗎？", "items": [
+      "我能說出〈背影〉的主題", "我能舉出文中的細節描寫", "我能分辨正面描寫與側面烘托", "我能寫一段細節描寫的親情短文"
+    ], "reflect": "今天我對「親情」有了什麼新的體會？" }
+  ]
+}
