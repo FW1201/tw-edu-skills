@@ -1,3 +1,27 @@
+> ## 📦 本專案已移至 [FW1201/twa-edu-harness](https://github.com/FW1201/twa-edu-harness)
+>
+> **技能名稱沒有改。** `tw-edu-lesson-plan-108` 還是 `tw-edu-lesson-plan-108`，
+> 觸發詞沒變，教學講義與工作坊教材不需要調整。要改的只有安裝來源：
+>
+> ```bash
+> npx skills add FW1201/twa-edu-harness --all -a claude-code
+> ```
+>
+> 新版修好了三件本 repo 一直存在的問題：
+>
+> - **共用協議在安裝後是失效的**。19 支技能把四份協議宣告為「必要前置步驟」，
+>   路徑卻指到 repo 之外——技能會照跑，只是靜默跳過那個步驟。
+> - **CI 一直是紅的**。它引用一支 2026-05-11 就被刪除的腳本。
+> - **技能數量有六個互相矛盾的說法**，README 還列了三個不存在的技能。
+>
+> 另外修好了 `tw-edu-research-viz` 產圖時中文全部變成空白方框的問題。
+>
+> 完整對照見 [遷移說明](https://github.com/FW1201/twa-edu-harness/blob/main/docs/MIGRATION-v3-to-v4.md)。
+>
+> 本 repo 保留 `v3.1-final` tag，既有安裝不會壞，但**不再更新**。
+
+---
+
 # tw-edu-skills — K-12 教學 Claude Skills 套組
 
 > **臺灣 K-12 教師專用 AI 技能套組**  

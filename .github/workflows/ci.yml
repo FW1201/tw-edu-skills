@@ -1,10 +1,10 @@
 name: 測試所有 Skills 腳本
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+  # 本 repo 已凍結（見 README）。自動觸發已停用——
+  # 這份 CI 引用了一支已被刪除的腳本，會永遠失敗。
+  # 保留 workflow_dispatch 供需要時手動執行。
+  workflow_dispatch:
 
 jobs:
   test-scripts:
