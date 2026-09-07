@@ -1,111 +1,46 @@
 ---
 name: tw-edu-learning-portfolio
-description: >
-  引導學生整理學習歷程檔案（108課綱大學申請入學用），
-  包含課程學習成果說明、多元表現敘述、自我評述框架。
-  當使用者提及「學習歷程」「備審資料」「課程學習成果」
-  「多元表現」「自我評述」「學習歷程檔案」「大學申請」時觸發。
-version: 1.0.0
-allowed-tools: "Bash, Read, Write"
-disable-model-invocation: true
+description: "協助整理學習證據、反思與成果。適用於學習歷程、成果反思。"
+version: 4.0.0
+author: 奇老師・數位敘事力社群
 ---
 
-# 學習歷程檔案輔助工具
+# 學習歷程指導
 
-## Step 0：讀取文件
-- `references/portfolio_guide.md`
-- `/mnt/skills/public/docx/SKILL.md`
+協助整理學習證據、反思與成果。適用 Codex 與 Claude Code，繁體中文輸出。
 
+## 開始前
 
-**概念對齊協議（必要前置步驟）：**
-`../../tw_edu_concept_alignment.md`
-→ 在執行任何工作前，先完成概念對齊確認卡。
+讀取 [共用工作方式](references/common/workflow.md)。檢查目前工作區的 `teacher-profile.md`；本次要求優先於對話脈絡、設定檔及預設。已提供的資訊不要重問。
 
+## 任務要求
 
-## Step 1：資訊收集
-1. 學生年級（高一/高二/高三）？
-2. 要撰寫哪類文件？
-   - 課程學習成果說明（每份800字內）
-   - 多元表現綜整心得
-   - 自傳/自我陳述
-   - 大學科系對應說明
-3. 學生提供的關鍵內容（活動、作品、心得）？
+區分學生原始成果、反思提問與教師建議。依實際資料整理動機、過程、困難、修正與學習證據，不代造經歷、心得或成績；未提供內容保持待補。
 
-## Step 2：生成學習歷程文件
+## 工作流程
+
+1. 確認使用者要完成的成果，讀取素材與必要教學脈絡。
+2. 依上述任務要求提出具體內容，保留來源與待確認事項。需要重大選擇時提供可評估的草稿。
+3. 讀取本技能的 `schemas/` 輸入規格與 `examples/` 範例；以實際內容建立 JSON。範例中的資料不得混入正式成品。
+4. 從任意工作目錄使用下列 CLI。先驗證，再生成，最後檢查成品及驗證紀錄。
 
 ```bash
-python scripts/generate_portfolio.py \
-  --grade "[高一/高二/高三]" \
-  --type "[course_result/diverse/autobiography]" \
-  --content "[學生提供的內容摘要]" \
-  --target_dept "[目標科系（選填）]" \
-  --output "/mnt/user-data/outputs/學習歷程_[類型].docx"
+# SKILL_DIR 為本技能安裝目錄；TASK_DIR 為目前工作區的任務輸出目錄。
+python3 "$SKILL_DIR/scripts/generate_portfolio.py" --input "$TASK_DIR/input.json" --validate-only
+python3 "$SKILL_DIR/scripts/generate_portfolio.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/output.docx"
+# 僅在明確需要展示時使用；輸出標示為範例。
+python3 "$SKILL_DIR/scripts/generate_portfolio.py" --example --output "$TASK_DIR/example.docx"
 ```
 
-## 重要提醒
-- 本工具提供框架與引導，最終內容須由學生自己撰寫
-- 輸出為草稿，需學生大量修改使其個人化
-- 強調真實性：鼓勵學生寫真實的學習歷程
+## 安裝依賴
 
----
-
-## 年級適應 + 引導式收集（v2.0 更新）
-
-### 自動年級偵測
-從使用者輸入辨識學習階段（國小/國中/高中），自動調整：
-- 教學語言複雜度與詞彙難度
-- 布魯姆認知層次分布
-- 活動設計的自主程度
-- 課綱代碼學段後綴（-E- / -J- / -U-）
-
-詳見：`../../tw_edu_grade_adapter.md`
-
-### 引導式資訊收集
-啟動時執行漸進式三輪問答，確保取得充足資訊再開始任務。
-詳見：`../../tw_edu_guided_collection.md`
-
----
-
-## MCP 連接器
-
-### Claude Code ／ Claude.ai（Pro/Team/Enterprise）
-```
-WebSearch（自動啟用）：
-  搜尋最新課綱資料、教材資源、時事素材
-
-Google Drive（若已連接，Settings → Connectors）：
-  直接從 Drive 讀取現有教材
-  完成後直接儲存輸出文件到 Drive
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
 ```
 
-### Codex 平台
-MCP Connectors 透過 `~/.codex/config.toml` 設定（`codex mcp add` 指令或手動編輯）。
-未設定時自動降級：請參閱上方降級方案。
+執行生成器時可將上方 python3 換成虛擬環境的 Python。舊版只傳主題或科目的呼叫不再生成固定範例；依 schema 填入實際內容。
 
-### Antigravity 平台（Google AI IDE）
-MCP 透過 MCP Server Hub（1,500+ servers）或 `~/.gemini/antigravity/mcp_config.json` 設定。
-支援 Jupyter Notebook 整合。未設定時自動降級：請參閱上方降級方案。
+## 交付檢查
 
----
-
-## MCP 整合更新（v3.0）
-
-**讀取全域策略文件：`../../tw_edu_mcp_strategy.md`**
-
-### 本 Skill 適用的 MCP 最佳化
-
-**WebSearch（已啟用）：**
-搜尋最新課綱資料、教學素材、時事情境。
-
-**Canva MCP（若已連接）：**
-使用者說「幫我做更美觀的版本」或「Canva 設計」時：
-→ 呼叫 Canva:generate-design 生成高設計感版本
-→ 優先適用：教案封面、簡報、學習單封面
-
-**Google Drive（若已連接）：**
-文件生成後詢問：「要上傳到 Google Drive 嗎？」
-→ 確認後上傳，返回分享連結
-→ 不修改任何現有檔案的分享權限
-
-**安全原則：**
-所有 MCP 寫入操作執行前，必須顯示確認摘要並等待使用者確認。
+核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-pbl-designer",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "校園環境提案（範例）",
+    "driving_question": "如何改善一處校園環境？",
+    "authentic_context": "向校務會議提出可行建議",
+    "milestones": [
+      {
+        "id": "M1",
+        "deliverable": "問題證據表",
+        "due": "第一週",
+        "feedback": "同儕檢核證據"
+      }
+    ],
+    "final_product": "三分鐘提案",
+    "assessment_criteria": [
+      "證據充分",
+      "方案可行"
+    ]
+  }
+}

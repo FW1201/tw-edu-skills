@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-differentiated",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "差異化教學（範例）",
+    "shared_goal": "以感官詞完成一段描寫",
+    "learner_groups": [
+      {
+        "id": "需要詞彙支持",
+        "evidence": "觀察紀錄詞彙少於三個",
+        "support": [
+          "提供感官詞卡"
+        ]
+      }
+    ],
+    "activities": [
+      {
+        "id": "A1",
+        "title": "分層描寫",
+        "instructions": "依支持卡完成短文。",
+        "materials": [
+          "詞卡"
+        ]
+      }
+    ]
+  }
+}

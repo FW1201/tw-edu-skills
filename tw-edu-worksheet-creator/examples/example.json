@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-worksheet-creator",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "校園觀察學習單（範例）",
+    "instructions": "依序完成觀察與推論。",
+    "prompts": [
+      {
+        "id": "P1",
+        "prompt": "記錄一個聽到的聲音。",
+        "response_space_lines": 3
+      }
+    ],
+    "reflection": "哪個細節最能支持你的感受？"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-slides-creator",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "環境觀察簡報（範例）",
+    "slides": [
+      {
+        "id": 1,
+        "type": "text",
+        "title": "觀察與描寫",
+        "body": [
+          "從感官細節開始"
+        ],
+        "notes": "請學生分享觀察。"
+      },
+      {
+        "id": 2,
+        "type": "table",
+        "title": "感官整理",
+        "table": [
+          [
+            "感官",
+            "例子"
+          ],
+          [
+            "聽覺",
+            "鳥鳴"
+          ]
+        ],
+        "notes": "比較不同感官。"
+      },
+      {
+        "id": 3,
+        "type": "chart",
+        "title": "觀察統計",
+        "chart": {
+          "categories": [
+            "視覺",
+            "聽覺"
+          ],
+          "series": [
+            {
+              "name": "次數",
+              "values": [
+                3,
+                2
+              ]
+            }
+          ]
+        },
+        "notes": "圖表資料為本範例。"
+      }
+    ]
+  }
+}

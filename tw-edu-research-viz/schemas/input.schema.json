@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-research-viz"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "type"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "prisma",
+            "simple_diagram"
+          ]
+        },
+        "prisma": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identified",
+            "duplicates_removed",
+            "screened",
+            "screening_excluded",
+            "full_text_assessed",
+            "full_text_excluded",
+            "included"
+          ],
+          "properties": {
+            "identified": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "duplicates_removed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "screened": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "screening_excluded": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "full_text_assessed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "full_text_excluded": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "included": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "label"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "prisma"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "prisma"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "simple_diagram"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "nodes"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -17,13 +17,33 @@ def slide_images(deck_dir: Path) -> List[Path]:
         return []
     pattern = re.compile(r"^slide_(\d+)\.(png|jpe?g|bmp|gif)$", re.IGNORECASE)
     found: List[Tuple[int, Path]] = []
+    seen: Dict[int, Path] = {}
     for path in origin.iterdir():
         if not path.is_file():
             continue
         match = pattern.match(path.name)
         if match:
-            found.append((int(match.group(1)), path))
+            slide_id = int(match.group(1))
+            if slide_id in seen:
+                raise ValueError(f"duplicate slide id {slide_id}: {seen[slide_id].name}, {path.name}")
+            seen[slide_id] = path
+            found.append((slide_id, path))
+    ids = sorted(seen)
+    if ids and ids != list(range(1, len(ids) + 1)):
+        raise ValueError(f"slide ids must be contiguous from 1; found {ids}")
     return [path for _, path in sorted(found)]
+
+
+def validate_images(images: List[Path]) -> None:
+    try:
+        from PIL import Image
+    except ImportError as exc:
+        raise ValueError("Pillow is required to validate image slides") from exc
+    for path in images:
+        with Image.open(path) as image:
+            width, height = image.size
+        if abs(width / height - 16 / 9) > 0.01:
+            raise ValueError(f"{path.name} is not 16:9 ({width}x{height})")
 
 
 def load_speaker_notes(deck_dir: Path) -> Dict[int, str]:
@@ -107,12 +127,22 @@ def main() -> int:
         print(deck_dir)
         return 0
 
-    images = slide_images(deck_dir)
+    try:
+        images = slide_images(deck_dir)
+        validate_images(images)
+    except ValueError as exc:
+        print(f"Invalid slide input: {exc}", file=sys.stderr)
+        return 2
     if not images:
         print(f"No final slide images found in {deck_dir / 'origin_image'}", file=sys.stderr)
         return 1
 
-    create_pptx(images, deck_dir / output_name, args.aspect_ratio, load_speaker_notes(deck_dir))
+    notes = load_speaker_notes(deck_dir)
+    invalid_notes = sorted(set(notes) - set(range(1, len(images) + 1)))
+    if invalid_notes:
+        print(f"Invalid speaker-note slide ids: {invalid_notes}", file=sys.stderr)
+        return 2
+    create_pptx(images, deck_dir / output_name, args.aspect_ratio, notes)
     return 0
 
 

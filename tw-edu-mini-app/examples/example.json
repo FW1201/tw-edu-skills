@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-mini-app",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "環境小測驗（範例）",
+    "mode": "quiz",
+    "questions": [
+      {
+        "id": "Q1",
+        "prompt": "哪個詞屬於聽覺描寫？",
+        "points": 1,
+        "options": [
+          {
+            "id": "A",
+            "text": "鳥鳴"
+          },
+          {
+            "id": "B",
+            "text": "翠綠"
+          }
+        ],
+        "answer": "A"
+      }
+    ]
+  }
+}

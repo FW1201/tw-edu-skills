@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-lesson-plan-108",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "校園環境描寫教案（範例）",
+    "total_minutes": 45,
+    "objectives": [
+      {
+        "id": "O1",
+        "description": "辨識感官描寫"
+      }
+    ],
+    "activities": [
+      {
+        "id": "A1",
+        "title": "文本觀察",
+        "minutes": 45,
+        "instructions": "圈選文本中的感官詞語。",
+        "objective_ids": [
+          "O1"
+        ]
+      }
+    ],
+    "assessments": [
+      {
+        "id": "E1",
+        "method": "出口卡",
+        "criteria": "寫出一個感官句。",
+        "objective_ids": [
+          "O1"
+        ]
+      }
+    ],
+    "curriculum_codes": [
+      {
+        "code": "待確認",
+        "description": "由教師核對正式代碼",
+        "verified": false,
+        "verification_note": "範例未連接官方課綱"
+      }
+    ]
+  }
+}

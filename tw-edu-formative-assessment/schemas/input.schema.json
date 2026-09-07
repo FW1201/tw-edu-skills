@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-formative-assessment"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "learning_target",
+        "checks",
+        "response_rules"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learning_target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "prompt",
+              "success_criteria",
+              "evidence_capture"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "prompt": {
+                "type": "string",
+                "minLength": 1
+              },
+              "success_criteria": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "evidence_capture": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "response_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence",
+              "action"
+            ],
+            "properties": {
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

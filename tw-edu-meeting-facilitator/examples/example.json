@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-meeting-facilitator",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "備課會議（範例）",
+    "participants": [
+      "教師甲",
+      "教師乙"
+    ],
+    "agenda": [
+      {
+        "topic": "共用評量標準",
+        "minutes": 20,
+        "owner": "教師甲"
+      }
+    ],
+    "decisions": [
+      "先試用一週"
+    ],
+    "actions": [
+      {
+        "owner": "教師乙",
+        "action": "整理學生作品",
+        "due": "2026-09-10"
+      }
+    ]
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-slides-creator"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "slides"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slides": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "type",
+              "title"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "type": {
+                "enum": [
+                  "text",
+                  "table",
+                  "chart",
+                  "image"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "body": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "table": {
+                "type": "array",
+                "minItems": 2,
+                "items": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "chart": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "categories",
+                  "series"
+                ],
+                "properties": {
+                  "categories": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "series": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "name",
+                        "values"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "values": {
+                          "type": "array",
+                          "minItems": 1,
+                          "items": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 1
+              },
+              "image": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "text"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "body"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "table"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "table"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "chart"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "chart"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "image"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "image"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "mode": {
+          "enum": [
+            "editable",
+            "image"
+          ],
+          "default": "editable"
+        }
+      }
+    }
+  }
+}

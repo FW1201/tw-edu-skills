@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-parent-communication",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "學習近況通知（範例）",
+    "recipients": [
+      "八年一班家長"
+    ],
+    "purpose": "說明本週觀察任務",
+    "message": "學生將完成校園觀察紀錄。",
+    "requested_action": "請提醒攜帶筆記本。",
+    "contact_channel": "班級聯絡簿"
+  }
+}

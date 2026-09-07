@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-research-viz",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "文獻篩選（範例）",
+    "type": "prisma",
+    "prisma": {
+      "identified": 10,
+      "duplicates_removed": 2,
+      "screened": 8,
+      "screening_excluded": 3,
+      "full_text_assessed": 5,
+      "full_text_excluded": 2,
+      "included": 3
+    }
+  }
+}

@@ -1,70 +1,14 @@
-# Outline, Style, And Sample
+# 大綱、風格與樣張
 
-Read this before writing `outline.md`, choosing visual style, or generating a sample slide.
+先整理逐頁大綱：頁碼、標題、教學目的、確切學生文字、講者解說、視覺解釋、活動／評量、年段密度、所需素材。
+新概念可採具體例子 → 觀察 → 解釋 → 遷移練習。不要自行填入未查證課綱代碼。
 
-## Teaching Outline
+沿用使用者已確認的大綱與風格；缺少必要選擇時再提供 2–3 個方向。
+風格至少記錄色彩、字型、版面、圖像方式與文字密度。名稱只是參考，不綁定作者個人設計系統。
 
-Create `outline.md` before generating slide images. Each slide must include:
+確認後製作一張代表性內容樣張：
+- editable：一頁原生 PPTX，並開啟或渲染預覽；
+- image：使用可用生圖能力產出一張實際圖片，記錄來源與工具。
 
-- slide number,
-- slide title,
-- teaching purpose,
-- Bloom level,
-- exact student-facing on-slide text,
-- teacher explanation need,
-- visual explanation idea,
-- activity / discussion / assessment cue,
-- grade-density check,
-- required assets.
-
-Use example-first design for new concepts:
-
-1. show a concrete example,
-2. guide students to notice features,
-3. explain the concept,
-4. practice or transfer.
-
-Stop after presenting the outline unless the user explicitly asked to continue without approval.
-
-## Style
-
-If the user has not specified a style, offer 2-3 options and recommend one. Include:
-
-- palette,
-- typography,
-- layout rhythm,
-- illustration or diagram treatment,
-- density rules,
-- anti-patterns.
-
-Default recommendations:
-
-- `Edu Warm Classroom`: general K-12 teaching.
-- `Academic Clean`: high-school or evidence-heavy content.
-- `Neon Circuit`: AI / technology / digital learning.
-- `Hand-drawn Explainer`: abstract concepts and process explanations.
-
-## Sample Slide
-
-Generate exactly one representative content slide after outline and style confirmation.
-
-Requirements:
-
-- Save it as its final filename, such as `origin_image/slide_04.png`.
-- Use real teaching content, not a generic title page.
-- State the backend/tool used.
-- Ask the user to confirm grade appropriateness, text clarity, visual explanation quality, and teaching usefulness.
-
-After approval, record:
-
-```json
-{
-  "sample_generation_method": {
-    "backend_used": "Codex imagegen",
-    "tool_name": "imagegen",
-    "mode": "generate",
-    "approved_sample_path": "origin_image/slide_04.png",
-    "handoff_rule": "Use the same backend family and inspect the approved sample for style consistency."
-  }
-}
-```
+請確認年段、文字清晰度、視覺解釋與教學用途；保留已核准樣張與核准紀錄。
+若使用者已明確允許全程製作，直接沿用授權，不強制重新詢問。

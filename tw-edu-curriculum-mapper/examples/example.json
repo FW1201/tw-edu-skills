@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-curriculum-mapper",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "閱讀單元地圖（範例）",
+    "units": [
+      {
+        "name": "環境觀察",
+        "weeks": "1–2",
+        "periods": 4,
+        "goals": [
+          "辨識描寫細節"
+        ],
+        "codes": [
+          {
+            "code": "待確認",
+            "description": "正式代碼由教師核對",
+            "verified": false,
+            "verification_note": "範例未連接官方課綱"
+          }
+        ],
+        "assessments": [
+          "觀察紀錄"
+        ]
+      }
+    ]
+  }
+}

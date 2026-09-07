@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-learning-portfolio",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "學習歷程（範例）",
+    "records": [
+      {
+        "date": "2026-09-01",
+        "artifact": "觀察短文",
+        "evidence": "修訂前後版本",
+        "reflection": "我增加了聽覺細節。",
+        "next_step": "檢查段落銜接。"
+      }
+    ]
+  }
+}

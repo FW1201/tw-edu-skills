@@ -1,95 +1,46 @@
 ---
 name: tw-edu-feedback-writer
-description: >
-  為學生作業、作文、口頭報告、學習歷程撰寫專業回饋評語，
-  依評量規準生成正向具體的書面評語，支援批量處理。
-  當使用者提及「評語」「回饋意見」「作文批改」「學生評語」
-  「寫評語」「批改」「作業回饋」「學習回饋」時觸發。
-version: 1.0.0
-allowed-tools: "Bash, Read, Write"
-disable-model-invocation: true
+description: "根據作品證據撰寫具體可行的回饋。適用於評語、作業回饋。"
+version: 4.0.0
+author: 奇老師・數位敘事力社群
 ---
 
-# 學生回饋評語生成工具
+# 學生回饋
 
-## Step 0：讀取文件
-- `references/feedback_principles.md`
-- `/mnt/skills/public/docx/SKILL.md`
+根據作品證據撰寫具體可行的回饋。適用 Codex 與 Claude Code，繁體中文輸出。
 
+## 開始前
 
-**概念對齊協議（必要前置步驟）：**
-`../../tw_edu_concept_alignment.md`
-→ 在執行任何工作前，先完成概念對齊確認卡。
+讀取 [共用工作方式](references/common/workflow.md)。檢查目前工作區的 `teacher-profile.md`；本次要求優先於對話脈絡、設定檔及預設。已提供的資訊不要重問。
 
+## 任務要求
 
-## Step 1：資訊收集
-1. 評量任務類型（作文/作業/報告/學習歷程）？
-2. 年級與科目？
-3. 評量規準有哪些向度？
-4. 學生表現描述（教師口述，Claude 整理成評語）？
-5. 需要幾位學生的評語？
+只依提供的作品與觀察撰寫；指出具體優點、可改進之處與下一步。不得虛構學生表現、班級統計或人數。預設匿名代稱，無資料時詢問必要證據。
 
-## Step 2：生成評語文件
+## 工作流程
+
+1. 確認使用者要完成的成果，讀取素材與必要教學脈絡。
+2. 依上述任務要求提出具體內容，保留來源與待確認事項。需要重大選擇時提供可評估的草稿。
+3. 讀取本技能的 `schemas/` 輸入規格與 `examples/` 範例；以實際內容建立 JSON。範例中的資料不得混入正式成品。
+4. 從任意工作目錄使用下列 CLI。先驗證，再生成，最後檢查成品及驗證紀錄。
 
 ```bash
-python scripts/generate_feedback.py \
-  --task "[任務名稱]" --subject "[科目]" --grade "[年級]" \
-  --students "[學生1描述|學生2描述|...]" \
-  --output "/mnt/user-data/outputs/學生評語.docx"
+# SKILL_DIR 為本技能安裝目錄；TASK_DIR 為目前工作區的任務輸出目錄。
+python3 "$SKILL_DIR/scripts/generate_feedback.py" --input "$TASK_DIR/input.json" --validate-only
+python3 "$SKILL_DIR/scripts/generate_feedback.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/output.docx"
+# 僅在明確需要展示時使用；輸出標示為範例。
+python3 "$SKILL_DIR/scripts/generate_feedback.py" --example --output "$TASK_DIR/example.docx"
 ```
 
-## 評語原則（三明治回饋法）
-1. 肯定優點（具體說明做得好的地方）
-2. 指出改進方向（具體、可操作的建議）
-3. 鼓勵展望（給予信心與期待）
+## 安裝依賴
 
-## 輸出格式
-- 每位學生一個回饋區塊
-- 含評量指標評等（優/良/可/需加強）
-- 字數約 100-150 字/人
-- 可輸出成 Word 表格便於逐一填入
-
----
-
-## 年級適應 + 引導式收集（v2.0 更新）
-
-### 年級偵測 + 語氣調整
-| 學習階段 | 評語語氣 | 建議字數/人 |
-|---------|---------|-----------|
-| 國小 | 溫暖鼓勵，避免批評性語言 | 60-80 字 |
-| 國中 | 平衡正向與建設性建議 | 80-120 字 |
-| 高中 | 具體、有深度，連結學習目標 | 100-150 字 |
-
-### 引導式收集（第一輪）
-```
-Q1: 「這是哪種任務的評語？（作文/報告/口頭/作業/其他）」
-Q2: 「請描述每位學生的表現特點。
-    （可批量：學生甲：___，學生乙：___）」
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
 ```
 
-### 第二輪
-```
-Q3: 「用哪些評量向度？（未提供則依任務類型自動設定）」
-```
+執行生成器時可將上方 python3 換成虛擬環境的 Python。舊版只傳主題或科目的呼叫不再生成固定範例；依 schema 填入實際內容。
 
----
+## 交付檢查
 
-## MCP 連接器（平台差異）
-
-### Claude Code ／ Claude.ai（Pro/Team/Enterprise）
-
-**Gmail MCP（若已連接）：**
-```
-用途：將個別學生評語草擬為家長信件並存入 Gmail 草稿
-      適合需要「個別通知家長」的情境
-
-流程：
-  1. Claude 生成全班評語文件
-  2. 詢問：「需要把個別評語轉成寄給家長的信嗎？
-            請提供需要個別通知的學生家長 Email。」
-  3. 若確認：批量建立 Gmail 草稿（每位家長一封）
-  ⚠️ Claude 只存草稿，不自動發送
-```
-
-### 其他平台
-輸出文字供手動複製。
+核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。
