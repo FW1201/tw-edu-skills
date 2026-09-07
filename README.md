@@ -1,237 +1,84 @@
-> ## 📦 本專案已移至 [FW1201/twa-edu-harness](https://github.com/FW1201/twa-edu-harness)
->
-> **技能名稱沒有改。** `tw-edu-lesson-plan-108` 還是 `tw-edu-lesson-plan-108`，
-> 觸發詞沒變，教學講義與工作坊教材不需要調整。要改的只有安裝來源：
->
-> ```bash
-> npx skills add FW1201/twa-edu-harness --all -a claude-code
-> ```
->
-> 新版修好了三件本 repo 一直存在的問題：
->
-> - **共用協議在安裝後是失效的**。19 支技能把四份協議宣告為「必要前置步驟」，
->   路徑卻指到 repo 之外——技能會照跑，只是靜默跳過那個步驟。
-> - **CI 一直是紅的**。它引用一支 2026-05-11 就被刪除的腳本。
-> - **技能數量有六個互相矛盾的說法**，README 還列了三個不存在的技能。
->
-> 另外修好了 `tw-edu-research-viz` 產圖時中文全部變成空白方框的問題。
->
-> 完整對照見 [遷移說明](https://github.com/FW1201/twa-edu-harness/blob/main/docs/MIGRATION-v3-to-v4.md)。
->
-> 本 repo 保留 `v3.1-final` tag，既有安裝不會壞，但**不再更新**。
+# tw-edu-skills v4.0.0
 
----
+臺灣 K-12 教師的 21 個獨立 AI Skills，適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 根據教材與實際資料撰寫內容，Python 驗證並排版。教師保有教學判斷權。
 
-# tw-edu-skills — K-12 教學 Claude Skills 套組
+本 repo 已重新啟用，安裝與更新來源為 **FW1201/tw-edu-skills**。v3.1-final 保留供舊版查閱，新版遷移見 [v4 遷移指南](docs/MIGRATION-v4.md)。
 
-> **臺灣 K-12 教師專用 AI 技能套組**  
-> 基於 108 課綱素養導向設計，涵蓋備課、命題、評量、班級經營、親師溝通等完整教學流程。
+## 安裝
 
-[![Skills](https://img.shields.io/badge/Skills-19-green)](https://github.com/FW1201/tw-edu-skills)
-[![Version](https://img.shields.io/badge/Version-3.1-blue)](https://github.com/FW1201/tw-edu-skills)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
-
----
-
-## 📦 套組概覽
-
-本套組包含 **19 個 Skills**，面向臺灣 K-12 各學段教師，深度整合：
-- 108 課綱核心素養三面九項
-- 十大學習領域 × 各版本教科書（南一/翰林/康軒）
-- SDGs / ESG 跨領域議題
-- 差異化教學（NESA 特教規範）
-
-> **相關套組**：[tw-stu-skills（學生）](https://github.com/FW1201/tw-stu-skills) ｜ [tw-research-skills（學術研究）](https://github.com/FW1201/tw-research-skills)
-
----
-
-## 🛠 Skills 清單
-
-### 課程設計
-| Skill | 功能說明 |
-|-------|---------|
-| `tw-edu-lesson-plan-108` | 依 108 課綱生成素養導向教案（.docx），支援所有學習領域 |
-| `tw-edu-curriculum-mapper` | 繪製課程地圖，對應核心素養指標 |
-| `tw-edu-differentiated` | 差異化教學設計，依學生程度分組教學策略 |
-| `tw-edu-interdisciplinary` | 跨領域/跨科課程設計，整合 SDGs 議題 |
-| `tw-edu-pbl-designer` | 專題式學習（PBL）完整設計，含驅動問題、任務鷹架、成果展示 |
-
-### 評量命題
-| Skill | 功能說明 |
-|-------|---------|
-| `tw-edu-exam-generator` | 素養導向試題生成，支援會考/學測題型，含閱讀素材 |
-| `tw-edu-rubric-designer` | 評量規準（Rubric）設計，布魯姆認知層次對應 |
-| `tw-edu-formative-assessment` | 形成性評量工具設計（提問策略、出口票、同儕互評） |
-| `tw-edu-anti-ai-assessment` | 抗 AI 作弊評量設計，確保學習真實性 |
-
-### 教材資源
-| Skill | 功能說明 |
-|-------|---------|
-| `tw-edu-worksheet-creator` | 學習單製作，支援引導式問題設計與素養題型 |
-| `tw-edu-slides-creator` | 教學簡報製作，含視覺化架構建議 |
-| `tw-edu-mini-app` | 生成互動式教學小程式（HTML Artifact），無需寫程式 |
-| `tw-edu-remotion-shorts` | 直式短影音學習動畫製作，含分鏡、風格與 Remotion 設定 |
-
-### 學生表現
-| Skill | 功能說明 |
-|-------|---------|
-| `tw-edu-feedback-writer` | 學生評語撰寫，個人化、具體描述學習表現 |
-
-### 班級行政
-| Skill | 功能說明 |
-|-------|---------|
-| `tw-edu-classroom-culture` | 班級經營計畫、班規設計、導師輔導策略 |
-| `tw-edu-parent-communication` | 親師溝通信件、聯絡簿回覆、家長說明文件 |
-| `tw-edu-school-document` | 校園公文寫作（會議記錄、申請表、活動計畫） |
-| `tw-edu-meeting-facilitator` | 教師會議引導，生成會議議程、摘要與行動事項 |
-
-### 套組設定
-| Skill | 功能說明 |
-|-------|---------|
-| `tw-edu-synchronizer` | 個人化套組設定助手，根據科別/年段/教學風格客製化所有 Skills 行為 |
-
----
-
-## 🚀 安裝方式
-
-### Claude Code（推薦）
-
-Claude Code 是本套組設計的**主要平台**，所有功能完整支援。
+需要 Git 與 Python 3.10+。先檢視原始碼，再安裝：
 
 ```bash
-# 安裝全套組（19 個 Skills）
-npx skills add FW1201/tw-edu-skills --all -a claude-code
-
-# 安裝單一 Skill
-npx skills add FW1201/tw-edu-skills tw-edu-lesson-plan-108 -a claude-code
-
-# 確認安裝
-npx skills list -a claude-code
-
-# 更新套組
-npx skills update -a claude-code
-```
-
-安裝後，在 Claude Code 中直接輸入觸發詞即可啟動（例如：「幫我寫一份教案」、「設計一份試卷」）。
-
-### Codex CLI
-
-Codex 原生支援 MCP 協議，透過 `~/.codex/config.toml` 設定 Connectors。
-
-**Skills 安裝路徑**：
-```
-<your-project>/.agents/skills/<skill-name>/SKILL.md   ← 專案層（推薦）
-~/.codex/skills/<skill-name>/SKILL.md                  ← 全域層
-```
-
-```bash
-# Clone 後複製到專案目錄
 git clone https://github.com/FW1201/tw-edu-skills.git
-mkdir -p <your-project>/.agents/skills
-cp -r tw-edu-skills/tw-edu-*/ <your-project>/.agents/skills/
+cd tw-edu-skills
+# 預覽，不修改安裝目錄
+bash install.sh --agent codex --dry-run
+# Codex 全套
+bash install.sh --agent codex
+# Claude Code 全套
+bash install.sh --agent claude-code
+# 單項：只安裝教案技能
+bash install.sh tw-edu-lesson-plan-108 --agent codex
 ```
 
-**MCP Connectors 設定**（`~/.codex/config.toml`）：
-```toml
-[mcp_servers.google-drive]
-command = "npx"
-args = ["-y", "@google/mcp-server-googledrive"]
+Codex 預設使用者目錄為 `~/.codex/skills`，Claude Code 為 `~/.claude/skills`。既有自訂內容會阻止覆蓋；檢查後可加 `--force`，舊目錄仍保留為同層隱藏備份。安裝器不執行全域 pip。完整說明見 [快速開始](docs/quick-start.md)。
 
-[mcp_servers.canva]
-url = "https://mcp.canva.com/mcp"
-headers = { Authorization = "Bearer ${CANVA_TOKEN}" }
+## 使用
 
-[mcp_servers.notion]
-command = "npx"
-args = ["-y", "@notionhq/notion-mcp-server"]
-env = { NOTION_API_KEY = "${NOTION_API_KEY}" }
-```
+告訴 Agent：「使用 tw-edu-lesson-plan-108，根據這份教材設計國中八年級國語文兩節課教案。」
 
-> 詳細設定請參閱 [docs/non-claude-setup.md](docs/non-claude-setup.md)
+技能讀取目前工作區的 `teacher-profile.md`；本次要求優先。Agent 先檢查來源、補足必要脈絡，再依技能 schema 建立內容。產出檔案前先驗證，正式內容不混入示範資料。未提供來源或未查證課綱時明示待確認。
 
-### Antigravity（Google AI IDE）
-
-Antigravity 完整支援 MCP，內建 MCP Server Hub（1,500+ Connectors）。
-
-**Skills 安裝路徑**（注意：路徑是 `.agent` 單數）：
-```
-~/.gemini/antigravity/skills/<skill-name>/SKILL.md   ← 全域層
-<project>/.agent/skills/<skill-name>/SKILL.md         ← 專案層
-```
+生成器共同介面：
 
 ```bash
-mkdir -p ~/.gemini/antigravity/skills
-cp -r tw-edu-skills/tw-edu-*/ ~/.gemini/antigravity/skills/
+python3 -m venv .venv
+.venv/bin/python -m pip install -r tw-edu-lesson-plan-108/requirements.txt
+.venv/bin/python tw-edu-lesson-plan-108/scripts/generate_lesson_plan.py --input input.json --validate-only
+.venv/bin/python tw-edu-lesson-plan-108/scripts/generate_lesson_plan.py --input input.json --output artifacts/lesson.docx
 ```
 
-**MCP Connectors 設定**：透過 MCP Server Hub 介面直接搜尋啟用（推薦），或編輯 `~/.gemini/antigravity/mcp_config.json`。
+各技能的 `schemas/` 與 `examples/` 提供輸入格式；`--example` 明確產生有標記的示範成品。只有主題、科目等舊參數的呼叫會提示遷移，不再生成看似正式的固定範本。
 
-> 詳細設定請參閱 [docs/non-claude-setup.md](docs/non-claude-setup.md)
+## 技能清單
 
----
+<!-- inventory:start -->
+| Skill | 用途 | 主要輸出 |
+|---|---|---|
+| `tw-edu-lesson-plan-108` | 108 課綱教案 | docx |
+| `tw-edu-curriculum-mapper` | 課程地圖 | xlsx |
+| `tw-edu-differentiated` | 差異化教學 | docx |
+| `tw-edu-interdisciplinary` | 跨領域課程 | docx |
+| `tw-edu-exam-generator` | 試卷命題 | docx |
+| `tw-edu-rubric-designer` | 評量規準 | docx |
+| `tw-edu-formative-assessment` | 形成性評量 | docx |
+| `tw-edu-worksheet-creator` | 學習單 | docx |
+| `tw-edu-slides-creator` | 教學簡報 | pptx |
+| `tw-edu-feedback-writer` | 學生回饋 | docx |
+| `tw-edu-learning-portfolio` | 學習歷程指導 | docx |
+| `tw-edu-parent-communication` | 親師溝通 | docx |
+| `tw-edu-classroom-culture` | 班級經營 | docx |
+| `tw-edu-school-document` | 校園文書 | docx |
+| `tw-edu-meeting-facilitator` | 會議引導 | docx |
+| `tw-edu-pbl-designer` | 專題式學習 | docx |
+| `tw-edu-mini-app` | 教學小程式 | html |
+| `tw-edu-research-viz` | 教學研究視覺化 | png |
+| `tw-edu-citation-checker` | 教育文獻查核 | markdown |
+| `tw-edu-anti-ai-assessment` | 評量真實性設計 | docx |
+| `tw-edu-synchronizer` | 教師偏好設定 | markdown |
+<!-- inventory:end -->
 
-## 🔌 MCP Connectors 整合
+Markdown 型技能由 Agent 產出查核表或設定檔，其餘技能有本機內容驗證／渲染 CLI。簡報預設原生可編輯文字、圖形、表格與圖表；完整圖片簡報須選用 image 模式。試卷分成學生卷與教師答案卷。
 
-本套組部分 Skills 可連接以下 MCP Connectors（需在 Claude Code 中設定）：
+## 能力與驗證
 
-| Connector | 應用 Skills | 功能 |
-|-----------|------------|------|
-| Google Drive | 所有 Skills | 讀取已有素材、儲存生成文件 |
-| Gmail | `tw-edu-parent-communication` | 直接生成信件草稿 |
-| Google Calendar | `tw-edu-lesson-plan-108`, `tw-edu-worksheet-creator` | 課程排程自動建立 |
-| Notion | 所有 Skills | 知識庫存檔、教案管理 |
-| Canva | `tw-edu-slides-creator`, `tw-edu-worksheet-creator` | 設計模板套用 |
-| Gamma | `tw-edu-slides-creator` | AI 生成教學簡報 |
+- [技能參考](docs/skill-reference.md)：輸入、輸出與驗收。
+- [健檢報告](docs/AUDIT-v4.md)：原問題與修復證據。
+- [驗收紀錄](docs/ACCEPTANCE-v4.md)：本機、CI、雙宿主與視覺檢查分別記錄。
+- [開發與發布](CONTRIBUTING.md)：單一來源、封裝與測試方式。
 
----
+需要的外部工具依當次宿主能力使用；未連接工具時不承諾外部同步、部署或搜尋完成。來源查證與教學適切性仍需教師確認。
 
-## 💡 第一次使用建議
+## 授權
 
-1. **執行 `tw-edu-synchronizer`**（輸入「我要設定教師套組」）  
-   → 完成 10 分鐘問卷，系統自動記住你的科別、年段、教學偏好
-2. **嘗試 `tw-edu-remotion-shorts`**（輸入「幫我做一支 9:16 的國中自然短影音學習動畫」）
-3. **再試 `tw-edu-lesson-plan-108`**（輸入「幫我設計一份國文教案」）
-4. 依需求使用其他 Skills
-
----
-
-## 📐 設計理念
-
-- **素養優先**：所有輸出對應 108 課綱核心素養三面九項
-- **教師主導**：AI 提供草稿與架構，教師保有最終判斷權
-- **概念對齊**：每個 Skill 執行前確認使用者意圖，避免誤解
-- **本土深度**：台灣版本教科書（南一/翰林/康軒）+ 本土文化語境
-
----
-
-## ⚠️ 重要聲明
-
-### 鼓勵共創與客製化
-
-本套組以開放精神釋出，**歡迎所有人 Fork、客製化、延伸開發**。  
-唯使用或衍生本套組時，請務必遵守以下 Citation 規範：
-
-```
-吳奇（Kevin Wu）. (2026). tw-edu-skills: K-12 教學 Claude Skills 套組 [Software].
-數位敘事力期刊. https://github.com/FW1201/tw-edu-skills
-```
-
-> 本套組的設計理念深受 **曾慶良老師**（GitHub：[@ChatGPT3a01](https://github.com/ChatGPT3a01)）啟發，  
-> 在此致上誠摯謝意。
-
-如需提交貢獻或客製化 Skills，請參閱 [CONTRIBUTING.md](CONTRIBUTING.md)。
-
----
-
-## 👨‍💻 作者
-
-**奇老師・數位敘事力期刊**  
-GitHub：[@FW1201](https://github.com/FW1201)
-
-📘 [Facebook](https://www.facebook.com/Journal.of.Digital.Narrative) ｜
-▶️ [YouTube](https://www.youtube.com/@Journal_of_Digital_Narrative) ｜
-📸 [Instagram](https://www.instagram.com/journal_of_digital_narrative/)
-
----
-
-*本套組採 MIT 授權。歡迎 Fork、提 Issue、或 PR 貢獻新 Skill。使用時請標註來源。*
+[MIT License](LICENSE)。作者：吳奇（Kevin Wu）・數位敘事力社群。引用：吳奇（2026）。tw-edu-skills：臺灣 K-12 教學 Skills [Software]。https://github.com/FW1201/tw-edu-skills

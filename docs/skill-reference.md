@@ -1,304 +1,35 @@
-# Skills 指令完整參考手冊
-
-> 所有 21 種 Skills 的詳細用法與參數說明
-
----
-
-## A 課程設計與教案
-
-### A1 `tw-edu-lesson-plan-108` — 素養導向教案
-**觸發詞**：教案、108課綱、素養導向、寫教案、幫我做教案、備課、教學設計
-
-| 參數 | 必填 | 說明 | 範例 |
-|------|------|------|------|
-| 課文/主題名稱 | ✅ | 任何科目的課文或主題 | 背影、二次方程式、光合作用 |
-| 年級 | ✅ | 國小至高中皆可 | 國中八年級、高一、國小三年 |
-| 科目 | ✅ | 108課綱各領域 | 國語文、數學、英語、社會 |
-| 版本 | ☐ | 教科書出版社 | 南一、康軒、翰林、龍騰 |
-| 節數 | ☐ | 預設3節 | 2、3、4節 |
-| 設計者 | ☐ | 填入封面 | 王小明老師 |
-
-**輸出**：`.docx`（含封面 + 9大表格，約40-60K）
-
-**範例提示詞**：
-```
-幫我設計一份《岳陽樓記》的教案，高中一年級，龍騰版，4節課，
-設計者：陳老師，班上有一位視覺障礙學生
-```
-
----
-
-### A2 `tw-edu-curriculum-mapper` — 課程地圖
-
-**觸發詞**：課程地圖、學習表現對應、課綱對應、學期課程規劃、課程架構
-
-| 參數 | 說明 |
-|------|------|
-| 科目 + 年級 | 課程所屬 |
-| 學期 | 上/下學期 |
-| 單元清單 | 以逗號分隔 |
-
-**輸出**：`.xlsx`（4工作表：總覽、學習表現、學習內容、跨域矩陣）
-
----
-
-### A3 `tw-edu-differentiated` — 差異化教學
-
-**觸發詞**：差異化、分層教學、UDL、適性教學、因材施教、融合教育
-
-**輸出**：`.docx`（三層次任務表 + UDL應用 + 特殊需求調整）
-
----
-
-### A4 `tw-edu-interdisciplinary` — 跨領域課程
-
-**觸發詞**：跨領域、彈性課程、校本課程、跨科、統整課程、核心問題
-
-**輸出**：`.docx`（跨科地圖 + 活動序列 + 真實性評量）
-
----
-
-## B 評量與命題
-
-### B1 `tw-edu-rubric-designer` — 評量規準
-
-**觸發詞**：評量規準、rubric、評分標準、作業規準、實作評量
-
-| 等第 | 說明 |
-|------|------|
-| 傑出(4) | 表現超越預期 |
-| 精熟(3) | 符合課綱標準 |
-| 基礎(2) | 部分達到 |
-| 待加強(1) | 尚未達到 |
-
-**輸出**：`.docx`（分析式規準表 + 學生自評 + 同儕評量欄）
-
----
-
-### B2 `tw-edu-exam-generator` — 試卷生成
-
-**觸發詞**：出題、試卷、考卷、命題、月考、段考、小考、測驗
-
-**題型支援**：
-- 選擇題（標記A/B/C/D選項）
-- 填充題（填空格）
-- 問答/簡答（含作答空格）
-- 閱讀理解（含文章段落）
-- 作文（國語文）
-
-**輸出**：`.docx`（試卷 + 答案卷，含評分說明）
-
----
-
-### B3 `tw-edu-formative-assessment` — 形成性評量
-
-**觸發詞**：形成性評量、出口票、exit ticket、KWL、診斷評量
-
-**工具類型**：
-- 出口票（一頁4份，可裁切）
-- KWL 學習記錄表
-- 學習理解自我檢核表
-- 全部（`all`）
-
-**輸出**：`.docx`（可直接列印使用）
-
----
-
-## C 教材與資源製作
-
-### C1 `tw-edu-worksheet-creator` — 學習單
-
-**觸發詞**：學習單、任務單、工作單、練習單、活動學習單
-
-**活動選項**：
-- 課前啟動（prereading）
-- 三層次提問（questions）
-- 概念圖框架（concept）
-- 仿作鷹架（writing）
-
-**輸出**：`.docx`（A4，留白充足）
-
----
-
-### C2 `tw-edu-reading-scaffold` — 閱讀鷹架
-
-**觸發詞**：閱讀鷹架、文本分析、閱讀理解引導、PISA閱讀、文本教學
-
-**支援文體**：記敘文、說明文、議論文、抒情文、文言文
-
-**輸出**：`.docx`（閱讀前/中/後三階段）
-
----
-
-### C3 `tw-edu-vocab-material` — 字詞教材
-
-**觸發詞**：生字、詞彙、注音、字詞教學、字義、CFL、華語教學
-
-**注音格式**：ㄅㄆㄇ（非漢語拼音）
-
-**輸出模式**：
-- `wordlist`：字詞總覽表
-- `worksheet`：練習學習單（填空、選詞、造句）
-- `cfl`：華語文教學字卡（含英文釋義）
-- `all`：全部輸出
-
-**輸出**：`.docx`
-
----
-
-### C4 `tw-edu-remotion-shorts` — 直式短影音學習動畫
-
-**觸發詞**：短影音、直式影片、Remotion、分鏡、字幕、旁白、TTS、9:16、Reels、Shorts、動畫流程、影片風格
-
-**核心流程**：
-- 先分析教學內容
-- 先輸出表格 + 卡片分鏡
-- 先讓使用者確認分鏡
-- 再選 5 種動態流程與 5 種影片風格
-- 最後才補齊 Remotion 與 ElevenLabs 設定並開始生成
-
-**輸出**：
-- 分鏡表
-- 風格/動態選型
-- Remotion 安裝與參數清單
-- 旁白與字幕設定流程
-
----
-
-## D 學生表現與回饋
-
-### D1 `tw-edu-feedback-writer` — 學生評語
-
-**觸發詞**：評語、回饋意見、作文批改、寫評語、批改、學習回饋
-
-**回饋格式（三明治法）**：
-1. ✅ 優點（具體說明做得好的地方）
-2. 💡 建議（可操作的改進方向）
-3. 🌟 鼓勵（期待與展望）
-
-**輸出**：`.docx`（每位學生一個回饋區塊 + 班級整體分析）
-
----
-
-### D2 `tw-edu-learning-portfolio` — 學習歷程
-
-**觸發詞**：學習歷程、備審資料、課程學習成果、多元表現、學習歷程檔案
-
-⚠️ **重要**：輸出為引導框架，所有內容須由學生本人以真實經歷撰寫
-
-**文件類型**：
-- `course_result`：課程學習成果說明框架
-- `diverse`：多元表現綜整框架
-- `autobiography`：自傳撰寫框架
-
-**輸出**：`.docx`
-
----
-
-### D3 `tw-edu-student-iep` — IEP 框架
-
-**觸發詞**：IEP、個別化教育計畫、特殊教育、特教、身心障礙學生
-
-⚠️ **隱私聲明**：請勿輸入學生真實姓名，本工具僅生成空白框架
-
-**輸出**：`.docx`（符合特教法規格式，含6大章節）
-
----
-
-## E 班級行政
-
-### E1 `tw-edu-parent-communication` — 親師溝通
-
-**觸發詞**：親師溝通、班訊、聯絡家長、通知信、家長通知
-
-**文件類型**：`newsletter`、`activity`、`care`、`behavior`、`grade`
-
-**格式規範**：民國年、敬語、正式書信格式（含 Line 版）
-
-**輸出**：`.docx`（含回條虛線，可直接列印）
-
----
-
-### E2 `tw-edu-classroom-culture` — 班級經營
-
-**觸發詞**：班級經營、班規、PBS、導師週記、班會、正向管教
-
-**包含**：班級公約（正向語言）+ PBS 三層架構 + 導師週記記錄表
-
-**輸出**：`.docx`
-
----
-
-### E3 `tw-edu-school-document` — 行政文書
-
-**觸發詞**：公文、簽呈、計畫書、成果報告、教學計畫、行政文書
-
-**文件類型**：`memo`（簽呈）、`plan`（計畫書）、`report`（報告）
-
-**格式**：符合教育部公文格式，含核示欄
-
-**輸出**：`.docx`
-
----
-
-### E4 `tw-edu-meeting-facilitator` — 會議文件
-
-**觸發詞**：PLC、課發會、會議記錄、教師社群、共備、專業社群
-
-**會議類型**：`plc`、`curriculum`（課發會）、`admin`（行政）、`lesson_study`（備課）
-
-**輸出**：`.docx`（議程 + 引導問題 + 記錄表 + 行動清單）
-
----
-
-## F AI素養與數位敘事
-
-### F1 `tw-edu-ai-literacy` — AI素養教學
-
-**觸發詞**：AI素養、提示詞教學、媒體識讀、AI倫理、AI融入教學
-
-**主題類型**：
-- `concept`：什麼是AI？
-- `prompt`：提示詞工程入門
-- `ethics`：AI倫理討論
-- `media`：深偽與媒體識讀
-
-**輸出**：`.pptx`（含教師注記、課堂活動頁）
-
----
-
-### F2 `tw-edu-digital-story` — 數位敘事
-
-**觸發詞**：數位敘事、故事設計、敘事力、digital storytelling、故事腳本
-
-**包含**：三幕劇結構 + 多媒體腳本模板 + 創作引導問題
-
-**輸出**：`.pptx`（含三幕劇拆解頁 + 腳本格式說明）
-
----
-
-### F3 `tw-edu-pbl-designer` — PBL 設計
-
-**觸發詞**：PBL、專題學習、探究實作、自主學習、驅動問題
-
-**包含**：
-- 課程總覽表
-- 里程碑時間表
-- 四類鷹架設計
-- 小組任務分工表
-- 最終成品評量規準（5向度×4等第）
-
-**輸出**：`.docx`
-
----
-
-## 跨平台相容性
-
-| 平台 | 支援程度 | 備注 |
-|------|---------|------|
-| Claude Code | ✅ 完整 | 主要開發目標，全功能 |
-| Claude.ai (Pro/Team) | ✅ 完整 | 透過 Settings→Skills 上傳 |
-| Claude API | ✅ 完整 | 透過 /v1/skills 端點 |
-| OpenAI Codex | ⚡ 部分 | 讀取 Markdown 指令，忽略 Claude 擴充欄位 |
-| gemini-cli | ⚡ 部分 | 需 Superpowers bootstrap |
-| Cursor / Windsurf | ℹ️ 手動 | 複製 SKILL.md 為 .cursorrules |
+# 技能參考
+
+由 skills-manifest.json 與各技能 schema 產生。共 21 個獨立 Skills。
+
+| Skill | 用途 | 輸入內容 | 輸出 |
+|---|---|---|---|
+| [tw-edu-lesson-plan-108](../tw-edu-lesson-plan-108/SKILL.md) | 依課程目標安排活動、時間與評量 | title, total_minutes, objectives, activities, assessments | docx |
+| [tw-edu-curriculum-mapper](../tw-edu-curriculum-mapper/SKILL.md) | 跨單元安排學期目標、進度與課綱對應 | title, units | xlsx |
+| [tw-edu-differentiated](../tw-edu-differentiated/SKILL.md) | 依學習證據調整任務與支持 | title, shared_goal, learner_groups, activities | docx |
+| [tw-edu-interdisciplinary](../tw-edu-interdisciplinary/SKILL.md) | 整合不同學科的概念與探究任務 | title, disciplines, driving_question, discipline_contributions, activities, product | docx |
+| [tw-edu-exam-generator](../tw-edu-exam-generator/SKILL.md) | 製作有答案、解析與配分的評量 | title, expected_question_count, total_points, questions | docx |
+| [tw-edu-rubric-designer](../tw-edu-rubric-designer/SKILL.md) | 建立任務專屬的表現描述與評分方式 | title, type, total_points, levels | docx |
+| [tw-edu-formative-assessment](../tw-edu-formative-assessment/SKILL.md) | 收集課中證據並決定教學調整 | title, learning_target, checks, response_rules | docx |
+| [tw-edu-worksheet-creator](../tw-edu-worksheet-creator/SKILL.md) | 編排學生可完成的練習與思考任務 | title, instructions, prompts, reflection | docx |
+| [tw-edu-slides-creator](../tw-edu-slides-creator/SKILL.md) | 製作可編輯投影片與教師講稿 | title, slides | pptx |
+| [tw-edu-feedback-writer](../tw-edu-feedback-writer/SKILL.md) | 根據作品證據撰寫具體可行的回饋 | title, students | docx |
+| [tw-edu-learning-portfolio](../tw-edu-learning-portfolio/SKILL.md) | 協助整理學習證據、反思與成果 | title, records | docx |
+| [tw-edu-parent-communication](../tw-edu-parent-communication/SKILL.md) | 撰寫清楚、有同理心的親師草稿 | title, recipients, purpose, message, requested_action, contact_channel | docx |
+| [tw-edu-classroom-culture](../tw-edu-classroom-culture/SKILL.md) | 設計共同規範、班級活動與支持策略 | title, agreements, routines, response_plan | docx |
+| [tw-edu-school-document](../tw-edu-school-document/SKILL.md) | 整理計畫、會議與行政文稿 | title, document_type, basis, purpose, implementation, responsible_people, expected_results | docx |
+| [tw-edu-meeting-facilitator](../tw-edu-meeting-facilitator/SKILL.md) | 建立議程、紀錄與可追蹤行動事項 | title, participants, agenda, decisions, actions | docx |
+| [tw-edu-pbl-designer](../tw-edu-pbl-designer/SKILL.md) | 設計驅動問題、探究歷程與真實成果 | title, driving_question, authentic_context, milestones, final_product, assessment_criteria | docx |
+| [tw-edu-mini-app](../tw-edu-mini-app/SKILL.md) | 產出可本機開啟的互動教學網頁 | title, mode | html |
+| [tw-edu-research-viz](../tw-edu-research-viz/SKILL.md) | 以真實數據製作研究圖表 | title, type | png |
+| [tw-edu-citation-checker](../tw-edu-citation-checker/SKILL.md) | 核實文獻存在性與引用資訊 | 由 Agent 讀取來源／偏好，產出 Markdown | markdown |
+| [tw-edu-anti-ai-assessment](../tw-edu-anti-ai-assessment/SKILL.md) | 檢視評量證據與改善任務設計 | title, items | docx |
+| [tw-edu-synchronizer](../tw-edu-synchronizer/SKILL.md) | 建立與更新可供技能讀取的教師偏好 | 由 Agent 讀取來源／偏好，產出 Markdown | markdown |
+
+## 共同輸入
+
+schema_version=1.0、skill、language=zh-TW、context（subject、grade、topic）、sources、content。各技能 schema 與 example.json 是具體欄位定義。
+
+CLI：--input JSON、--output PATH、--validate-only、--example。正式模式驗證失敗即停止，不產生成品。
+
+驗收核對輸入與成品，學生卷不含答案；圖片簡報非文字可編輯，預設 editable。尚待來源查證、Office 視覺及宿主實測項目見 ACCEPTANCE-v4.md。
