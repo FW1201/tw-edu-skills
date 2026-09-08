@@ -1,16 +1,11 @@
 # Implementation status
 
-Baseline: d19f192 (2026-09-07). Original checkout HEAD 1cff78d with README changes, four script mode changes and untracked short-video outputs, retained untouched.
+2026-09-08. Baseline: d19f192. Exactly 21 independent Skills; no Harness dependency or edits.
 
-| Tasks | Shared interface | Resolution |
-|---|---|---|
-| Runtime / packaging | scripts/edu_runtime, schemas, examples | Runtime worker supplies canonical package and per-skill schemas/examples; controller syncs copies. |
-| Runtime / skill docs | input contract | schema_version 1.0, skill, language, context, sources, content; schema-specific task payloads. |
-| Runtime / tests | CLI | --input, --output, --example, --validate-only; explicit migration errors for unsupported old calls. |
-| Packaging / documentation | inventory | Exactly 21 existing Skill names, no additional skills. |
-| Task 1 internal consistency | validated content / output | Validate before output; explicit examples only. |
-| Task 2 internal consistency | single source / independent install | Generated physical copies verified by CI, not runtime sibling dependencies. |
+Implemented: 19 content-driven renderers, versioned schemas/examples, portable resources, manifest-driven packaging, transactional installer, editable/image slides, safe interactive HTML, separated exam outputs, profile precedence, migration docs and automatic CI.
 
-Task 1: in progress.
-Task 2: in progress.
-Host, Office, GitHub release checks: pending.
+Evidence: 74 local tests; first four Linux/macOS Python 3.10/3.12 CI jobs passed; real Codex representative tasks and browser interactions passed. Claude Code installation passed but live tasks require login. Full Office visual acceptance is not claimed.
+
+The original dirty checkout remains untouched. The temporary upgrade clone disappeared between sessions; patch records were recovered into the persistent sibling checkout tw-edu-skills-upgrade and tested again. Historical shell/deployment commands were not replayed.
+
+On 2026-09-08 the user requested no excessive additional acceptance. Publishing proceeds with limitations documented in ACCEPTANCE-v4.md. Distribution: 21 individual ZIPs, aggregate ZIP and SHA256SUMS.

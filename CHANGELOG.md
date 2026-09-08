@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0 — in development
+## 4.0.0 — 2026-09-08
 
 - Reactivate this repository as 21 independent Taiwan K-12 Skills for Codex and Claude Code.
 - Manifest-driven packaging, self-contained resources and recoverable installer updates.

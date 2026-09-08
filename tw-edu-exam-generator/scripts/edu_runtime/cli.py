@@ -143,7 +143,7 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
     from docx import Document
     from docx.oxml import OxmlElement
     from docx.oxml.ns import qn
-    from docx.shared import Cm, Pt
+    from docx.shared import Cm, Pt, RGBColor
     doc = Document(); sec = doc.sections[0]; sec.page_width=Cm(21); sec.page_height=Cm(29.7); sec.top_margin=sec.bottom_margin=Cm(1.8); sec.left_margin=sec.right_margin=Cm(2)
     title = d["content"].get("title") or d["context"].get("topic") or d["skill"]
     doc.add_heading(title + ("｜教師答案" if teacher else ""), 0)
@@ -183,7 +183,9 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
             for row,(label,key) in zip(table.rows,[("具體觀察","observations"),("優勢","strengths"),("下一步","next_steps"),("回饋文字","feedback")]): row.cells[0].text=label; row.cells[1].text="\n".join(student[key]) if isinstance(student[key],list) else student[key]
     elif d["skill"] == "tw-edu-exam-generator":
         c=d["content"]
+        doc.add_paragraph(f"題數：{len(c['questions'])} 題　總分：{c['total_points']} 分")
         for i,q in enumerate(c["questions"],1):
+            doc.add_paragraph({'multiple_choice':'選擇題','short_answer':'簡答題','essay':'申論題','true_false':'是非題'}[q['type']])
             doc.add_heading(f"{i}. {q['prompt']}（{q['points']} 分）", 2)
             for o in q.get("options",[]): doc.add_paragraph(f"{o['id']}. {o['text']}")
             if teacher:
@@ -212,6 +214,30 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
     for n in ["Normal","Title","Heading 1","Heading 2"]:
         styles[n].font.name="Noto Sans TC"; styles[n]._element.rPr.rFonts.set(qn("w:eastAsia"),"Noto Sans TC"); styles[n].font.size=Pt(11 if n=="Normal" else 16)
         styles[n].paragraph_format.line_spacing=1.35
+        styles[n].font.color.rgb = RGBColor(0, 0, 0)
+        for border in styles[n]._element.xpath('.//w:pBdr'):
+            border.getparent().remove(border)
+    for paragraph in doc.paragraphs:
+        for border in paragraph._p.xpath('.//w:pBdr'):
+            border.getparent().remove(border)
+    for table in doc.tables:
+        header = OxmlElement('w:tblHeader')
+        table.rows[0]._tr.get_or_add_trPr().append(header)
+        headings = [cell.text for cell in table.rows[0].cells]
+        weights = [1 if h in {'編號','分鐘','配分'} else 2 if h == '對應目標' else 4 for h in headings]
+        table.autofit = False
+        for j, weight in enumerate(weights):
+            table.columns[j].width = Cm(17 * weight / sum(weights))
+        for row in table.rows:
+            for j, cell in enumerate(row.cells):
+                cell.width = Cm(17 * weights[j] / sum(weights))
+                for p in cell.paragraphs:
+                    p.paragraph_format.space_after = Pt(4)
+                    p.paragraph_format.space_before = Pt(4)
+                    p.paragraph_format.line_spacing = 1.15
+                    for run in p.runs:
+                        run.font.name = 'Noto Sans TC'
+                        run._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'), 'Noto Sans TC')
     for paragraph in doc.paragraphs:
         for run in paragraph.runs:
             run.font.name="Noto Sans TC"; run._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"),"Noto Sans TC")
@@ -231,6 +257,12 @@ def _xlsx(d: dict, output: Path) -> None:
     for col,w in zip("ABCDEF",[22,12,8,40,22,35]): ws.column_dimensions[col].width=w
     for row in ws.iter_rows():
         for cell in row: cell.alignment=Alignment(vertical="top",wrap_text=True)
+    ws.freeze_panes = 'A5'
+    ws.print_title_rows = '1:4'
+    ws.sheet_properties.pageSetUpPr.fitToPage = True
+    ws.page_setup.orientation = 'landscape'
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
+    ws.page_setup.fitToWidth, ws.page_setup.fitToHeight = 1, 0
     output.parent.mkdir(parents=True,exist_ok=True); wb.save(output)
 
 def _safe_json(v): return json.dumps(v,ensure_ascii=False).replace("<","\\u003c")
