@@ -1,38 +1,18 @@
-# Workflow Gates And Progress
+# 簡報流程與確認關卡
 
-Read this before advancing phases or reporting progress.
+兩種模式皆依序：素材與目標 → 大綱 → 風格 → 一張內容樣張 → 全套製作 → 視覺檢查與交付。
+沿用使用者已提供或已核准的資訊；明確授權跳過確認時記錄原因，不重複詢問。
 
-## Mandatory Gates
+預設 editable：使用原生文字、圖形、表格、資料圖表；圖片作為插圖。
+選用 image：每頁整張圖片，文字不能直接編輯；開始前說明此限制。
 
-Phase order:
+## 可核實的進度
 
-1. Teaching source reading and objective extraction
-2. `outline.md` confirmation
-3. Visual style confirmation
-4. One sample slide approval
-5. Full slide image generation
-6. QA, speaker notes, and PPTX assembly
+- 大綱：outline.md，逐頁列教學目的、實際文字、活動與評量。
+- 風格：已確認的色彩、字型、密度與圖像處理。
+- 樣張：editable 可用一頁 PPTX 與渲染預覽；image 使用一張實際圖片。兩者都需檢查內容。
+- 製作：符合 schemas/input.schema.json 的輸入 JSON；image 的圖片工作紀錄為選用。
+- 成品：PPTX、輸入 JSON、validation.json；講者備註已寫入对应頁面。
+- 驗收：實際開啟或渲染檢查，不以檔案存在、大小或生成工作狀態替代視覺證據。
 
-Do not create final `deck_spec.json`, `speech.md`, prompt jobs, final slide images, or `.pptx` before the required earlier gates are approved, unless the user explicitly asks to skip confirmations.
-
-If early internal planning is necessary, use draft filenames such as `deck_spec.draft.json` or `speech.draft.md`.
-
-## Visible Progress
-
-Use this checklist for non-trivial decks:
-
-1. Prepare teaching source, outline, and style decisions.
-2. Generate and approve one sample slide.
-3. Prepare slide jobs and state files.
-4. Generate and record final slide images.
-5. QA and repair slides.
-6. Write teacher notes and assemble PPTX.
-
-Completion evidence:
-
-- Teaching outline: approved `outline.md`.
-- Style: one confirmed style direction.
-- Sample: one approved `origin_image/slide_XX.png`.
-- Jobs: `deck_spec.json`, `prompts/slide_XX.json`, `slide_jobs.json`, and `slide_run_state.json`.
-- Results: every expected final slide exists under `origin_image/`.
-- Assembly: final `.pptx` exists and speaker notes from `speech.md` are written when applicable.
+未核准前的探索用 draft 名稱，勿將草稿宣稱為核准成品。

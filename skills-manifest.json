@@ -1,0 +1,252 @@
+{
+  "version": "4.0.0",
+  "schema_version": 1,
+  "skills": [
+    {
+      "name": "tw-edu-lesson-plan-108",
+      "version": "4.0.0",
+      "title": "108 課綱教案",
+      "purpose": "依課程目標安排活動、時間與評量",
+      "entrypoint": "scripts/generate_lesson_plan.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-curriculum-mapper",
+      "version": "4.0.0",
+      "title": "課程地圖",
+      "purpose": "跨單元安排學期目標、進度與課綱對應",
+      "entrypoint": "scripts/generate_curriculum_map.py",
+      "format": "xlsx",
+      "dependencies": [
+        "openpyxl>=3.1,<4",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-differentiated",
+      "version": "4.0.0",
+      "title": "差異化教學",
+      "purpose": "依學習證據調整任務與支持",
+      "entrypoint": "scripts/generate_differentiated.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-interdisciplinary",
+      "version": "4.0.0",
+      "title": "跨領域課程",
+      "purpose": "整合不同學科的概念與探究任務",
+      "entrypoint": "scripts/generate_interdisciplinary.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-exam-generator",
+      "version": "4.0.0",
+      "title": "試卷命題",
+      "purpose": "製作有答案、解析與配分的評量",
+      "entrypoint": "scripts/generate_exam.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-rubric-designer",
+      "version": "4.0.0",
+      "title": "評量規準",
+      "purpose": "建立任務專屬的表現描述與評分方式",
+      "entrypoint": "scripts/generate_rubric.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-formative-assessment",
+      "version": "4.0.0",
+      "title": "形成性評量",
+      "purpose": "收集課中證據並決定教學調整",
+      "entrypoint": "scripts/generate_formative.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-worksheet-creator",
+      "version": "4.0.0",
+      "title": "學習單",
+      "purpose": "編排學生可完成的練習與思考任務",
+      "entrypoint": "scripts/generate_worksheet.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-slides-creator",
+      "version": "5.0.0",
+      "title": "教學簡報",
+      "purpose": "製作可編輯投影片與教師講稿",
+      "entrypoint": "scripts/generate_slides.py",
+      "format": "pptx",
+      "dependencies": [
+        "python-pptx>=1.0,<2",
+        "Pillow>=10,<13",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-feedback-writer",
+      "version": "4.0.0",
+      "title": "學生回饋",
+      "purpose": "根據作品證據撰寫具體可行的回饋",
+      "entrypoint": "scripts/generate_feedback.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-learning-portfolio",
+      "version": "4.0.0",
+      "title": "學習歷程指導",
+      "purpose": "協助整理學習證據、反思與成果",
+      "entrypoint": "scripts/generate_portfolio.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-parent-communication",
+      "version": "4.0.0",
+      "title": "親師溝通",
+      "purpose": "撰寫清楚、有同理心的親師草稿",
+      "entrypoint": "scripts/generate_parent_comm.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-classroom-culture",
+      "version": "4.0.0",
+      "title": "班級經營",
+      "purpose": "設計共同規範、班級活動與支持策略",
+      "entrypoint": "scripts/generate_classroom.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-school-document",
+      "version": "4.0.0",
+      "title": "校園文書",
+      "purpose": "整理計畫、會議與行政文稿",
+      "entrypoint": "scripts/generate_school_doc.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-meeting-facilitator",
+      "version": "4.0.0",
+      "title": "會議引導",
+      "purpose": "建立議程、紀錄與可追蹤行動事項",
+      "entrypoint": "scripts/generate_meeting.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-pbl-designer",
+      "version": "4.0.0",
+      "title": "專題式學習",
+      "purpose": "設計驅動問題、探究歷程與真實成果",
+      "entrypoint": "scripts/generate_pbl.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-mini-app",
+      "version": "4.0.0",
+      "title": "教學小程式",
+      "purpose": "產出可本機開啟的互動教學網頁",
+      "entrypoint": "scripts/generate_mini_app.py",
+      "format": "html",
+      "dependencies": [
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-research-viz",
+      "version": "4.0.0",
+      "title": "教學研究視覺化",
+      "purpose": "以真實數據製作研究圖表",
+      "entrypoint": "scripts/generate_prisma.py",
+      "format": "png",
+      "dependencies": [
+        "matplotlib>=3.8,<4",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-citation-checker",
+      "version": "2.0.0",
+      "title": "教育文獻查核",
+      "purpose": "核實文獻存在性與引用資訊",
+      "entrypoint": null,
+      "format": "markdown",
+      "dependencies": []
+    },
+    {
+      "name": "tw-edu-anti-ai-assessment",
+      "version": "4.0.0",
+      "title": "評量真實性設計",
+      "purpose": "檢視評量證據與改善任務設計",
+      "entrypoint": "scripts/generate_anti_ai_report.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5"
+      ]
+    },
+    {
+      "name": "tw-edu-synchronizer",
+      "version": "2.0.0",
+      "title": "教師偏好設定",
+      "purpose": "建立與更新可供技能讀取的教師偏好",
+      "entrypoint": null,
+      "format": "markdown",
+      "dependencies": []
+    }
+  ]
+}

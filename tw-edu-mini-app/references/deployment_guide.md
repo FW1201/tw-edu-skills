@@ -1,59 +1,23 @@
-# 教學小程式部署指南
+# 教學小程式使用與部署
 
-## 方式一：Vercel（推薦）
+預設在瀏覽器開啟產出的 HTML 即可使用；quiz、flashcard、lottery、timer 不需遠端伺服器。
+先實際操作：答題計分與重設、翻卡、抽籤、計時開始／暫停；檢查中文、鍵盤操作和投影可讀性。
 
-### 準備工作
-1. 前往 https://vercel.com 建立免費帳號
-2. 在 Claude Code 中連接 Vercel MCP：
-   `claude mcp add vercel`
+## 更新內容
 
-### 透過 Vercel MCP 自動部署（Claude Code 用戶）
-Claude Code 中說：「幫我把這個小程式部署到 Vercel」
-→ Claude 自動執行 deploy_to_vercel()
-→ 返回永久連結（如 https://edu-quiz-abc123.vercel.app）
+修改原始輸入 JSON，依本技能 schemas/input.schema.json 檢查，再重新執行生成器。
+不要直接把使用者字串貼入 HTML 或 script。生成器會安全序列化資料。
+正式教材不可直接使用 examples/input.json 冒充客製內容。
 
-### 手動部署（其他平台）
-```bash
-# 安裝 Vercel CLI
-npm i -g vercel
+## 遠端部署（選用）
 
-# 部署單一 HTML 檔案
-echo '{"rewrites":[{"source":"/(.*)", "destination":"/index.html"}]}' > vercel.json
-vercel --prod
-```
+只有使用者要求部署時才進行。沿用已授權的服務、帳號、專案與目標環境；
+不確定目的地或公開範圍時先詢問。不要發布學生姓名、成績或其他個資。
 
-## 方式二：GitHub Pages（免費）
+1. 確認目前宿主實際可用的部署工具與登入狀態；本技能不假設存在特定 MCP 指令。
+2. 將已驗證的 HTML 作為靜態網站入口。依目的地現行官方文件設定，不自動安裝全域套件。
+3. 使用已授權的部署能力上傳。正式環境、網域或新公開 repo 的建立需在使用者授權範圍內。
+4. 回讀部署狀態與實際 URL，開啟頁面操作各功能。建置成功不等於線上驗收通過。
+5. 回報 URL、部署版本與驗證結果；失敗或權限不足時保留本機 HTML，具體說明阻礙。
 
-### 步驟
-1. 建立 GitHub repository（public）
-2. 將 HTML 檔案命名為 `index.html`
-3. 推送到 GitHub
-4. 在 repository Settings → Pages 選擇 main branch
-5. 約 2 分鐘後可訪問 https://[帳號].github.io/[repo名]/
-
-### 快速腳本
-```bash
-git init
-git add index.html
-git commit -m "教學小程式初始版本"
-git branch -M main
-git remote add origin https://github.com/你的帳號/小程式名稱.git
-git push -u origin main
-# 然後到 GitHub 網站啟用 Pages
-```
-
-## 方式三：本地使用（最簡單）
-
-直接在瀏覽器開啟 .html 檔案，投影給學生使用。
-不需要網路，學生不需要手機。
-適合：計時器、隨機分組等教師操作型工具。
-
-## 更新小程式內容
-
-### 修改題目
-在 HTML 檔案中找到 `const questions = [...]` 區塊，
-直接修改題目、選項和答案。
-或請 Claude 「幫我更新第 3 題的選項」。
-
-### 重新部署
-修改後執行 `vercel --prod` 或 `git push`，連結不變。
+GitHub Pages、Vercel 等可作為靜態網站目的地，但不保證固定完成時間、永久免費或 URL 永不改變。

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-school-document",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "校園觀察活動計畫（範例）",
+    "document_type": "plan",
+    "basis": [
+      "校本課程規劃"
+    ],
+    "purpose": [
+      "培養觀察與表達能力"
+    ],
+    "implementation": [
+      {
+        "item": "活動方式",
+        "details": "分組完成校園觀察紀錄"
+      }
+    ],
+    "responsible_people": [
+      "教學組"
+    ],
+    "expected_results": [
+      "每組完成一份紀錄"
+    ]
+  }
+}

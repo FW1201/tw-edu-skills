@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-formative-assessment",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "形成性評量（範例）",
+    "learning_target": "辨識並使用感官描寫",
+    "checks": [
+      {
+        "id": "C1",
+        "prompt": "圈出一個聽覺詞並說明效果。",
+        "success_criteria": [
+          "詞語正確",
+          "效果合理"
+        ],
+        "evidence_capture": "出口卡"
+      }
+    ],
+    "response_rules": [
+      {
+        "evidence": "只圈詞未說明",
+        "action": "提供效果句型後再答一次"
+      }
+    ]
+  }
+}

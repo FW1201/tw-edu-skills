@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-classroom-culture",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "班級文化（範例）",
+    "agreements": [
+      "發言前先聽完他人的理由"
+    ],
+    "routines": [
+      {
+        "situation": "小組討論",
+        "steps": [
+          "確認角色",
+          "記錄共識"
+        ]
+      }
+    ],
+    "response_plan": [
+      {
+        "trigger": "討論中斷",
+        "teacher_action": "重述共同規範",
+        "follow_up": "課後檢視分工"
+      }
+    ]
+  }
+}

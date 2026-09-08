@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-interdisciplinary",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "校園聲景（範例）",
+    "disciplines": [
+      "國語文",
+      "自然"
+    ],
+    "driving_question": "如何用文字與測量呈現校園聲景？",
+    "discipline_contributions": [
+      {
+        "discipline": "國語文",
+        "knowledge": "感官描寫",
+        "method": "短文寫作"
+      },
+      {
+        "discipline": "自然",
+        "knowledge": "聲音強弱",
+        "method": "定點觀測"
+      }
+    ],
+    "activities": [
+      {
+        "id": "A1",
+        "title": "聲景觀測",
+        "instructions": "記錄聲音與感受。",
+        "materials": [
+          "紀錄表"
+        ]
+      }
+    ],
+    "product": "聲景導覽頁"
+  }
+}

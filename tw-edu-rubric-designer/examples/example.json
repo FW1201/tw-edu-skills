@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-rubric-designer",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "短文評量規準（範例）",
+    "type": "analytic",
+    "total_points": 10,
+    "levels": [
+      {
+        "id": "L1",
+        "label": "達成",
+        "score": 2
+      },
+      {
+        "id": "L0",
+        "label": "待加強",
+        "score": 1
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "D1",
+        "name": "內容",
+        "weight": 10,
+        "descriptions": {
+          "L1": "細節具體",
+          "L0": "細節不足"
+        }
+      }
+    ]
+  }
+}

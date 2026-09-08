@@ -1,0 +1,2 @@
+matplotlib>=3.8,<4
+jsonschema>=4.20,<5

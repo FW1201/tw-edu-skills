@@ -1,5 +1,7 @@
 # Slide Generation State
 
+此文件僅適用於選用 image 模式的逐頁生圖工作紀錄；預設 editable 模式不需建立圖片 jobs。這些輔助腳本不代替 generate_slides.py 的版本化輸入與驗證，也不代表成品已通過視覺驗收。
+
 Read this before creating prompts, generating final slides, or recording slide results.
 
 ## Required Files

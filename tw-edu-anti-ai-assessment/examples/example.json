@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-anti-ai-assessment",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "環境觀察"
+  },
+  "sources": [
+    {
+      "title": "教師提供教材",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "評量設計檢視（範例）",
+    "items": [
+      {
+        "id": "I1",
+        "assessment_item": "記錄校園中的一個真實細節。",
+        "dimensions": [
+          {
+            "name": "現場證據",
+            "score": 2,
+            "reason": "要求可核對的課堂觀察紀錄。"
+          }
+        ],
+        "total_score": 2,
+        "reason": "分數描述任務設計特徵，不推定作弊。",
+        "redesign": "附上觀察時間與修訂紀錄。"
+      }
+    ]
+  }
+}
