@@ -1,10 +1,10 @@
 {
-  "version": "4.1.0",
+  "version": "4.1.1",
   "schema_version": 1,
   "skills": [
     {
       "name": "tw-edu-lesson-plan-108",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "title": "108 課綱教案",
       "purpose": "依課程目標安排活動、時間與評量",
       "entrypoint": "scripts/generate_lesson_plan.py",

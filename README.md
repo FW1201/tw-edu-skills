@@ -1,4 +1,4 @@
-# tw-edu-skills v4.1.0
+# tw-edu-skills v4.1.1
 
 臺灣 K-12 教師的 23 個獨立 AI Skills，適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 根據教材與實際資料撰寫內容，Python 驗證並排版。教師保有教學判斷權。
 

@@ -2,7 +2,7 @@
 name: tw-edu-lesson-plan-108
 description: 依課程目標安排活動、時間與評量。適用於教案、備課、108課綱。
 metadata:
-  version: 4.1.0
+  version: 4.1.1
   author: 奇老師・數位敘事力社群
 ---
 
@@ -45,7 +45,7 @@ python3 -m venv .venv
 
 ## 按需參考
 
-- [課綱指標資料（使用前回查官方版本）](references/108_subject_indicators.md)
+- [課綱指標查詢與隨包快照（使用前回查官方版本）](references/108_subject_indicators.md)
 - [認知層次與教學目標](references/bloom_taxonomy_tw.md)
 
 參考資料是教學素材；若與本版輸入規格或實際工具能力不同，以當前 schema 與可用工具為準。來源與專業主張需要查證。
