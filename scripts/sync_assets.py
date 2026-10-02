@@ -16,7 +16,7 @@ def desired_files():
             prefix, tail = content.split(start, 1)
             _, suffix = tail.split(end, 1)
             yield readme, (prefix + start + '\n| Skill | 用途 | 主要輸出 |\n|---|---|---|\n' + rows + '\n' + end + suffix).encode()
-    reference = ['# 技能參考', '', '由 skills-manifest.json 與各技能 schema 產生。共 21 個獨立 Skills。', '', '| Skill | 用途 | 輸入內容 | 輸出 |', '|---|---|---|---|']
+    reference = ['# 技能參考', '', '由 skills-manifest.json 與各技能 schema 產生。共 23 個獨立 Skills。', '', '| Skill | 用途 | 輸入內容 | 輸出 |', '|---|---|---|---|']
     for skill in manifest['skills']:
         schema = ROOT / skill['name'] / 'schemas/input.schema.json'
         required = ', '.join(json.loads(schema.read_text())['properties']['content'].get('required', [])) if schema.exists() else '由 Agent 讀取來源／偏好，產出 Markdown'

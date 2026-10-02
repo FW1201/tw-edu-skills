@@ -16,14 +16,14 @@ def validate(root=ROOT):
     names = [item['name'] for item in records]
     errors = []
     actual = sorted(p.parent.name for p in root.glob('tw-edu-*/SKILL.md'))
-    if len(names) != 21 or len(set(names)) != 21 or sorted(names) != actual:
-        errors.append('Manifest must match exactly 21 unique installable Skills')
+    if len(names) != 23 or len(set(names)) != 23 or sorted(names) != actual:
+        errors.append('Manifest must match exactly 23 unique installable Skills')
     for item in records:
         base = root / item['name']
         text = (base / 'SKILL.md').read_text()
         try:
             meta = yaml.safe_load(text.split('---', 2)[1])
-            if meta['name'] != item['name'] or str(meta['version']) != item['version']:
+            if meta['name'] != item['name'] or str(meta.get('version',meta.get('metadata',{}).get('version'))) != item['version']:
                 errors.append(f'{base.name}: metadata differs from manifest')
             if not isinstance(meta.get('description'), str) or not meta['description'].strip():
                 errors.append(f'{base.name}: description missing')
@@ -60,5 +60,5 @@ def validate(root=ROOT):
 
 if __name__ == '__main__':
     errors = validate()
-    print('\n'.join(errors) if errors else 'PASS: 21 independent Skills, metadata, resources and syntax')
+    print('\n'.join(errors) if errors else 'PASS: 23 independent Skills, metadata, resources and syntax')
     sys.exit(bool(errors))

@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 SKILLS = {
+    "tw-edu-learning-evidence-analyzer":"docx", "tw-edu-material-reviewer":"docx",
     "tw-edu-lesson-plan-108": "docx", "tw-edu-curriculum-mapper": "xlsx",
     "tw-edu-exam-generator": "exam", "tw-edu-rubric-designer": "docx",
     "tw-edu-feedback-writer": "docx", "tw-edu-learning-portfolio": "docx",
@@ -62,6 +63,17 @@ def _validate(data: dict, schema_path: Path) -> None:
 
 def _semantic(skill: str, d: dict) -> None:
     c = d["content"]
+    if skill == "tw-edu-learning-evidence-analyzer":
+        from .learning_evidence import analyze
+        try: analyze(c)
+        except (ValueError, KeyError, TypeError) as exc: raise InputError(str(exc)) from exc
+    if skill == "tw-edu-material-reviewer":
+        materials={x['id']:x['text'] for x in c['materials']}
+        if len(materials)!=len(c['materials']): raise InputError('duplicate material ID')
+        if len({f['id'] for f in c['findings']})!=len(c['findings']): raise InputError('duplicate finding ID')
+        for f in c['findings']:
+            if f['material_id'] not in materials or f['quote'] not in materials[f['material_id']]: raise InputError('finding quote is not located in material')
+            if f['status']=='unknown' and f['severity']!='unknown': raise InputError('unknown finding must retain unknown severity')
     def unique(items, field, label):
         values=[x[field] for x in items]
         if len(values)!=len(set(values)): raise InputError(f"duplicate {label}")
@@ -181,6 +193,29 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
             doc.add_heading(f"學生紀錄：{student['student_id']}",1)
             table=doc.add_table(rows=4,cols=2); table.style="Table Grid"
             for row,(label,key) in zip(table.rows,[("具體觀察","observations"),("優勢","strengths"),("下一步","next_steps"),("回饋文字","feedback")]): row.cells[0].text=label; row.cells[1].text="\n".join(student[key]) if isinstance(student[key],list) else student[key]
+    elif d["skill"] == "tw-edu-learning-evidence-analyzer":
+        c=d['content'];doc.add_paragraph(f"匿名學生數：{c['class_n']}")
+        doc.add_heading('題目與分母',1);table=doc.add_table(rows=1,cols=7);table.style='Table Grid'
+        for cell,label in zip(table.rows[0].cells,['題目／目標','已答','缺答','答對','全班正確率','已答正確率','答案狀態']): cell.text=label
+        for item in c['items']:
+            def percent(v): return '未計算' if v is None else f'{v:.1%}'
+            values=[item['item_id']+'／'+item['target'],str(item['answered_n']),str(item['missing_n']),str(item['correct_n']) if item['correct_n'] is not None else '未計算',percent(item['accuracy_all_students']),percent(item['accuracy_answered']),{'verified':'已核實','pending':'待核實','ambiguous':'有疑義'}[item['key_status']]]
+            for cell,text in zip(table.add_row().cells,values): cell.text=text
+            doc.add_paragraph(item['item_id']+' 選項分布：'+ '、'.join(f'{key} {value}人' for key,value in item['option_counts'].items()))
+        doc.add_heading('個別觀察與後續追問',1)
+        for student,items in c['student_observations'].items():
+            doc.add_paragraph(student+'：'+'；'.join(x['item_id']+' '+{'missing':'缺答','ungraded':'答案未核實','correct':'答對','needs_followup':'需追問原因'}[x['status']] for x in items))
+        for note in c['limitations']: doc.add_paragraph(note)
+        doc.add_paragraph('教學決策應另核學生解釋與作品；本表不自動判定迷思或介入效果。')
+    elif d["skill"] == "tw-edu-material-reviewer":
+        c=d['content'];doc.add_paragraph('檢查模式：'+{'material':'教材','assessment':'評量','slides':'簡報'}[c['mode']])
+        for f in c['findings']:
+            doc.add_heading(f['id']+'／'+f['material_id'],1)
+            doc.add_paragraph('原文：'+f['quote']);doc.add_paragraph('狀態：'+{'confirmed':'已確認','unknown':'待查','resolved':'已修正'}[f['status']]+'｜影響：'+{'blocking':'影響使用','warning':'需調整','info':'建議','unknown':'待查'}[f['severity']]);doc.add_paragraph('理由：'+f['reason']);doc.add_paragraph('修正：'+f['revision'])
+            if f['source_ids']: doc.add_paragraph('來源定位：'+ '、'.join(f['source_ids']))
+        doc.add_heading('尚未檢查',1)
+        for note in c['unchecked']: doc.add_paragraph(note)
+        doc.add_paragraph('本報告編排使用者／分析者完成的檢查，不代表腳本自動核實所有知識或版面。')
     elif d["skill"] == "tw-edu-exam-generator":
         c=d["content"]
         doc.add_paragraph(f"題數：{len(c['questions'])} 題　總分：{c['total_points']} 分")
@@ -324,6 +359,16 @@ def run(skill: str, input_path: Path, output: Path, validate_only=False, sample=
         d['content']['title'] += '（範例）'
     if output.exists(): raise InputError(f'output already exists: {output}')
     kind=SKILLS[skill]; outputs=[]
+    if skill == 'tw-edu-learning-evidence-analyzer':
+        from .learning_evidence import analyze
+        summary=analyze(d['content'])
+        output.parent.mkdir(parents=True,exist_ok=True)
+        evidence_file=output.with_suffix('.analysis.json')
+        if evidence_file.exists(): raise InputError('analysis output already exists')
+        evidence_file.write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+        import copy
+        d=copy.deepcopy(d);d['content']={'title':d['content']['title'],**summary}
+
     if kind=="exam":
         stem=output.with_suffix(""); student=stem.with_name(stem.name+"-student").with_suffix(".docx"); teacher=stem.with_name(stem.name+"-teacher").with_suffix(".docx")
         if student.exists() or teacher.exists(): raise InputError('exam output already exists')
@@ -333,6 +378,7 @@ def run(skill: str, input_path: Path, output: Path, validate_only=False, sample=
         if output.suffix.lower()!=expected: raise InputError(f"output must use {expected}")
         from .slides import render as render_slides
         {"docx":_docx,"xlsx":_xlsx,"html":_html,"png":_png,"pptx":render_slides}[kind](d,output); outputs=[output]
+    if skill == "tw-edu-learning-evidence-analyzer": outputs.append(evidence_file)
     _report(input_path,outputs,d,sample); return outputs
 
 def main(skill_name: str) -> int:

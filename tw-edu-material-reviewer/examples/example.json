@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-material-reviewer",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "文本理解"
+  },
+  "sources": [
+    {
+      "title": "教師提供資料",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "教材審查（範例）",
+    "mode": "assessment",
+    "materials": [
+      {
+        "id": "M1",
+        "text": "一加一等於三。"
+      }
+    ],
+    "findings": [
+      {
+        "id": "F1",
+        "material_id": "M1",
+        "quote": "一加一等於三",
+        "status": "confirmed",
+        "severity": "blocking",
+        "reason": "加法結果錯誤",
+        "revision": "一加一等於二。",
+        "source_ids": []
+      }
+    ],
+    "unchecked": [
+      "未取得實際版面"
+    ]
+  }
+}

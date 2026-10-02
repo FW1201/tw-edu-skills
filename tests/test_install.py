@@ -80,7 +80,7 @@ def test_dry_run_and_both_hosts(tmp_path):
         assert not target.exists()
         r = subprocess.run(cmd, capture_output=True, text=True)
         assert r.returncode == 0, r.stderr
-        assert len(list(target.glob('tw-edu-*/SKILL.md'))) == 21
+        assert len(list(target.glob('tw-edu-*/SKILL.md'))) == len(json.loads((ROOT / 'skills-manifest.json').read_text())['skills'])
         manifest = json.loads((ROOT / 'skills-manifest.json').read_text())
         for skill in manifest['skills']:
             assert installer.hashes(target / skill['name']) == installer.hashes(ROOT / skill['name'])

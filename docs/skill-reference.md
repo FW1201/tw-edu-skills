@@ -1,6 +1,6 @@
 # 技能參考
 
-由 skills-manifest.json 與各技能 schema 產生。共 21 個獨立 Skills。
+由 skills-manifest.json 與各技能 schema 產生。共 23 個獨立 Skills。
 
 | Skill | 用途 | 輸入內容 | 輸出 |
 |---|---|---|---|
@@ -25,6 +25,8 @@
 | [tw-edu-citation-checker](../tw-edu-citation-checker/SKILL.md) | 核實文獻存在性與引用資訊 | 由 Agent 讀取來源／偏好，產出 Markdown | markdown |
 | [tw-edu-anti-ai-assessment](../tw-edu-anti-ai-assessment/SKILL.md) | 檢視評量證據與改善任務設計 | title, items | docx |
 | [tw-edu-synchronizer](../tw-edu-synchronizer/SKILL.md) | 建立與更新可供技能讀取的教師偏好 | 由 Agent 讀取來源／偏好，產出 Markdown | markdown |
+| [tw-edu-learning-evidence-analyzer](../tw-edu-learning-evidence-analyzer/SKILL.md) | 以匿名實際作答與作品判讀班級學習證據，區分缺答、題目疑義與待驗證錯因。 | title, items, responses | docx |
+| [tw-edu-material-reviewer](../tw-edu-material-reviewer/SKILL.md) | 檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查；生成器負責編排審查報告。 | title, mode, materials, findings, unchecked | docx |
 
 ## 共同輸入
 

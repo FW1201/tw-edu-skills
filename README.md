@@ -1,6 +1,6 @@
-# tw-edu-skills v4.0.0
+# tw-edu-skills v4.1.0
 
-臺灣 K-12 教師的 21 個獨立 AI Skills，適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 根據教材與實際資料撰寫內容，Python 驗證並排版。教師保有教學判斷權。
+臺灣 K-12 教師的 23 個獨立 AI Skills，適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 根據教材與實際資料撰寫內容，Python 驗證並排版。教師保有教學判斷權。
 
 本 repo 已重新啟用，安裝與更新來源為 **FW1201/tw-edu-skills**。v3.1-final 保留供舊版查閱，新版遷移見 [v4 遷移指南](docs/MIGRATION-v4.md)。
 
@@ -66,6 +66,8 @@ python3 -m venv .venv
 | `tw-edu-citation-checker` | 教育文獻查核 | markdown |
 | `tw-edu-anti-ai-assessment` | 評量真實性設計 | docx |
 | `tw-edu-synchronizer` | 教師偏好設定 | markdown |
+| `tw-edu-learning-evidence-analyzer` | 學習證據分析 | docx |
+| `tw-edu-material-reviewer` | 教材與評量品質審查 | docx |
 <!-- inventory:end -->
 
 Markdown 型技能由 Agent 產出查核表或設定檔，其餘技能有本機內容驗證／渲染 CLI。簡報預設原生可編輯文字、圖形、表格與圖表；完整圖片簡報須選用 image 模式。試卷分成學生卷與教師答案卷。

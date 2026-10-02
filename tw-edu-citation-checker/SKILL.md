@@ -1,8 +1,9 @@
 ---
 name: tw-edu-citation-checker
-description: "核實文獻存在性與引用資訊。適用於文獻查核、引用查核、APA。"
-version: 2.0.0
-author: 奇老師・數位敘事力社群
+description: 核實文獻存在性與引用資訊。適用於文獻查核、引用查核、APA。
+metadata:
+  version: 2.1.0
+  author: 奇老師・數位敘事力社群
 ---
 
 # 教育文獻查核
@@ -34,3 +35,7 @@ author: 奇老師・數位敘事力社群
 ## 交付檢查
 
 核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。
+
+## 教學品質與整合模式
+
+逐筆記錄 verified／partially_verified／not_found／blocked；網絡失敗不是不存在。文獻存在、metadata正確、格式正確及支持主張分開，未讀全文不冒充全文覈實。

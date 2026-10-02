@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-learning-evidence-analyzer",
+  "language": "zh-TW",
+  "context": {
+    "subject": "國語文",
+    "grade": "國中八年級",
+    "topic": "文本理解"
+  },
+  "sources": [
+    {
+      "title": "教師提供資料",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "學習證據分析（範例）",
+    "items": [
+      {
+        "id": "Q1",
+        "target": "辨識感官",
+        "answer": "A",
+        "key_status": "verified",
+        "options": [
+          "A",
+          "B"
+        ]
+      }
+    ],
+    "responses": [
+      {
+        "student_id": "S1",
+        "answers": {
+          "Q1": "A"
+        }
+      },
+      {
+        "student_id": "S2",
+        "answers": {
+          "Q1": null
+        }
+      }
+    ]
+  }
+}
