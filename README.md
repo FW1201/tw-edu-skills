@@ -1,4 +1,4 @@
-# tw-edu-skills v5.0.0
+# tw-edu-skills v5.0.1
 
 臺灣 K-12 教師的 35 個獨立 AI Skills，分 8 個面向：課程設計、評量命題、教材資源、學生表現、班級經營、教育行政、教師專業、套組設定。適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 依技能內的思維路線讀教材與實際資料、撰寫內容，Python 驗證並排版。教師保有教學判斷權。
 
@@ -49,8 +49,8 @@ python3 -m venv .venv
 
 | Skill | 用途 | 主要輸出 |
 |---|---|---|
-| `tw-edu-lesson-plan-108` | 108 課綱教案：依課程目標安排活動、時間與評量 | docx |
-| `tw-edu-curriculum-mapper` | 課程地圖：跨單元安排學期目標、進度與課綱對應 | xlsx |
+| `tw-edu-lesson-plan-108` | 108 課綱教案：以學習重點逆向設計目標、評量與活動，課綱代碼回查 | docx |
+| `tw-edu-curriculum-mapper` | 課程地圖：跨單元安排學期進度、課綱對應與評量，檢查校行事衝突 | xlsx |
 | `tw-edu-differentiated` | 差異化教學：依學習證據調整任務與支持 | docx |
 | `tw-edu-interdisciplinary` | 跨領域課程：整合不同學科的概念與探究任務 | docx |
 | `tw-edu-pbl-designer` | 專題式學習：設計驅動問題、探究歷程與真實成果 | docx |
@@ -73,7 +73,7 @@ python3 -m venv .venv
 | `tw-edu-worksheet-creator` | 學習單：編排學生可完成的練習與思考任務 | docx |
 | `tw-edu-slides-creator` | 教學簡報：製作可編輯投影片與教師講稿 | pptx |
 | `tw-edu-mini-app` | 教學小程式：產出可本機開啟的互動教學網頁 | html |
-| `tw-edu-material-reviewer` | 教材與評量品質審查：檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查；生成器負責編排審查報告。 | docx |
+| `tw-edu-material-reviewer` | 教材與評量品質審查：檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查 | docx |
 
 ### 學生表現（4）
 
@@ -81,15 +81,15 @@ python3 -m venv .venv
 |---|---|---|
 | `tw-edu-feedback-writer` | 學生回饋：根據作品證據撰寫具體可行的回饋 | docx |
 | `tw-edu-learning-portfolio` | 學習歷程指導：協助整理學習證據、反思與成果 | docx |
-| `tw-edu-learning-evidence-analyzer` | 學習證據分析：以匿名實際作答與作品判讀班級學習證據，區分缺答、題目疑義與待驗證錯因。 | docx |
+| `tw-edu-learning-evidence-analyzer` | 學習證據分析：以匿名作答判讀班級學習證據，區分缺答、題目疑義與待驗證錯因 | docx |
 | `tw-edu-conduct-comments` | 日常生活表現評語：依行為事實撰寫不標籤化的日常生活表現評語 | docx |
 
 ### 班級經營（7）
 
 | Skill | 用途 | 主要輸出 |
 |---|---|---|
-| `tw-edu-parent-communication` | 親師溝通：撰寫清楚、有同理心的親師草稿 | docx |
-| `tw-edu-classroom-culture` | 班級經營：設計共同規範、班級活動與支持策略 | docx |
+| `tw-edu-parent-communication` | 親師溝通：依對象與敏感程度選擇管道，先事實後關切，提出具體合作請求 | docx |
+| `tw-edu-classroom-culture` | 班級規範與文化：以安全底線、共同協議、可選擇事項三層規範，設計儀式、關係經營與修復路徑 | docx |
 | `tw-edu-homeroom-operations` | 導師日常與學期事務：規劃開學建班、幹部職務、出缺勤預警、聯絡簿與學期交接 | docx |
 | `tw-edu-behavior-support` | 學生行為支持：以觀察紀錄與功能假設設計正向行為支持計畫 | docx |
 | `tw-edu-incident-response` | 事件應變與通報分流：處理同儕衝突並以紅旗閘門分流霸凌、性平、兒少保護與自傷通報 | docx |
@@ -100,8 +100,8 @@ python3 -m venv .venv
 
 | Skill | 用途 | 主要輸出 |
 |---|---|---|
-| `tw-edu-school-document` | 校園文書：整理計畫、會議與行政文稿 | docx |
-| `tw-edu-meeting-facilitator` | 會議引導：建立議程、紀錄與可追蹤行動事項 | docx |
+| `tw-edu-school-document` | 校務計畫與成果文書：撰寫活動計畫、補助申請、成果報告與校內辦法草案，經費與成果可檢核 | docx |
+| `tw-edu-meeting-facilitator` | 校內會議議程與紀錄：排定議程時間，區分報告事項與討論事項決議，追蹤執行單位與期限 | docx |
 | `tw-edu-official-document` | 校園公文：依文書處理手冊撰寫或修改學校簽、函、便簽、開會通知單與公告 | docx |
 
 ### 教師專業（5）

@@ -1,3 +1,7 @@
+# 5.0.1 — 2026-10-09
+
+manifest 顯示名稱與用途對齊 v5 SKILL.md（classroom-culture、parent-communication、school-document、meeting-facilitator、lesson-plan-108、curriculum-mapper、material-reviewer、learning-evidence-analyzer），README 與技能參考重新產生。各技能內容與個別版本不變。
+
 # 5.0.0 — 2026-10-09
 
 **面向重整、思維路線深化、12 支新技能。共 35 支，分 8 個面向。**

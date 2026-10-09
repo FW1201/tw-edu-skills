@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.0.1",
   "schema_version": 1,
   "skills": [
     {
@@ -7,7 +7,7 @@
       "version": "5.0.0",
       "title": "108 課綱教案",
       "category": "課程設計",
-      "purpose": "依課程目標安排活動、時間與評量",
+      "purpose": "以學習重點逆向設計目標、評量與活動，課綱代碼回查",
       "entrypoint": "scripts/generate_lesson_plan.py",
       "format": "docx",
       "dependencies": [
@@ -23,7 +23,7 @@
       "version": "5.0.0",
       "title": "課程地圖",
       "category": "課程設計",
-      "purpose": "跨單元安排學期目標、進度與課綱對應",
+      "purpose": "跨單元安排學期進度、課綱對應與評量，檢查校行事衝突",
       "entrypoint": "scripts/generate_curriculum_map.py",
       "format": "xlsx",
       "dependencies": [
@@ -168,7 +168,7 @@
       "version": "5.0.0",
       "title": "親師溝通",
       "category": "班級經營",
-      "purpose": "撰寫清楚、有同理心的親師草稿",
+      "purpose": "依對象與敏感程度選擇管道，先事實後關切，提出具體合作請求",
       "entrypoint": "scripts/generate_parent_comm.py",
       "format": "docx",
       "dependencies": [
@@ -180,9 +180,9 @@
     {
       "name": "tw-edu-classroom-culture",
       "version": "5.0.0",
-      "title": "班級經營",
+      "title": "班級規範與文化",
       "category": "班級經營",
-      "purpose": "設計共同規範、班級活動與支持策略",
+      "purpose": "以安全底線、共同協議、可選擇事項三層規範，設計儀式、關係經營與修復路徑",
       "entrypoint": "scripts/generate_classroom.py",
       "format": "docx",
       "dependencies": [
@@ -194,9 +194,9 @@
     {
       "name": "tw-edu-school-document",
       "version": "5.0.0",
-      "title": "校園文書",
+      "title": "校務計畫與成果文書",
       "category": "教育行政",
-      "purpose": "整理計畫、會議與行政文稿",
+      "purpose": "撰寫活動計畫、補助申請、成果報告與校內辦法草案，經費與成果可檢核",
       "entrypoint": "scripts/generate_school_doc.py",
       "format": "docx",
       "dependencies": [
@@ -208,9 +208,9 @@
     {
       "name": "tw-edu-meeting-facilitator",
       "version": "5.0.0",
-      "title": "會議引導",
+      "title": "校內會議議程與紀錄",
       "category": "教育行政",
-      "purpose": "建立議程、紀錄與可追蹤行動事項",
+      "purpose": "排定議程時間，區分報告事項與討論事項決議，追蹤執行單位與期限",
       "entrypoint": "scripts/generate_meeting.py",
       "format": "docx",
       "dependencies": [
@@ -301,7 +301,7 @@
       "version": "1.1.0",
       "title": "學習證據分析",
       "category": "學生表現",
-      "purpose": "以匿名實際作答與作品判讀班級學習證據，區分缺答、題目疑義與待驗證錯因。",
+      "purpose": "以匿名作答判讀班級學習證據，區分缺答、題目疑義與待驗證錯因",
       "entrypoint": "scripts/generate_evidence.py",
       "format": "docx",
       "dependencies": [
@@ -315,7 +315,7 @@
       "version": "1.1.0",
       "title": "教材與評量品質審查",
       "category": "教材資源",
-      "purpose": "檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查；生成器負責編排審查報告。",
+      "purpose": "檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查",
       "entrypoint": "scripts/generate_review.py",
       "format": "docx",
       "dependencies": [
