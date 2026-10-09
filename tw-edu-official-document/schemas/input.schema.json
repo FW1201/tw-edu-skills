@@ -1,0 +1,343 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-official-document"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "mode",
+        "doc_type",
+        "direction",
+        "issuer",
+        "handling",
+        "date",
+        "subject",
+        "explanation",
+        "proposal_label",
+        "proposal"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mode": {
+          "enum": [
+            "撰寫",
+            "修改"
+          ]
+        },
+        "doc_type": {
+          "enum": [
+            "簽",
+            "函",
+            "書函",
+            "便簽",
+            "開會通知單",
+            "公告"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "上行",
+            "平行",
+            "下行",
+            "對人民",
+            "校內"
+          ]
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "handling": {
+          "enum": [
+            "先簽後稿",
+            "簽稿併陳",
+            "以稿代簽",
+            "只簽不稿",
+            "不適用"
+          ]
+        },
+        "date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "explanation": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "proposal_label": {
+          "enum": [
+            "辦法",
+            "建議",
+            "請求",
+            "擬辦",
+            "公告事項",
+            "無"
+          ]
+        },
+        "proposal": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "doc_number": {
+          "type": "string",
+          "minLength": 1
+        },
+        "speed": {
+          "enum": [
+            "最速件",
+            "速件",
+            "普通件"
+          ]
+        },
+        "secrecy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attachments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sign_route": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "basis": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "cc": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "original"
+          ],
+          "properties": {
+            "original": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "copy": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "meeting": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "time",
+            "place",
+            "chair",
+            "attendees",
+            "contact"
+          ],
+          "properties": {
+            "time": {
+              "type": "string",
+              "minLength": 1
+            },
+            "place": {
+              "type": "string",
+              "minLength": 1
+            },
+            "chair": {
+              "type": "string",
+              "minLength": 1
+            },
+            "attendees": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "contact": {
+              "type": "string",
+              "minLength": 1
+            },
+            "observers": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "agenda": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "review_findings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "location",
+              "issue",
+              "why",
+              "fix",
+              "basis",
+              "severity"
+            ],
+            "properties": {
+              "location": {
+                "type": "string",
+                "minLength": 1
+              },
+              "issue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "why": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fix": {
+                "type": "string",
+                "minLength": 1
+              },
+              "basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "severity": {
+                "enum": [
+                  "錯誤",
+                  "警告",
+                  "建議"
+                ]
+              }
+            }
+          }
+        },
+        "pending": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

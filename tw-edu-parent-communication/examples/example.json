@@ -3,24 +3,38 @@
   "skill": "tw-edu-parent-communication",
   "language": "zh-TW",
   "context": {
-    "subject": "國語文",
-    "grade": "國中八年級",
-    "topic": "環境觀察"
+    "subject": "導師班級經營",
+    "grade": "國小二年級",
+    "topic": "學習狀況個別溝通"
   },
   "sources": [
     {
-      "title": "教師提供教材",
+      "title": "教師提供之班級情境描述",
       "status": "user_provided"
     }
   ],
   "content": {
-    "title": "學習近況通知（範例）",
+    "title": "學生學習狀況個別溝通草稿（範例）",
+    "audience": "個別家長",
+    "channel": "電話",
+    "sensitivity": "個別",
     "recipients": [
-      "八年一班家長"
+      "學生F 家長"
     ],
-    "purpose": "說明本週觀察任務",
-    "message": "學生將完成校園觀察紀錄。",
-    "requested_action": "請提醒攜帶筆記本。",
-    "contact_channel": "班級聯絡簿"
+    "purpose": "說明近兩週作業完成情形並討論家庭協助方式",
+    "facts": [
+      "近兩週 10 份作業完成 4 份",
+      "課堂上能回答口頭問題"
+    ],
+    "concerns": [
+      "可能需要調整作業份量或提供完成步驟提示"
+    ],
+    "message": "您好，我是學生F 的導師。想跟您分享孩子最近的學習情形：課堂上他回答問題很積極；作業部分這兩週完成 4 份，想和您一起找出困難在哪裡。",
+    "requested_action": "請協助觀察孩子在家寫作業時卡住的地方，下週三前回覆或約時間聊聊。",
+    "contact_channel": "學校電話或聯絡簿",
+    "send_status": "草稿",
+    "pending": [
+      "家長方便通話的時間"
+    ]
   }
 }

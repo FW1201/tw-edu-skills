@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-conduct-comments",
+  "language": "zh-TW",
+  "context": {
+    "subject": "導師班級經營",
+    "grade": "國中七年級",
+    "topic": "上學期日常生活表現"
+  },
+  "sources": [
+    {
+      "title": "教師提供之班級情境描述",
+      "status": "user_provided"
+    },
+    {
+      "title": "國民小學及國民中學學生學習評量辦法第10條",
+      "status": "verified",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0070019"
+    }
+  ],
+  "content": {
+    "title": "七年級上學期日常生活表現紀錄（範例）",
+    "school_level": "國民中學",
+    "students": [
+      {
+        "student_id": "S01",
+        "evidence": [
+          {
+            "id": "E1",
+            "aspect": "公共服務",
+            "date": "9–12 月",
+            "observation": "擔任衛生股長，每週五主動檢查掃具並補齊"
+          },
+          {
+            "id": "E2",
+            "aspect": "團體活動",
+            "date": "11/20",
+            "observation": "合唱比賽擔任伴奏，課後自主練習 3 週"
+          }
+        ],
+        "comment": "擔任衛生股長期間每週主動整理掃具；合唱比賽擔任伴奏並持續自主練習，展現負責與投入。",
+        "evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "suggestion": "可嘗試把整理掃具的方法教給下一任股長，練習帶領他人。",
+        "parent_version": "孩子這學期擔任衛生股長，每週都主動整理掃具；合唱比賽擔任伴奏，練習很投入。下學期可以鼓勵他試著帶領同學。"
+      }
+    ]
+  }
+}

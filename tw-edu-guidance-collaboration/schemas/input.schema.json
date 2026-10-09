@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-guidance-collaboration"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "mode",
+        "student_alias",
+        "concern",
+        "observation_period",
+        "teacher_actions",
+        "evidence",
+        "student_strengths",
+        "requested_support",
+        "information_sharing",
+        "privacy_notes",
+        "follow_up"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mode": {
+          "enum": [
+            "輔導轉介",
+            "特教協作",
+            "IEP會議準備",
+            "資料分享評估"
+          ]
+        },
+        "student_alias": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12
+        },
+        "concern": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observation_period": {
+          "type": "string",
+          "minLength": 1
+        },
+        "teacher_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "period",
+              "result"
+            ],
+            "properties": {
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "period": {
+                "type": "string",
+                "minLength": 1
+              },
+              "result": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "summary",
+              "source"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "enum": [
+                  "教師觀察",
+                  "學生自述",
+                  "家長告知",
+                  "同學轉述",
+                  "科任教師",
+                  "紀錄文件"
+                ]
+              }
+            }
+          }
+        },
+        "student_strengths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requested_support": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "information_sharing": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item",
+              "share_with",
+              "reason",
+              "level"
+            ],
+            "properties": {
+              "item": {
+                "type": "string",
+                "minLength": 1
+              },
+              "share_with": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "level": {
+                "enum": [
+                  "必要分享",
+                  "經同意分享",
+                  "不分享"
+                ]
+              }
+            }
+          }
+        },
+        "privacy_notes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "follow_up": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "owner",
+              "due"
+            ],
+            "properties": {
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "type": "string",
+                "minLength": 1
+              },
+              "due": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "class_adjustments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "area",
+              "adjustment"
+            ],
+            "properties": {
+              "area": {
+                "enum": [
+                  "座位與環境",
+                  "教材與作業",
+                  "評量",
+                  "作息與轉銜",
+                  "同儕支持",
+                  "溝通"
+                ]
+              },
+              "adjustment": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "meeting_agenda": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "questions_for_team": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

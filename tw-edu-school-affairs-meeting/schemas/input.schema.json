@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-school-affairs-meeting"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "role",
+        "stage",
+        "allegations",
+        "timeline",
+        "rights_checklist",
+        "deadlines",
+        "limitations"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "被檢舉教師",
+            "受訪證人教師",
+            "教師會代表",
+            "輔佐人"
+          ]
+        },
+        "stage": {
+          "enum": [
+            "收到通知前",
+            "受理審查",
+            "調查訪談",
+            "校事會議審議",
+            "輔導改善",
+            "教評會陳述",
+            "救濟"
+          ]
+        },
+        "allegations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "summary",
+              "my_account",
+              "evidence_available",
+              "evidence_to_request"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1
+              },
+              "my_account": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_available": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "evidence_to_request": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "date",
+              "event",
+              "source"
+            ],
+            "properties": {
+              "date": {
+                "type": "string",
+                "minLength": 1
+              },
+              "event": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "rights_checklist": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item",
+              "basis",
+              "status"
+            ],
+            "properties": {
+              "item": {
+                "type": "string",
+                "minLength": 1
+              },
+              "basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "已確認",
+                  "待確認",
+                  "不適用"
+                ]
+              }
+            }
+          }
+        },
+        "deadlines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item",
+              "date",
+              "basis"
+            ],
+            "properties": {
+              "item": {
+                "type": "string",
+                "minLength": 1
+              },
+              "date": {
+                "type": "string",
+                "minLength": 1
+              },
+              "basis": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "notice": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "received_date",
+            "document",
+            "stated_purpose",
+            "deadline"
+          ],
+          "properties": {
+            "received_date": {
+              "type": "string",
+              "minLength": 1
+            },
+            "document": {
+              "type": "string",
+              "minLength": 1
+            },
+            "stated_purpose": {
+              "type": "string",
+              "minLength": 1
+            },
+            "deadline": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "statement_draft": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "opening",
+            "by_allegation",
+            "closing"
+          ],
+          "properties": {
+            "opening": {
+              "type": "string",
+              "minLength": 1
+            },
+            "by_allegation": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "allegation_id",
+                  "statement"
+                ],
+                "properties": {
+                  "allegation_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "statement": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            "closing": {
+              "type": "string",
+              "minLength": 1
+            },
+            "context": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "interview_prep": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "likely_question",
+              "answer_points",
+              "cautions"
+            ],
+            "properties": {
+              "likely_question": {
+                "type": "string",
+                "minLength": 1
+              },
+              "answer_points": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "cautions": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "support_people": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "who",
+              "role"
+            ],
+            "properties": {
+              "who": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "enum": [
+                  "輔佐人",
+                  "教師會",
+                  "律師",
+                  "同儕支持",
+                  "家人"
+                ]
+              }
+            }
+          }
+        },
+        "wellbeing_note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

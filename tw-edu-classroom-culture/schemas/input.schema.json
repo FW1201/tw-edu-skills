@@ -57,15 +57,15 @@
             "type": "string",
             "minLength": 1
           },
-          "url": {
-            "type": "string"
-          },
           "status": {
             "enum": [
               "verified",
               "user_provided",
               "pending"
             ]
+          },
+          "url": {
+            "type": "string"
           }
         }
       }
@@ -75,8 +75,10 @@
       "additionalProperties": false,
       "required": [
         "title",
-        "agreements",
+        "norms",
+        "rituals",
         "routines",
+        "repair_paths",
         "response_plan"
       ],
       "properties": {
@@ -84,15 +86,94 @@
           "type": "string",
           "minLength": 1
         },
-        "agreements": {
+        "norms": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "safety_floor",
+            "shared_agreements",
+            "choices"
+          ],
+          "properties": {
+            "safety_floor": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "shared_agreements": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "choices": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "rituals": {
           "type": "array",
           "minItems": 1,
           "items": {
-            "type": "string",
-            "minLength": 1
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "moment",
+              "practice"
+            ],
+            "properties": {
+              "moment": {
+                "enum": [
+                  "開始",
+                  "轉換",
+                  "結束",
+                  "重要時刻"
+                ]
+              },
+              "practice": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
           }
         },
         "routines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "situation",
+              "steps"
+            ],
+            "properties": {
+              "situation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "steps": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "repair_paths": {
           "type": "array",
           "minItems": 1,
           "items": {
@@ -143,6 +224,49 @@
                 "minLength": 1
               }
             }
+          }
+        },
+        "relationship_practices": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "class_activities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "purpose",
+              "frequency"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frequency": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "student_voice": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
           }
         }
       }

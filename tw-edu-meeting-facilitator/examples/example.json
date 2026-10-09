@@ -3,38 +3,66 @@
   "skill": "tw-edu-meeting-facilitator",
   "language": "zh-TW",
   "context": {
-    "subject": "國語文",
-    "grade": "國中八年級",
-    "topic": "環境觀察"
+    "subject": "教育行政",
+    "grade": "國民中學",
+    "topic": "課程發展委員會"
   },
   "sources": [
     {
-      "title": "教師提供教材",
+      "title": "教務處提供之提案資料",
       "status": "user_provided"
     }
   ],
   "content": {
-    "title": "備課會議（範例）",
+    "title": "115 學年度第 1 次課程發展委員會議程（範例）",
+    "meeting_type": "課程發展委員會",
+    "date": "115年10月15日 15:30",
+    "duration_minutes": 60,
     "participants": [
-      "教師甲",
-      "教師乙"
+      "校長",
+      "教務主任",
+      "各領域召集人",
+      "家長代表"
     ],
     "agenda": [
       {
-        "topic": "共用評量標準",
-        "minutes": 20,
-        "owner": "教師甲"
-      }
-    ],
-    "decisions": [
-      "先試用一週"
-    ],
-    "actions": [
+        "topic": "上次會議決議執行情形",
+        "minutes": 10,
+        "owner": "教務處",
+        "kind": "報告事項"
+      },
       {
-        "owner": "教師乙",
-        "action": "整理學生作品",
-        "due": "2026-09-10"
+        "topic": "彈性學習課程計畫修訂案",
+        "minutes": 35,
+        "owner": "教務處",
+        "kind": "討論事項"
+      },
+      {
+        "topic": "臨時動議",
+        "minutes": 15,
+        "owner": "主席",
+        "kind": "臨時動議"
       }
-    ]
+    ],
+    "reports": [
+      {
+        "unit": "教務處",
+        "summary": "上次決議之校訂課程時數調整已完成排課"
+      }
+    ],
+    "discussions": [
+      {
+        "case_no": "第一案",
+        "proposer": "教務處",
+        "cause": "彈性學習課程「社區小偵探」單元修訂",
+        "explanation": [
+          "依領域教學研究會建議調整第 3 單元"
+        ],
+        "resolution": "〔待會議決議〕",
+        "status": "待決議"
+      }
+    ],
+    "actions": [],
+    "record_status": "議程草案"
   }
 }

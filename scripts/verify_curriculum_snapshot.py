@@ -4,7 +4,7 @@ from pathlib import Path
 import hashlib,json
 ROOT=Path(__file__).resolve().parents[1]
 def verify():
- base=ROOT/'tw-edu-lesson-plan-108/references';data=base/'curriculum';manifest=json.loads((data/'snapshot-manifest.json').read_text());count=0;competencies=[]
+ base=ROOT/'shared/curriculum/references';data=base/'curriculum';manifest=json.loads((data/'snapshot-manifest.json').read_text());count=0;competencies=[]
  assert {p.name for p in data.glob('*.json')}==set(manifest['files'])|{'snapshot-manifest.json'}
  for file,sha in manifest['files'].items():
   path=data/file;assert hashlib.sha256(path.read_bytes()).hexdigest()==sha,file

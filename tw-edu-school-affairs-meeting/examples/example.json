@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-school-affairs-meeting",
+  "language": "zh-TW",
+  "context": {
+    "subject": "教師專業",
+    "grade": "國民中學",
+    "topic": "收到校事會議調查訪談通知"
+  },
+  "sources": [
+    {
+      "title": "教師本人提供之通知書與事實紀錄",
+      "status": "user_provided"
+    },
+    {
+      "title": "高級中等以下學校教師解聘不續聘停聘或資遣辦法（115.01.12 修正）",
+      "status": "verified",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0060087"
+    }
+  ],
+  "content": {
+    "title": "校事會議調查訪談準備（範例）",
+    "role": "被檢舉教師",
+    "stage": "調查訪談",
+    "notice": {
+      "received_date": "10/3",
+      "document": "調查小組訪談通知書",
+      "stated_purpose": "就 9 月課堂管教事項進行訪談",
+      "deadline": "10/14 下午 2 時到場"
+    },
+    "allegations": [
+      {
+        "id": "A1",
+        "summary": "通知書所載：9/18 課堂上以不當言語指責學生",
+        "my_account": "9/18 第4節學生在實驗操作時拿酒精燈對著同學，我立即大聲制止並要求放下，課後個別說明危險性。",
+        "evidence_available": [
+          "當日教學進度表",
+          "實驗安全守則（課前已發給學生）"
+        ],
+        "evidence_to_request": [
+          "請學校確認當節是否有其他在場人員可說明"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "date": "9/18 第4節",
+        "event": "理化實驗課，發生酒精燈操作危險情形並制止",
+        "source": "本人記憶與教學進度表"
+      },
+      {
+        "date": "9/18 午休",
+        "event": "與該生個別談話說明安全理由",
+        "source": "本人記憶"
+      },
+      {
+        "date": "10/3",
+        "event": "收到訪談通知",
+        "source": "通知書"
+      }
+    ],
+    "rights_checklist": [
+      {
+        "item": "可偕同輔佐人到場，人數不超過 2 人",
+        "basis": "解聘辦法第22條",
+        "status": "已確認"
+      },
+      {
+        "item": "訪談全程錄音錄影，本人不得自行錄音錄影",
+        "basis": "解聘辦法第19條",
+        "status": "已確認"
+      },
+      {
+        "item": "調查期限與延長時應通知當事人",
+        "basis": "解聘辦法第21條",
+        "status": "待確認"
+      },
+      {
+        "item": "若移送教評會，學校應於 7 日前提供調查報告與輔導報告",
+        "basis": "解聘辦法第43條",
+        "status": "不適用"
+      }
+    ],
+    "deadlines": [
+      {
+        "item": "訪談到場",
+        "date": "10/14 14:00",
+        "basis": "訪談通知書"
+      }
+    ],
+    "statement_draft": {
+      "opening": "本人就 10/3 通知書所載事項，依事實說明如下。",
+      "by_allegation": [
+        {
+          "allegation_id": "A1",
+          "statement": "9/18 第4節學生在實驗時將點燃的酒精燈朝向同學，本人為避免危險立即大聲要求放下。制止後未再責備，午休時與學生個別說明安全理由。課前已發放實驗安全守則。"
+        }
+      ],
+      "context": "本課程為理化實驗，安全規範於學期初與每次實驗前說明。",
+      "closing": "以上說明如需補充，本人願配合提供資料。"
+    },
+    "interview_prep": [
+      {
+        "likely_question": "當時說了哪些話？",
+        "answer_points": [
+          "依記憶陳述原句，不確定處說明不確定",
+          "說明制止的理由是安全"
+        ],
+        "cautions": [
+          "不推測學生或家長動機",
+          "不清楚的事不要猜"
+        ]
+      },
+      {
+        "likely_question": "事後有無與學生溝通？",
+        "answer_points": [
+          "午休個別談話的時間與內容"
+        ],
+        "cautions": []
+      }
+    ],
+    "support_people": [
+      {
+        "who": "學校教師會代表",
+        "role": "輔佐人"
+      }
+    ],
+    "wellbeing_note": "訪談前一晚把資料整理好即可，其餘時間照常作息；可預約教師支持中心諮詢。",
+    "limitations": [
+      "本文件不是法律意見",
+      "事實以本人記憶與可得資料為準，需與教師會或律師確認陳述內容"
+    ]
+  }
+}

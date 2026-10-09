@@ -1,51 +1,59 @@
 ---
 name: tw-edu-formative-assessment
-description: 收集課中證據並決定教學調整。適用於形成性評量、出口票、提問。
+description: 形成性評量設計。從學習目標寫出成功準則，設計課中檢核點（出口票、提問、小白板、同儕互評），預先訂好判讀規則與對應的教學決策，並安排短期再檢核。適用於形成性評量、出口票、課堂提問、學習檢核、即時回饋、補救前診斷。
 metadata:
-  version: 4.1.0
+  version: 4.2.0
   author: 奇老師・數位敘事力社群
+  category: 評量命題
 ---
 
 # 形成性評量
 
-收集課中證據並決定教學調整。適用 Codex 與 Claude Code，繁體中文輸出。
+形成性評量的價值在於「看到證據之後，教學會改變」。只設計題目、不設計判讀與調整，就只是小考。
+
+## 定位與邊界
+
+- **做**：學習目標與成功準則、檢核點設計、證據蒐集方式、判讀規則、教學決策、再檢核。
+- **不做**：原始作答的統計分析（→ `tw-edu-learning-evidence-analyzer`）、段考命題（→ `tw-edu-exam-generator`）。
 
 ## 開始前
 
-讀取 [共用工作方式](references/common/workflow.md)。檢查目前工作區的 `teacher-profile.md`；本次要求優先於對話脈絡、設定檔及預設。已提供的資訊不要重問。
+讀取 [共用工作方式](references/common/workflow.md)，檢查 `teacher-profile.md`。
 
-## 任務要求
+必要情境：這節課的學習目標、學生先備、可用時間（形成性評量通常 3–10 分鐘）、可用工具（紙本、小白板、平板）。
 
-明確指定欲觀察的理解、可收集證據、判讀方式與後續教學回應。出口票、提問、同儕互評皆須對應目標；不能只產生問題而沒有判讀與調整建議。
+## 思維路線
 
-## 工作流程
+1. **學習目標 → 成功準則**：用學生聽得懂的話寫出「做到什麼就代表學會了」。
+2. **選檢核點時機**：課前（先備）、課中（關鍵概念後）、課末（出口票）。
+3. **設計檢核任務**：一到三題，直接對準最常見的誤解；能在短時間內看完全班的回答。
+4. **預先寫判讀規則**：例如「八成以上答對 → 進入下一段；答錯集中在 B 選項 → 代表把分子分母倒置，重新用圖示示範」。判讀規則要在上課前就決定。
+5. **教學決策**：全班再教、分組支持、個別追問、繼續前進，各對應一個判讀結果。
+6. **再檢核**：調整後用一題相似但不同的題目確認；不因一次答對就宣稱已精熟。
+7. **學生參與**：讓學生用成功準則自評或互評，知道自己的下一步。
 
-1. 確認使用者要完成的成果，讀取素材與必要教學脈絡。
-2. 依上述任務要求提出具體內容，保留來源與待確認事項。需要重大選擇時提供可評估的草稿。
-3. 讀取本技能的 `schemas/` 輸入規格與 `examples/` 範例；以實際內容建立 JSON。範例中的資料不得混入正式成品。
-4. 從任意工作目錄使用下列 CLI。先驗證，再生成，最後檢查成品及驗證紀錄。
+## 台灣情境要點
+
+- 國中小學習評量辦法將平時評量與定期評量並列；形成性評量多屬平時評量的一部分，結果用於調整教學，是否計分依學校規定。
+
+## 產出
+
+依 [輸入規格](schemas/input.schema.json) 建立 JSON，[範例](examples/example.json) 只看結構。重點欄位：`learning_target`、`checks`（題目、成功準則、證據蒐集方式）、`response_rules`（證據 → 行動）。
 
 ```bash
-# SKILL_DIR 為本技能安裝目錄；TASK_DIR 為目前工作區的任務輸出目錄。
 python3 "$SKILL_DIR/scripts/generate_formative.py" --input "$TASK_DIR/input.json" --validate-only
-python3 "$SKILL_DIR/scripts/generate_formative.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/output.docx"
-# 僅在明確需要展示時使用；輸出標示為範例。
-python3 "$SKILL_DIR/scripts/generate_formative.py" --example --output "$TASK_DIR/example.docx"
+python3 "$SKILL_DIR/scripts/generate_formative.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/formative.docx"
 ```
 
-## 安裝依賴
+## 品質關卡
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
-```
+- 每個檢核點都有對應的判讀規則與教學行動。
+- 檢核題目對準常見誤解，而不是只問記憶。
+- 有再檢核的安排。
+- 只設計檢核時，不宣稱學生已經改善。
 
-執行生成器時可將上方 python3 換成虛擬環境的 Python。舊版只傳主題或科目的呼叫不再生成固定範例；依 schema 填入實際內容。
+## 交接
 
-## 交付檢查
-
-核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。
-
-## 教學品質與整合模式
-
-形成性評量閉環：設計檢核→實際作答→證據判讀→教學調整→短期再檢核。只設計檢核不宣告已改善；可選 learning-evidence-analyzer 處理原始資料，未安裝時自行摘要並留分母及待查錯因。
+- 收回的作答要分析 → `tw-edu-learning-evidence-analyzer`。
+- 需要分組支持 → `tw-edu-differentiated`。
+- 個別回饋 → `tw-edu-feedback-writer`。

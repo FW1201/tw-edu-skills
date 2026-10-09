@@ -5,13 +5,15 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 PY=Path(sys.executable)
-GENERATORS={
-"tw-edu-learning-evidence-analyzer":"generate_evidence.py", "tw-edu-material-reviewer":"generate_review.py",
-"tw-edu-anti-ai-assessment":"generate_anti_ai_report.py","tw-edu-classroom-culture":"generate_classroom.py","tw-edu-curriculum-mapper":"generate_curriculum_map.py","tw-edu-differentiated":"generate_differentiated.py","tw-edu-exam-generator":"generate_exam.py","tw-edu-feedback-writer":"generate_feedback.py","tw-edu-formative-assessment":"generate_formative.py","tw-edu-interdisciplinary":"generate_interdisciplinary.py","tw-edu-learning-portfolio":"generate_portfolio.py","tw-edu-lesson-plan-108":"generate_lesson_plan.py","tw-edu-meeting-facilitator":"generate_meeting.py","tw-edu-mini-app":"generate_mini_app.py","tw-edu-parent-communication":"generate_parent_comm.py","tw-edu-pbl-designer":"generate_pbl.py","tw-edu-research-viz":"generate_prisma.py","tw-edu-rubric-designer":"generate_rubric.py","tw-edu-school-document":"generate_school_doc.py","tw-edu-slides-creator":"generate_slides.py","tw-edu-worksheet-creator":"generate_worksheet.py"}
-EXT={"tw-edu-curriculum-mapper":".xlsx","tw-edu-mini-app":".html","tw-edu-research-viz":".png","tw-edu-slides-creator":".pptx"}
+MANIFEST=json.loads((ROOT/"skills-manifest.json").read_text(encoding="utf-8"))
+GENERATORS={s["name"]:Path(s["entrypoint"]).name for s in MANIFEST["skills"] if s["entrypoint"]}
+EXT={s["name"]:"."+s["format"] for s in MANIFEST["skills"] if s["entrypoint"] and s["format"]!="docx"}
 def invoke(skill,*args,cwd=None):
     env=os.environ.copy(); env.setdefault("MPLCONFIGDIR","/private/tmp/tw-edu-mpl"); env.setdefault("XDG_CACHE_HOME","/private/tmp/tw-edu-cache")
     return subprocess.run([str(PY),str(ROOT/skill/"scripts"/GENERATORS[skill]),*map(str,args)],cwd=cwd,text=True,capture_output=True,env=env)
+
+def test_manifest_lists_every_generator():
+    assert len(GENERATORS)==33 and "tw-edu-official-document" in GENERATORS
 
 @pytest.mark.parametrize("skill",GENERATORS)
 def test_every_generator_example_and_arbitrary_cwd(skill,tmp_path):

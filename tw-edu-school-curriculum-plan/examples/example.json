@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-school-curriculum-plan",
+  "language": "zh-TW",
+  "context": {
+    "subject": "校訂課程",
+    "grade": "國民小學",
+    "topic": "彈性學習課程規劃"
+  },
+  "sources": [
+    {
+      "title": "課程小組提供之課程規劃草案",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "○○國小 115 學年度彈性學習課程計畫（範例）",
+    "school_type": "國民小學",
+    "plan_type": "彈性學習課程",
+    "vision": "在地探索、自主學習、友善共好",
+    "student_image": [
+      "會探究的學習者",
+      "能合作的公民",
+      "愛家鄉的行動者"
+    ],
+    "goals": [
+      {
+        "id": "G1",
+        "goal": "運用觀察與訪談了解社區的人文與生態",
+        "image_links": [
+          "會探究的學習者",
+          "愛家鄉的行動者"
+        ]
+      },
+      {
+        "id": "G2",
+        "goal": "在小組中分工合作完成成果並公開分享",
+        "image_links": [
+          "能合作的公民"
+        ]
+      }
+    ],
+    "structure": [
+      {
+        "grade": "三年級",
+        "course": "社區小偵探",
+        "category": "統整性主題課程",
+        "periods_per_week": 2,
+        "weeks": 20,
+        "goal_ids": [
+          "G1"
+        ]
+      },
+      {
+        "grade": "三年級",
+        "course": "閱讀與表達",
+        "category": "其他類課程",
+        "periods_per_week": 1,
+        "weeks": 20,
+        "goal_ids": [
+          "G2"
+        ]
+      }
+    ],
+    "required_periods": [
+      {
+        "grade": "三年級",
+        "periods_per_week": 3,
+        "source": "依本校課程發展委員會通過之節數配置（範例，請依總綱與學校實際配置填入）"
+      }
+    ],
+    "units": [
+      {
+        "course": "社區小偵探",
+        "unit": "我們的老街",
+        "weeks": "1–7",
+        "learning_focus": [
+          "觀察記錄",
+          "訪談提問"
+        ],
+        "assessment": "觀察學習單與訪談紀錄",
+        "issues": [
+          "戶外教育"
+        ]
+      },
+      {
+        "course": "閱讀與表達",
+        "unit": "社區故事分享會",
+        "weeks": "15–20",
+        "learning_focus": [
+          "口語表達",
+          "合作分工"
+        ],
+        "assessment": "分享會評量規準"
+      }
+    ],
+    "review_process": [
+      "領域教學研究會提出草案",
+      "課程發展委員會審議通過",
+      "依主管機關規定期程報備查"
+    ],
+    "local_format_note": "各縣市備查表格與期程不同，請依當年度教育局通知格式調整。"
+  }
+}

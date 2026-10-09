@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-behavior-support",
+  "language": "zh-TW",
+  "context": {
+    "subject": "導師班級經營",
+    "grade": "國小四年級",
+    "topic": "課堂離座與中斷"
+  },
+  "sources": [
+    {
+      "title": "教師提供之班級情境描述",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "學生A 課堂離座行為支持計畫（範例）",
+    "student_alias": "學生A",
+    "behavior_definition": "數學課獨立練習時間，離開座位走到教室後方或窗邊，每次 2–5 分鐘，未經允許。",
+    "strengths": [
+      "喜歡協助老師發放教具",
+      "口語表達清楚，小組討論時願意分享"
+    ],
+    "baseline": {
+      "period": "9/15–9/26 共 8 節數學課",
+      "frequency": "平均每節 3 次，集中於獨立練習開始後 5 分鐘內",
+      "settings": [
+        "數學獨立練習",
+        "國語寫作時間（較少）"
+      ]
+    },
+    "abc_records": [
+      {
+        "when": "9/16 第 3 節",
+        "antecedent": "教師發下 10 題分數練習單，說明獨立完成",
+        "behavior": "寫完 2 題後離座到窗邊",
+        "consequence": "教師走過去提醒，學生回座，練習單未完成"
+      },
+      {
+        "when": "9/19 第 3 節",
+        "antecedent": "同類練習單，教師在前排協助其他學生",
+        "behavior": "離座到教室後方翻閱書櫃",
+        "consequence": "同學笑，教師點名請回座"
+      }
+    ],
+    "function_hypotheses": [
+      {
+        "id": "H1",
+        "function": "逃避任務",
+        "statement": "練習量與難度超過目前可獨立完成的程度時，離座可暫時離開任務。",
+        "evidence_for": [
+          "離座多在獨立練習開始後不久",
+          "練習單後半常空白"
+        ],
+        "evidence_against": [
+          "國語寫作時間較少離座，但寫作也需要獨立完成"
+        ],
+        "status": "假設"
+      },
+      {
+        "id": "H2",
+        "function": "取得注意",
+        "statement": "離座能引起同學或教師關注。",
+        "evidence_for": [
+          "同學笑後行為持續"
+        ],
+        "evidence_against": [
+          "教師在旁時也會離座"
+        ],
+        "status": "假設"
+      }
+    ],
+    "support_tier": "個別層級",
+    "prevention": [
+      "把練習拆成 3 題一組，完成一組舉手確認",
+      "第一組題目先在黑板示範一題",
+      "安排座位靠近教師巡視路線，而非窗邊"
+    ],
+    "replacement_behavior": {
+      "behavior": "需要休息或卡關時，翻開桌上「求助卡」並在座位等待",
+      "teaching_steps": [
+        "課前個別說明求助卡用法並練習",
+        "前三次使用時教師 1 分鐘內回應",
+        "逐步拉長回應時間至 3 分鐘"
+      ],
+      "reinforcement": "完成一組題目可選擇當教具小幫手一次"
+    },
+    "response_plan": [
+      {
+        "situation": "學生離座",
+        "teacher_response": "平靜走近，低聲提示求助卡並引導回座，不當眾點名"
+      },
+      {
+        "situation": "同學起鬨",
+        "teacher_response": "以全班提醒回到任務，課後再與學生A個別談"
+      }
+    ],
+    "review": {
+      "method": "每節記錄離座次數與完成題組數",
+      "owner": "數學老師（導師協助彙整）",
+      "review_date": "10/17"
+    },
+    "stop_conditions": [
+      "兩週內離座次數未下降：檢視題目難度與 H1/H2 假設",
+      "出現危險行為或情緒持續失控：與輔導室討論",
+      "家長回報校外同類困難增加：安排三方會談"
+    ],
+    "collaboration": [
+      {
+        "who": "導師",
+        "role": "彙整紀錄、與家長溝通進展"
+      },
+      {
+        "who": "數學老師",
+        "role": "執行題組拆分與求助卡回應"
+      }
+    ],
+    "safety_check": {
+      "red_flags_present": false,
+      "note": "未觀察到自傷、傷人或受虐跡象"
+    }
+  }
+}

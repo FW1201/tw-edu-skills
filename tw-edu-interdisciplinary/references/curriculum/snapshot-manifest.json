@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-09-08",
+  "synchronized_at": "2026-10-03",
+  "origin_repository": "FW1201/twa-edu-harness",
+  "origin_commit": "de633db3e31f2f62ebb7ce09cf42b424d92d3db6",
+  "official_index": "https://www.naer.edu.tw/PageSyllabus?fid=52",
+  "verification_scope": "逐檔重用既有領綱 PDF 抽取快照；本次未逐頁重新核對所有官方 PDF，不宣稱快照永遠為最新版本。",
+  "files": {
+    "健體.json": "f2f86e7ae037bf935030b10abaf86fbbcdac12d0f06bc402a61a85756d97cd85",
+    "國.json": "d8c8afae4cc223907acfd450c0467a07644bb8f28b3c92aef0edf6fd3b5d9e43",
+    "數.json": "375b2f92840b6875e4f4a3d6fa20bd2ac5ac060e9aa109914a71769308d7689c",
+    "社.json": "8510a46047c2c082e4d8c737ac55438aa005451f6f8b47cc8cdb5c6fc0fa143b",
+    "科.json": "ca2a1ad02a5d4f27eb47147b30386dfd70b2ad44968c92c3cbe5b4f5c94d11b4",
+    "綜.json": "11ce3a21771fe4966339baad1a3c3c582c7e51d978eab1d616f7f7ad518d1175",
+    "自.json": "2e3ba64e7e923673cb244d2d400fa3f3eddcbbcc69daae0f705022ad83cf312c",
+    "英.json": "352f57336ed36438d1c9de1a7a3b06f89cd699ee1a5787e051f332d97b9ef09e",
+    "藝.json": "36499a4d8063d2529809e5a19341bbabd3749aa596e968b4952a576b90ac6788"
+  },
+  "counts": {
+    "健康與體育": {
+      "competencies": 27,
+      "performance": 209,
+      "content": 272
+    },
+    "國語文": {
+      "competencies": 27,
+      "performance": 157,
+      "content": 174
+    },
+    "數學": {
+      "competencies": 27,
+      "performance": 131,
+      "content": 227
+    },
+    "社會": {
+      "competencies": 27,
+      "performance": 95,
+      "content": 500
+    },
+    "科技": {
+      "competencies": 18,
+      "performance": 58,
+      "content": 74
+    },
+    "綜合活動": {
+      "competencies": 27,
+      "performance": 76,
+      "content": 262
+    },
+    "自然科學": {
+      "competencies": 27,
+      "performance": 59,
+      "content": 342
+    },
+    "英語文": {
+      "competencies": 22,
+      "performance": 282,
+      "content": 119
+    },
+    "藝術": {
+      "competencies": 27,
+      "performance": 63,
+      "content": 131
+    }
+  }
+}

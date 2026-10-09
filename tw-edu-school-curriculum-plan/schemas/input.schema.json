@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-school-curriculum-plan"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "school_type",
+        "plan_type",
+        "vision",
+        "student_image",
+        "goals",
+        "structure",
+        "units",
+        "review_process",
+        "local_format_note"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "school_type": {
+          "enum": [
+            "國民小學",
+            "國民中學",
+            "高級中等學校"
+          ]
+        },
+        "plan_type": {
+          "enum": [
+            "校訂課程",
+            "彈性學習課程",
+            "學校總體課程計畫"
+          ]
+        },
+        "vision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "student_image": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "goals": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "goal",
+              "image_links"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "goal": {
+                "type": "string",
+                "minLength": 1
+              },
+              "image_links": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "structure": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "grade",
+              "course",
+              "category",
+              "periods_per_week",
+              "weeks",
+              "goal_ids"
+            ],
+            "properties": {
+              "grade": {
+                "type": "string",
+                "minLength": 1
+              },
+              "course": {
+                "type": "string",
+                "minLength": 1
+              },
+              "category": {
+                "type": "string",
+                "minLength": 1
+              },
+              "periods_per_week": {
+                "type": "number",
+                "minimum": 0
+              },
+              "weeks": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "goal_ids": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "course",
+              "unit",
+              "weeks",
+              "learning_focus",
+              "assessment"
+            ],
+            "properties": {
+              "course": {
+                "type": "string",
+                "minLength": 1
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "weeks": {
+                "type": "string",
+                "minLength": 1
+              },
+              "learning_focus": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "assessment": {
+                "type": "string",
+                "minLength": 1
+              },
+              "issues": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "review_process": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "local_format_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_periods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "grade",
+              "periods_per_week",
+              "source"
+            ],
+            "properties": {
+              "grade": {
+                "type": "string",
+                "minLength": 1
+              },
+              "periods_per_week": {
+                "type": "number",
+                "minimum": 0
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

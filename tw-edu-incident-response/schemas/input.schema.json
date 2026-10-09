@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-incident-response"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "incident_type",
+        "facts",
+        "red_flags",
+        "immediate_safety",
+        "not_alone",
+        "follow_up",
+        "case_status"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "incident_type": {
+          "enum": [
+            "同儕衝突",
+            "言語衝突",
+            "肢體衝突",
+            "財物爭議",
+            "網路言論",
+            "其他"
+          ]
+        },
+        "facts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "time",
+              "location",
+              "description",
+              "source"
+            ],
+            "properties": {
+              "time": {
+                "type": "string",
+                "minLength": 1
+              },
+              "location": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "enum": [
+                  "教師目擊",
+                  "學生陳述",
+                  "他人轉述",
+                  "書面或數位紀錄"
+                ]
+              }
+            }
+          }
+        },
+        "red_flags": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "bullying",
+            "gender_equity",
+            "child_protection",
+            "self_harm_or_violence",
+            "campus_safety",
+            "notes"
+          ],
+          "properties": {
+            "bullying": {
+              "type": "boolean"
+            },
+            "gender_equity": {
+              "type": "boolean"
+            },
+            "child_protection": {
+              "type": "boolean"
+            },
+            "self_harm_or_violence": {
+              "type": "boolean"
+            },
+            "campus_safety": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "immediate_safety": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "not_alone": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "follow_up": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "owner",
+              "due"
+            ],
+            "properties": {
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "type": "string",
+                "minLength": 1
+              },
+              "due": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "case_status": {
+          "enum": [
+            "處理中",
+            "已通報待交接",
+            "已交接",
+            "待追蹤",
+            "已結案"
+          ]
+        },
+        "reporting": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "route",
+              "recipient",
+              "deadline",
+              "basis",
+              "status"
+            ],
+            "properties": {
+              "route": {
+                "type": "string",
+                "minLength": 1
+              },
+              "recipient": {
+                "type": "string",
+                "minLength": 1
+              },
+              "deadline": {
+                "type": "string",
+                "minLength": 1
+              },
+              "basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "待通報",
+                  "已通報",
+                  "不適用"
+                ]
+              }
+            }
+          }
+        },
+        "restorative": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eligible",
+            "reason",
+            "steps"
+          ],
+          "properties": {
+            "eligible": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "steps": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "communication": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "party",
+              "channel",
+              "boundary"
+            ],
+            "properties": {
+              "party": {
+                "type": "string",
+                "minLength": 1
+              },
+              "channel": {
+                "type": "string",
+                "minLength": 1
+              },
+              "boundary": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

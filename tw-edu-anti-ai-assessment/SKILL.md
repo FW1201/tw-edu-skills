@@ -1,59 +1,64 @@
 ---
 name: tw-edu-anti-ai-assessment
-description: 檢視評量證據與改善任務設計。適用於抗AI評量、評量真實性。
+description: 評量真實性設計。依教育部人工智慧使用和學習指引，檢視作業與評量被生成式 AI 代勞的風險，區分允許、需揭露、禁止的 AI 用途，並以過程證據、口頭說明、修改歷程與遷移任務重新設計。適用於抗 AI 作業、AI 使用規範、評量真實性、學生用 AI 寫作業怎麼辦。
 metadata:
-  version: 4.1.0
+  version: 4.2.0
   author: 奇老師・數位敘事力社群
+  category: 評量命題
 ---
 
 # 評量真實性設計
 
-檢視評量證據與改善任務設計。適用 Codex 與 Claude Code，繁體中文輸出。
+目標不是「抓出用 AI 的學生」，而是讓評量看得到學生自己的思考過程。偵測器分數、文風與完成速度都不能證明學生作弊。
+
+## 定位與邊界
+
+- **做**：評量項目的 AI 代勞風險評估、AI 使用分級（允許／需揭露／禁止）、過程證據設計、重新設計方案、班級 AI 使用規範。
+- **不做**：判定個別學生是否作弊、使用 AI 偵測器做結論、懲處建議。
 
 ## 開始前
 
-讀取 [共用工作方式](references/common/workflow.md)。檢查目前工作區的 `teacher-profile.md`；本次要求優先於對話脈絡、設定檔及預設。已提供的資訊不要重問。
+讀取 [共用工作方式](references/common/workflow.md)，檢查 `teacher-profile.md`。
 
-## 任務要求
+必要情境：實際的作業或評量題目、作答環境（課堂內、回家）、學段、核心學習目標。
 
-依實際題目、作答環境與核心目標評估風險，寫出評分理由與可行修正。過程證據、口頭說明與課堂觀察相互參照；個人聲明不能證明未用AI，評量設計分數不能判定學生作弊。
+## 思維路線
 
-## 工作流程
+1. **核心目標**：這個評量最想看到學生哪種能力？如果 AI 代勞了，失去的是哪一部分？
+2. **風險評估**：依向度評分（例如任務是否只要最終產物、是否需要個人經驗或在地資料、是否有過程紀錄、是否需要即時口頭說明），寫出評分理由。
+3. **AI 使用分級**：與學生事先約定哪些用途允許（查資料後自行查證、文法檢查）、哪些需揭露（標註工具名稱、版本與對話紀錄）、哪些禁止（直接產出要評量的成果）。
+4. **重新設計**：
+   - 加入過程證據：草稿、修改紀錄、課堂中的部分完成。
+   - 加入個人與在地連結：自己的經驗、班級資料、校園觀察。
+   - 加入口頭說明：簡短的作品說明或問答。
+   - 加入遷移任務：把方法用在新的情境。
+5. **公平性**：重新設計不能讓沒有家中資源的學生吃虧；課堂內提供必要的時間與工具。
+6. **溝通**：向學生與家長說明 AI 使用規範的目的與方式。
 
-1. 確認使用者要完成的成果，讀取素材與必要教學脈絡。
-2. 依上述任務要求提出具體內容，保留來源與待確認事項。需要重大選擇時提供可評估的草稿。
-3. 讀取本技能的 `schemas/` 輸入規格與 `examples/` 範例；以實際內容建立 JSON。範例中的資料不得混入正式成品。
-4. 從任意工作目錄使用下列 CLI。先驗證，再生成，最後檢查成品及驗證紀錄。
+## 台灣情境要點
+
+- 教育部《高級中等以下學校人工智慧使用和學習指引》（115.06.05 核定）依人工智慧基本法七項原則分述教師責任：維持人類監督與專業判斷、評量增加高層次思考與反思、避免上傳學生個資、要求學生標註使用的生成式 AI 名稱、版本與對話歷程、不以帶偏見的 AI 輸出分組或評分、教師對選用的教材負最終責任。原文使用前回查。
+- 風險評估向度見 [AI 代勞風險規準](references/ai_vulnerability_rubric.md)；設計策略見 [真實性評量策略](references/anti_ai_strategies.md)。
+
+## 產出
+
+依 [輸入規格](schemas/input.schema.json) 建立 JSON，[範例](examples/example.json) 只看結構。每個項目包含向度分數、總分、評分理由與重新設計。
 
 ```bash
-# SKILL_DIR 為本技能安裝目錄；TASK_DIR 為目前工作區的任務輸出目錄。
 python3 "$SKILL_DIR/scripts/generate_anti_ai_report.py" --input "$TASK_DIR/input.json" --validate-only
-python3 "$SKILL_DIR/scripts/generate_anti_ai_report.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/output.docx"
-# 僅在明確需要展示時使用；輸出標示為範例。
-python3 "$SKILL_DIR/scripts/generate_anti_ai_report.py" --example --output "$TASK_DIR/example.docx"
+python3 "$SKILL_DIR/scripts/generate_anti_ai_report.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/authenticity.docx"
 ```
 
-## 安裝依賴
+語意閘門：每個項目的向度分數加總必須等於總分。
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
-```
+## 品質關卡
 
-執行生成器時可將上方 python3 換成虛擬環境的 Python。舊版只傳主題或科目的呼叫不再生成固定範例；依 schema 填入實際內容。
+- 每個風險分數都有理由。
+- 重新設計保留原本的核心目標。
+- AI 使用分級清楚，學生知道如何揭露。
+- 沒有任何「判定學生作弊」的結論。
 
+## 交接
 
-## 按需參考
-
-- [評量設計檢視向度（非作弊判定）](references/ai_vulnerability_rubric.md)
-- [任務設計策略（需依實際情境判斷）](references/anti_ai_strategies.md)
-
-參考資料是教學素材；若與本版輸入規格或實際工具能力不同，以當前 schema 與可用工具為準。來源與專業主張需要查證。
-
-## 交付檢查
-
-核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。
-
-## 教學品質與整合模式
-
-以學習過程、解釋、修改與獨立遷移檢視任務真實性；區分教師允許／禁止／需揭露的AI用途。不能憑文本風格、檢測器分數或完成速度判定作弊。
+- 重新設計後的規準 → `tw-edu-rubric-designer`。
+- 班級 AI 使用約定 → `tw-edu-classroom-culture` 或 `tw-edu-homeroom-operations`。

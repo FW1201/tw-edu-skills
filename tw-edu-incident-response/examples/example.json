@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-incident-response",
+  "language": "zh-TW",
+  "context": {
+    "subject": "導師班級經營",
+    "grade": "國中八年級",
+    "topic": "下課肢體衝突"
+  },
+  "sources": [
+    {
+      "title": "教師提供之班級情境描述",
+      "status": "user_provided"
+    },
+    {
+      "title": "校園霸凌防制準則第17條",
+      "status": "verified",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=H0020081"
+    }
+  ],
+  "content": {
+    "title": "八年級下課肢體衝突初步處理紀錄（範例）",
+    "incident_type": "肢體衝突",
+    "facts": [
+      {
+        "time": "10/8 第二節下課",
+        "location": "八年級走廊",
+        "description": "學生B推學生C，學生C跌倒，左手肘擦傷。兩人均稱因借用物品爭執。",
+        "source": "教師目擊"
+      },
+      {
+        "time": "10/8 第三節前",
+        "location": "健康中心",
+        "description": "護理師處理擦傷，記錄傷勢輕微。",
+        "source": "書面或數位紀錄"
+      },
+      {
+        "time": "10/8 午休",
+        "location": "導師辦公室",
+        "description": "學生C表示上週也被學生B拿走文具兩次。",
+        "source": "學生陳述"
+      }
+    ],
+    "red_flags": {
+      "bullying": true,
+      "gender_equity": false,
+      "child_protection": false,
+      "self_harm_or_violence": false,
+      "campus_safety": false,
+      "notes": "學生C陳述有重複發生之情形，可能符合持續性條件，需交學校權責人員判斷"
+    },
+    "immediate_safety": [
+      "分開兩位學生座位與下課動線",
+      "傷口已由健康中心處理",
+      "請科任教師留意兩人互動"
+    ],
+    "reporting": [
+      {
+        "route": "學校權責人員（學務處）",
+        "recipient": "生教組長",
+        "deadline": "立即；學校向主管機關通報至遲 24 小時",
+        "basis": "校園霸凌防制準則第17條",
+        "status": "待通報"
+      }
+    ],
+    "not_alone": [
+      "不由導師私下判定是否構成霸凌",
+      "不安排兩人和解或當面對質",
+      "不自行訪談其他學生取證，交由學校調查程序",
+      "不在班級群組說明事件"
+    ],
+    "restorative": {
+      "eligible": false,
+      "reason": "涉及疑似霸凌，先依正式程序；調和須雙方同意並由學校依程序辦理",
+      "steps": []
+    },
+    "communication": [
+      {
+        "party": "雙方家長",
+        "channel": "電話",
+        "boundary": "說明已發生的事實與學校處理程序，不說明另一方學生資料"
+      }
+    ],
+    "follow_up": [
+      {
+        "action": "將紀錄交學務處",
+        "owner": "導師",
+        "due": "10/8 放學前"
+      },
+      {
+        "action": "一週內觀察兩人互動並記錄",
+        "owner": "導師",
+        "due": "10/15"
+      }
+    ],
+    "case_status": "已通報待交接"
+  }
+}

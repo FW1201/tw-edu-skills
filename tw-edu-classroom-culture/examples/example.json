@@ -3,35 +3,82 @@
   "skill": "tw-edu-classroom-culture",
   "language": "zh-TW",
   "context": {
-    "subject": "國語文",
-    "grade": "國中八年級",
-    "topic": "環境觀察"
+    "subject": "導師班級經營",
+    "grade": "國小三年級",
+    "topic": "建立班級共識"
   },
   "sources": [
     {
-      "title": "教師提供教材",
+      "title": "教師提供之班級情境描述",
       "status": "user_provided"
     }
   ],
   "content": {
-    "title": "班級文化（範例）",
-    "agreements": [
-      "發言前先聽完他人的理由"
+    "title": "三年級班級規範與文化設計（範例）",
+    "norms": {
+      "safety_floor": [
+        "不打人、不推人、不拿危險物品",
+        "被欺負或看到同學被欺負要告訴老師"
+      ],
+      "shared_agreements": [
+        "發言前先舉手",
+        "借東西要先問、用完歸還"
+      ],
+      "choices": [
+        "下課可選擇閱讀角或操場",
+        "作業完成後可選擇延伸活動"
+      ]
+    },
+    "rituals": [
+      {
+        "moment": "開始",
+        "practice": "早上進教室與老師打招呼並放好聯絡簿"
+      },
+      {
+        "moment": "結束",
+        "practice": "放學前 3 分鐘說一件今天學到的事"
+      }
     ],
     "routines": [
       {
-        "situation": "小組討論",
+        "situation": "分組活動",
         "steps": [
-          "確認角色",
-          "記錄共識"
+          "老師說明任務與時間",
+          "組長分配角色",
+          "完成後收回材料"
+        ]
+      }
+    ],
+    "relationship_practices": [
+      "每天至少叫每位學生名字一次",
+      "每週輪流與 3 位學生午餐聊天"
+    ],
+    "class_activities": [
+      {
+        "name": "班級小書房",
+        "purpose": "共同經營閱讀角，培養責任感",
+        "frequency": "每週輪值"
+      }
+    ],
+    "student_voice": [
+      "每月班會討論一條協議是否需要修改"
+    ],
+    "repair_paths": [
+      {
+        "situation": "同學間吵架",
+        "steps": [
+          "先各自冷靜",
+          "說出發生的事與感受",
+          "討論可以怎麼彌補",
+          "老師一週內追蹤"
         ]
       }
     ],
     "response_plan": [
       {
-        "trigger": "討論中斷",
-        "teacher_action": "重述共同規範",
-        "follow_up": "課後檢視分工"
+        "trigger": "違反安全底線",
+        "teacher_action": "立即制止並確保安全，課後個別談話",
+        "follow_up": "必要時通知家長，持續發生時與輔導室討論"
       }
     ]
   }

@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-guidance-collaboration",
+  "language": "zh-TW",
+  "context": {
+    "subject": "導師班級經營",
+    "grade": "國中九年級",
+    "topic": "IEP 會議準備"
+  },
+  "sources": [
+    {
+      "title": "教師提供之班級情境描述",
+      "status": "user_provided"
+    },
+    {
+      "title": "特殊教育法第31條",
+      "status": "verified",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0080027"
+    }
+  ],
+  "content": {
+    "title": "學生E 期初 IEP 會議導師準備單（範例）",
+    "mode": "IEP會議準備",
+    "student_alias": "學生E",
+    "concern": "長篇閱讀與書寫作業完成度低；分組活動時較少發言，但口頭回答時理解正確。",
+    "observation_period": "九年級上學期第 1–4 週",
+    "teacher_actions": [
+      {
+        "action": "考卷題目放大並分段",
+        "period": "第 2–4 週",
+        "result": "國文小考完成題數由 6 題增至 9 題"
+      },
+      {
+        "action": "分組時指定固定夥伴",
+        "period": "第 3–4 週",
+        "result": "小組內開始負責記錄工作"
+      }
+    ],
+    "evidence": [
+      {
+        "type": "作業紀錄",
+        "summary": "長篇閱讀作業 4 次中完成 1 次",
+        "source": "教師觀察"
+      },
+      {
+        "type": "科任回饋",
+        "summary": "自然科口頭問答正確率高，書寫報告未完成",
+        "source": "科任教師"
+      }
+    ],
+    "student_strengths": [
+      "口語理解佳",
+      "願意擔任小組記錄"
+    ],
+    "requested_support": [
+      "討論書寫作業替代形式（口頭、錄音）",
+      "會考相關評量調整的申請時程"
+    ],
+    "class_adjustments": [
+      {
+        "area": "評量",
+        "adjustment": "段考題本放大並分段，延長時間依特教組評估"
+      },
+      {
+        "area": "同儕支持",
+        "adjustment": "固定分組夥伴，每月檢視一次"
+      }
+    ],
+    "meeting_agenda": [
+      "導師報告班級觀察與已試行措施",
+      "討論本學期評量調整方式",
+      "確認導師、科任、特教老師分工"
+    ],
+    "questions_for_team": [
+      "書寫替代形式在各科是否一致",
+      "會考服務申請需導師準備的資料"
+    ],
+    "information_sharing": [
+      {
+        "item": "班級觀察與作業紀錄",
+        "share_with": "IEP 團隊",
+        "reason": "擬定目標所需",
+        "level": "必要分享"
+      },
+      {
+        "item": "家庭背景細節",
+        "share_with": "科任教師",
+        "reason": "教學調整不需要",
+        "level": "不分享"
+      }
+    ],
+    "privacy_notes": [
+      "IEP 文件不放入班級公開區",
+      "與科任教師分享時只提供調整方式，不提供鑑定資料"
+    ],
+    "follow_up": [
+      {
+        "action": "會後一週內向科任教師說明調整方式",
+        "owner": "導師",
+        "due": "會後 7 日"
+      },
+      {
+        "action": "期中檢視調整成效",
+        "owner": "特教老師與導師",
+        "due": "第 10 週"
+      }
+    ]
+  }
+}

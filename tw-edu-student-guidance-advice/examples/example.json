@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-student-guidance-advice",
+  "language": "zh-TW",
+  "context": {
+    "subject": "導師班級經營",
+    "grade": "高中一年級",
+    "topic": "學生近期退縮與缺交作業"
+  },
+  "sources": [
+    {
+      "title": "教師提供之班級情境描述",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "學生D 近期狀況分析與建議（範例）",
+    "student_alias": "學生D",
+    "profile": {
+      "grade_band": "高中一年級",
+      "context": "住校生，週末返家；上學期成績中上，參加熱音社。",
+      "strengths": [
+        "對音樂有熱情",
+        "與一位同學關係穩定"
+      ],
+      "known_supports": [
+        "無已知輔導或特教服務"
+      ]
+    },
+    "timeline": [
+      {
+        "date": "9 月第 2 週",
+        "event": "開始缺交英文與數學作業",
+        "source": "科任教師"
+      },
+      {
+        "date": "9 月第 4 週",
+        "event": "熱音社社長告知學生D 連續兩週未到社團",
+        "source": "同學轉述"
+      },
+      {
+        "date": "10/2",
+        "event": "午休時獨自坐在教室，詢問時說「最近很累、沒事」",
+        "source": "教師觀察"
+      },
+      {
+        "date": "10/6",
+        "event": "家長來電詢問週末返家話變少的原因",
+        "source": "家長告知"
+      }
+    ],
+    "teacher_view": "我覺得他可能是剛上高中課業壓力太大，加上住校不適應，但也擔心是不是有其他事情。",
+    "analysis": {
+      "facts": [
+        "作業缺交自 9 月第 2 週開始",
+        "社團連續兩週缺席",
+        "10/2 自述很累"
+      ],
+      "teacher_interpretations": [
+        "課業壓力與住校適應"
+      ],
+      "ai_inferences": [
+        "多個生活面向在 3–4 週內同時退縮，變化範圍不只課業",
+        "社團原本是重要支持來源，缺席可能代表支持系統減弱"
+      ]
+    },
+    "patterns": [
+      "退縮從課業延伸到社團與家庭互動",
+      "自述「很累」但未說明原因"
+    ],
+    "turning_points": [
+      "9 月第 2 週前表現穩定"
+    ],
+    "protective_factors": [
+      "與一位同學關係穩定",
+      "家長主動關心並聯繫學校"
+    ],
+    "risk_factors": [
+      "多面向同時退縮",
+      "住校減少家庭日常觀察"
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "explanation": "課業難度提升造成挫折與時間壓力",
+        "supporting": [
+          "缺交集中在英文與數學"
+        ],
+        "contradicting": [
+          "社團也停止，非僅課業"
+        ],
+        "check": "與科任教師確認作業困難點；個別談話了解時間安排"
+      },
+      {
+        "id": "H2",
+        "explanation": "宿舍或同儕關係出現變化",
+        "supporting": [
+          "住校生",
+          "社團缺席"
+        ],
+        "contradicting": [
+          "仍與一位同學互動"
+        ],
+        "check": "與宿舍輔導員確認生活作息與人際"
+      },
+      {
+        "id": "H3",
+        "explanation": "情緒困擾或睡眠問題影響整體功能",
+        "supporting": [
+          "自述很累",
+          "多面向同時退縮"
+        ],
+        "contradicting": [],
+        "check": "由輔導老師評估，導師不自行判斷"
+      }
+    ],
+    "red_flag_screen": {
+      "triggered": false,
+      "flags": [],
+      "action": "目前未見自傷言語或受虐跡象；若出現，立即依通報流程並轉介輔導室"
+    },
+    "actions": [
+      {
+        "horizon": "現在",
+        "action": "本週找安靜時間個別談話，表達關心並詢問近況，不追問原因",
+        "owner": "導師",
+        "observe": "是否願意說明、情緒反應"
+      },
+      {
+        "horizon": "下週",
+        "action": "與科任教師、宿舍輔導員交換觀察（限必要資訊）",
+        "owner": "導師",
+        "observe": "其他情境是否有相同變化"
+      },
+      {
+        "horizon": "下階段",
+        "action": "若兩週內無改善或出現新的擔心訊號，填寫轉介單交輔導室",
+        "owner": "導師",
+        "observe": "作業、出席、社團參與"
+      }
+    ],
+    "referral": {
+      "recommended": true,
+      "to": "輔導室（介入性輔導評估）",
+      "reason": "多面向同時退縮且持續超過 3 週，需專業評估"
+    },
+    "monitoring": [
+      "每週作業繳交數",
+      "社團出席",
+      "個別談話時的情緒與用語"
+    ],
+    "limits": [
+      "資料多為轉述與片段觀察",
+      "未取得學生本人完整說法",
+      "本分析不是診斷"
+    ]
+  }
+}

@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-student-guidance-advice"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "student_alias",
+        "profile",
+        "timeline",
+        "teacher_view",
+        "analysis",
+        "patterns",
+        "protective_factors",
+        "risk_factors",
+        "hypotheses",
+        "red_flag_screen",
+        "actions",
+        "referral",
+        "monitoring",
+        "limits"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "student_alias": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12
+        },
+        "profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "grade_band",
+            "context",
+            "strengths"
+          ],
+          "properties": {
+            "grade_band": {
+              "type": "string",
+              "minLength": 1
+            },
+            "context": {
+              "type": "string",
+              "minLength": 1
+            },
+            "strengths": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "known_supports": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "date",
+              "event",
+              "source"
+            ],
+            "properties": {
+              "date": {
+                "type": "string",
+                "minLength": 1
+              },
+              "event": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "enum": [
+                  "教師觀察",
+                  "學生自述",
+                  "家長告知",
+                  "同學轉述",
+                  "科任教師",
+                  "紀錄文件"
+                ]
+              }
+            }
+          }
+        },
+        "teacher_view": {
+          "type": "string",
+          "minLength": 1
+        },
+        "analysis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "facts",
+            "teacher_interpretations",
+            "ai_inferences"
+          ],
+          "properties": {
+            "facts": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "teacher_interpretations": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "ai_inferences": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "patterns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "protective_factors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "risk_factors": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "hypotheses": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "explanation",
+              "supporting",
+              "contradicting",
+              "check"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "supporting": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "contradicting": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "check": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "red_flag_screen": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "triggered",
+            "flags",
+            "action"
+          ],
+          "properties": {
+            "triggered": {
+              "type": "boolean"
+            },
+            "flags": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "action": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "horizon",
+              "action",
+              "owner",
+              "observe"
+            ],
+            "properties": {
+              "horizon": {
+                "enum": [
+                  "現在",
+                  "下週",
+                  "下階段"
+                ]
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observe": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "referral": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "recommended",
+            "to",
+            "reason"
+          ],
+          "properties": {
+            "recommended": {
+              "type": "boolean"
+            },
+            "to": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "monitoring": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "limits": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "turning_points": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

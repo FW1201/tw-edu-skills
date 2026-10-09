@@ -1,58 +1,66 @@
 ---
 name: tw-edu-exam-generator
-description: 製作有答案、解析與配分的評量。適用於出題、試卷、素養題。
+description: 試卷命題。先建雙向細目表（學習目標×認知層次）決定題數與配分，再命素養題情境與題組、單選與非選題，檢核答案唯一、誘答合理、線索不外洩與難度分布，分開輸出學生卷與教師答案卷。適用於段考、小考、素養題、會考學測型題組、出題、試卷。
 metadata:
-  version: 4.1.0
+  version: 4.2.0
   author: 奇老師・數位敘事力社群
+  category: 評量命題
 ---
 
 # 試卷命題
 
-製作有答案、解析與配分的評量。適用 Codex 與 Claude Code，繁體中文輸出。
+好試卷的每一題都知道自己在測哪個目標、哪個層次，而且學生答錯時，老師能從選項看出卡在哪裡。
+
+## 定位與邊界
+
+- **做**：雙向細目表、題型與配分、素養題情境與題組、選項與誘答設計、解析、命題自檢、學生卷與教師卷分離、特殊需求試場調整提示。
+- **不做**：既有試卷的品質審查（→ `tw-edu-material-reviewer`）、作答結果分析（→ `tw-edu-learning-evidence-analyzer`）、評量規準（→ `tw-edu-rubric-designer`）。
 
 ## 開始前
 
-讀取 [共用工作方式](references/common/workflow.md)。檢查目前工作區的 `teacher-profile.md`；本次要求優先於對話脈絡、設定檔及預設。已提供的資訊不要重問。
+讀取 [共用工作方式](references/common/workflow.md)，檢查 `teacher-profile.md`。
 
-## 任務要求
+必要情境：範圍（單元、頁數）、學段、考試時間、總分、題型偏好、教材原文。題目必須能由教材或題目提供的資訊作答；沒有教材時先請老師提供。
 
-先對齊範圍、學習目標、題型與總分。題目必須可由教材或已給資訊作答；選項互斥且答案唯一，解析說明推理。驗證題數與配分，分開輸出學生卷與教師答案卷。
+## 思維路線
 
-## 工作流程
+1. **雙向細目表**：列出範圍內的學習目標，對應認知層次（記憶、理解、應用、分析、評鑑、創造），決定每格題數與配分。重點目標配分高，不讓記憶題占滿。
+2. **難度分布**：預估易、中、難的比例，符合考試目的（段考需區辨、小考看精熟）。
+3. **素養題情境**：情境要真實且必要，閱讀它才能作答；不是在題目前加一段無關故事。題組的各小題要測不同面向，避免前一題答錯導致後面全錯。
+4. **選擇題**：
+   - 題幹完整，讀完就知道要問什麼。
+   - 選項互斥、長度相近、語法一致；答案唯一。
+   - 誘答選項來自常見迷思，解析中說明每個誘答反映的錯誤想法。
+   - 不用「以上皆是」「以上皆非」作為省力的答案。
+5. **非選題**：寫出評分要點與部分給分方式。
+6. **命題自檢**：答案正確且唯一、題與題之間沒有提示答案、題意沒有歧義、數字與單位一致、配分加總等於總分。
+7. **兩份輸出**：學生卷不含答案與解析；教師卷附答案、解析與對應目標。
+8. **特殊需求**：需要放大、報讀、延長時間的學生，依特教組與 IEP 決定；題本可提供放大與分段版本。
 
-1. 確認使用者要完成的成果，讀取素材與必要教學脈絡。
-2. 依上述任務要求提出具體內容，保留來源與待確認事項。需要重大選擇時提供可評估的草稿。
-3. 讀取本技能的 `schemas/` 輸入規格與 `examples/` 範例；以實際內容建立 JSON。範例中的資料不得混入正式成品。
-4. 從任意工作目錄使用下列 CLI。先驗證，再生成，最後檢查成品及驗證紀錄。
+## 台灣情境要點
+
+素養導向命題的原則、題組設計與會考、學測題型特徵，見 [素養命題指引](references/competency_exam_guide.md)。
+
+## 產出
+
+依 [輸入規格](schemas/input.schema.json) 建立 JSON，[範例](examples/example.json) 只看結構。
 
 ```bash
-# SKILL_DIR 為本技能安裝目錄；TASK_DIR 為目前工作區的任務輸出目錄。
 python3 "$SKILL_DIR/scripts/generate_exam.py" --input "$TASK_DIR/input.json" --validate-only
-python3 "$SKILL_DIR/scripts/generate_exam.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/output.docx"
-# 僅在明確需要展示時使用；輸出標示為範例。
-python3 "$SKILL_DIR/scripts/generate_exam.py" --example --output "$TASK_DIR/example.docx"
+python3 "$SKILL_DIR/scripts/generate_exam.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/exam.docx"
 ```
 
-## 安裝依賴
+會產生 `exam-student.docx` 與 `exam-teacher.docx`。語意閘門會擋下：題號重複、實際題數與預期不符、配分加總不等於總分、單選題答案不在選項中、選項編號重複。
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
-```
+## 品質關卡
 
-執行生成器時可將上方 python3 換成虛擬環境的 Python。舊版只傳主題或科目的呼叫不再生成固定範例；依 schema 填入實際內容。
+- 每題都能對到雙向細目表的一格。
+- 答案唯一，解析能說明為何其他選項錯。
+- 學生卷沒有答案、解析或內部標記。
+- 情境資料有來源，數據可查證。
 
+## 交接
 
-## 按需參考
-
-- [素養命題原則](references/competency_exam_guide.md)
-
-參考資料是教學素材；若與本版輸入規格或實際工具能力不同，以當前 schema 與可用工具為準。來源與專業主張需要查證。
-
-## 交付檢查
-
-核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。
-
-## 教學品質與整合模式
-
-命題後以實際作答核對答案、唯一性、誘答理由、配分與題意。學生版不含內部解析；教材審查發現雙答案或來源不足時先修題，再用於學生診斷。
+- 考前請同儕審題 → `tw-edu-material-reviewer`（assessment 模式）。
+- 考後分析 → `tw-edu-learning-evidence-analyzer`。
+- 非選題評分規準 → `tw-edu-rubric-designer`。

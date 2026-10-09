@@ -1,51 +1,64 @@
 ---
 name: tw-edu-rubric-designer
-description: 建立任務專屬的表現描述與評分方式。適用於rubric、評量規準。
+description: 評量規準設計。從任務分析決定整體式或分析式，訂出向度、等級與低推論表現描述，核對配分，並以匿名作品試評校準、產出學生自評與互評版本。適用於 rubric、評量規準、評分標準、實作評量、報告與口頭發表評分、評分校準。
 metadata:
-  version: 4.1.0
+  version: 4.2.0
   author: 奇老師・數位敘事力社群
+  category: 評量命題
 ---
 
 # 評量規準
 
-建立任務專屬的表現描述與評分方式。適用 Codex 與 Claude Code，繁體中文輸出。
+規準要讓兩位老師拿同一份作品評出相近的分數，也要讓學生在動手前就知道「好的作品長什麼樣子」。
+
+## 定位與邊界
+
+- **做**：任務分析、規準類型選擇、向度與權重、等級描述、配分核對、試評校準、學生版。
+- **不做**：單一學生的回饋文字（→ `tw-edu-feedback-writer`）、試題命製（→ `tw-edu-exam-generator`）。
 
 ## 開始前
 
-讀取 [共用工作方式](references/common/workflow.md)。檢查目前工作區的 `teacher-profile.md`；本次要求優先於對話脈絡、設定檔及預設。已提供的資訊不要重問。
+讀取 [共用工作方式](references/common/workflow.md)，檢查 `teacher-profile.md`。
 
-## 任務要求
+必要情境：任務說明、學習目標、學段、總分、是否要讓學生自評。
 
-依任務選整體式或分析式；各等級寫可觀察的表現差異，避免只有優良可等泛稱。分析式每向度有專屬描述與分數，整體式用完整表現描述。核對滿分與權重。
+## 思維路線
 
-## 工作流程
+1. **任務分析**：完成這個任務需要哪些能力？哪些是本次目標，哪些只是附帶（例如排版）？附帶項目不占大比重。
+2. **選類型**：
+   - 整體式：快速判斷整體品質，適合短任務或總結判斷。
+   - 分析式：分向度回饋，適合要讓學生知道改進方向的任務。
+3. **定向度**：3–5 個，彼此不重疊，每個對應學習目標。
+4. **定等級**：通常 3–4 級。先寫最高與最低等級，再寫中間。
+5. **寫低推論描述**：描述作品中看得到的特徵，例如「論點有兩個以上的證據，且說明證據如何支持論點」，而不是「論點很好」。等級之間的差異要是質的差異，不只是「部分」「大部分」。
+6. **配分**：分析式各向度權重加總等於總分；整體式最高等級分數等於總分。
+7. **校準**：選 2–3 份匿名作品，老師們各自試評，比較分歧，修改描述直到分歧縮小。保留分歧與理由。
+8. **學生版**：改寫成學生看得懂的語言，加上自評或互評的提示，以及一項「下次可以修改的地方」。
 
-1. 確認使用者要完成的成果，讀取素材與必要教學脈絡。
-2. 依上述任務要求提出具體內容，保留來源與待確認事項。需要重大選擇時提供可評估的草稿。
-3. 讀取本技能的 `schemas/` 輸入規格與 `examples/` 範例；以實際內容建立 JSON。範例中的資料不得混入正式成品。
-4. 從任意工作目錄使用下列 CLI。先驗證，再生成，最後檢查成品及驗證紀錄。
+## 台灣情境要點
+
+- 常用於定期評量的實作與報告、課程學習成果、專題發表。
+- 規準不用字數、頁數或版面美觀取代能力判斷。
+
+## 產出
+
+依 [輸入規格](schemas/input.schema.json) 建立 JSON，[範例](examples/example.json) 只看結構。`type` 為 analytic 時填 `dimensions`，holistic 時填 `descriptions`。
 
 ```bash
-# SKILL_DIR 為本技能安裝目錄；TASK_DIR 為目前工作區的任務輸出目錄。
 python3 "$SKILL_DIR/scripts/generate_rubric.py" --input "$TASK_DIR/input.json" --validate-only
-python3 "$SKILL_DIR/scripts/generate_rubric.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/output.docx"
-# 僅在明確需要展示時使用；輸出標示為範例。
-python3 "$SKILL_DIR/scripts/generate_rubric.py" --example --output "$TASK_DIR/example.docx"
+python3 "$SKILL_DIR/scripts/generate_rubric.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/rubric.docx"
 ```
 
-## 安裝依賴
+語意閘門會擋下：等級或向度編號重複、分析式某向度缺少任一等級描述、權重加總不等於總分、整體式最高分不等於總分。
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
-```
+## 品質關卡
 
-執行生成器時可將上方 python3 換成虛擬環境的 Python。舊版只傳主題或科目的呼叫不再生成固定範例；依 schema 填入實際內容。
+- 每個描述都能在作品中被指出來。
+- 相鄰等級的差異清楚。
+- 配分與學習目標的重要性相符。
+- 有學生看得懂的版本。
 
-## 交付檢查
+## 交接
 
-核對年段、科目與實際內容；不把未查證的資料寫成事實。確認學生可見成品未混入內部答案或理由。提供成品路徑與尚待教師確認項目，未執行的外部操作不標記完成。
-
-## 教學品質與整合模式
-
-calibration 模式：用匿名作品獨立試評，保留判分證據與分歧，再修訂描述。提供學生可理解的自評／互評提示與一項修正；量尺不得以字數或版面取代任務能力。
+- 依規準寫回饋 → `tw-edu-feedback-writer`。
+- 規準用於專題 → `tw-edu-pbl-designer`。

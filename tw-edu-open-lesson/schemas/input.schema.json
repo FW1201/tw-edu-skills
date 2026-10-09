@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-open-lesson"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "stage",
+        "lesson_info",
+        "records_privacy"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stage": {
+          "enum": [
+            "共同備課",
+            "觀課",
+            "議課",
+            "三階段完整"
+          ]
+        },
+        "lesson_info": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "teacher_role",
+            "class_info",
+            "unit",
+            "date"
+          ],
+          "properties": {
+            "teacher_role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "class_info": {
+              "type": "string",
+              "minLength": 1
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "date": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "records_privacy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prep": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "learning_goals",
+            "student_prior",
+            "observation_focus",
+            "evidence_to_collect",
+            "observers"
+          ],
+          "properties": {
+            "learning_goals": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "student_prior": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "observation_focus": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "maxItems": 3
+            },
+            "evidence_to_collect": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "observers": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "observer",
+                  "focus",
+                  "position"
+                ],
+                "properties": {
+                  "observer": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "focus": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "position": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "time",
+              "target",
+              "behavior",
+              "observer"
+            ],
+            "properties": {
+              "time": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target": {
+                "type": "string",
+                "minLength": 1
+              },
+              "behavior": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "artifact": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "debrief": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "facts",
+            "interpretations",
+            "learning_evidence",
+            "next_trial"
+          ],
+          "properties": {
+            "facts": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "interpretations": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "learning_evidence": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "next_trial": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "teacher_reflection": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

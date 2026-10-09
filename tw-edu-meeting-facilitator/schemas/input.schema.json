@@ -57,15 +57,15 @@
             "type": "string",
             "minLength": 1
           },
-          "url": {
-            "type": "string"
-          },
           "status": {
             "enum": [
               "verified",
               "user_provided",
               "pending"
             ]
+          },
+          "url": {
+            "type": "string"
           }
         }
       }
@@ -75,15 +75,37 @@
       "additionalProperties": false,
       "required": [
         "title",
+        "meeting_type",
+        "date",
+        "duration_minutes",
         "participants",
         "agenda",
-        "decisions",
-        "actions"
+        "actions",
+        "record_status"
       ],
       "properties": {
         "title": {
           "type": "string",
           "minLength": 1
+        },
+        "meeting_type": {
+          "enum": [
+            "校務會議",
+            "行政會議",
+            "課程發展委員會",
+            "領域教學研究會",
+            "學生事務相關會議",
+            "班親會",
+            "其他"
+          ]
+        },
+        "date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1
         },
         "participants": {
           "type": "array",
@@ -102,7 +124,8 @@
             "required": [
               "topic",
               "minutes",
-              "owner"
+              "owner",
+              "kind"
             ],
             "properties": {
               "topic": {
@@ -116,16 +139,16 @@
               "owner": {
                 "type": "string",
                 "minLength": 1
+              },
+              "kind": {
+                "enum": [
+                  "報告事項",
+                  "討論事項",
+                  "臨時動議",
+                  "其他"
+                ]
               }
             }
-          }
-        },
-        "decisions": {
-          "type": "array",
-          "minItems": 0,
-          "items": {
-            "type": "string",
-            "minLength": 1
           }
         },
         "actions": {
@@ -135,22 +158,106 @@
             "type": "object",
             "additionalProperties": false,
             "required": [
-              "owner",
               "action",
+              "owner",
               "due"
             ],
             "properties": {
-              "owner": {
+              "action": {
                 "type": "string",
                 "minLength": 1
               },
-              "action": {
+              "owner": {
                 "type": "string",
                 "minLength": 1
               },
               "due": {
                 "type": "string",
                 "minLength": 1
+              }
+            }
+          }
+        },
+        "record_status": {
+          "enum": [
+            "議程草案",
+            "紀錄草稿",
+            "已確認紀錄"
+          ]
+        },
+        "reports": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "unit",
+              "summary"
+            ],
+            "properties": {
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "discussions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "case_no",
+              "proposer",
+              "cause",
+              "explanation",
+              "resolution",
+              "status"
+            ],
+            "properties": {
+              "case_no": {
+                "type": "string",
+                "minLength": 1
+              },
+              "proposer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cause": {
+                "type": "string",
+                "minLength": 1
+              },
+              "explanation": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "resolution": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "通過",
+                  "修正通過",
+                  "不通過",
+                  "保留",
+                  "待決議"
+                ]
               }
             }
           }

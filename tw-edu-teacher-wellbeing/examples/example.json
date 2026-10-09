@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-teacher-wellbeing",
+  "language": "zh-TW",
+  "context": {
+    "subject": "教師專業",
+    "grade": "國民小學",
+    "topic": "面對家長陳情後的壓力"
+  },
+  "sources": [
+    {
+      "title": "教師本人描述之近況",
+      "status": "user_provided"
+    },
+    {
+      "title": "高級中等以下學校教師諮商輔導支持體系設立辦法",
+      "status": "verified",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0060086"
+    }
+  ],
+  "content": {
+    "title": "近期壓力支持計畫（範例）",
+    "situation": "三週前收到家長向教育局陳情，學校正在了解中；最近晚上常查看通訊軟體，擔心再有訊息。",
+    "stressors": [
+      {
+        "source": "家長申訴或陳情",
+        "description": "陳情內容涉及作業量，結果未定"
+      },
+      {
+        "source": "工作負荷",
+        "description": "同時準備公開授課"
+      }
+    ],
+    "signals": [
+      "入睡困難，約持續兩週",
+      "上課前會胃不舒服",
+      "對同事的關心回應變少"
+    ],
+    "risk_screen": {
+      "self_harm_thoughts": false,
+      "unable_to_function": false,
+      "note": "仍能正常上課與照顧家庭"
+    },
+    "strengths": [
+      "同學年老師願意支持",
+      "過去處理親師溝通經驗"
+    ],
+    "coping_now": [
+      "晚上 9 點後通訊軟體設勿擾",
+      "每天下課後散步 15 分鐘",
+      "把擔心寫下來，區分可控與不可控"
+    ],
+    "resources": [
+      {
+        "resource": "教育部教師支持中心",
+        "access": "教師可直接申請個別諮商或專業諮詢",
+        "note": "依法不得因使用服務而受差別待遇"
+      },
+      {
+        "resource": "學校教師會",
+        "access": "洽詢陳情處理程序與陪同"
+      },
+      {
+        "resource": "衛福部安心專線 1925",
+        "access": "24 小時電話",
+        "note": "情緒難以承受時使用"
+      }
+    ],
+    "boundaries": [
+      "家長訊息於上班時間回覆",
+      "陳情相關事項一律經由學校窗口"
+    ],
+    "scripts": [
+      {
+        "situation": "家長在群組追問",
+        "script": "謝謝您的關心，這件事學校正在了解，我會依學校程序回覆，個別事項請私訊或電話聯繫。"
+      }
+    ],
+    "records_habits": [
+      "重要溝通當天記錄時間、內容與在場人員",
+      "作業規劃與調整理由保存在教學檔案"
+    ],
+    "plan": [
+      {
+        "horizon": "現在",
+        "action": "今晚開始設定勿擾時段"
+      },
+      {
+        "horizon": "本週",
+        "action": "預約教師支持中心諮詢一次"
+      },
+      {
+        "horizon": "本月",
+        "action": "與教師會確認陳情處理程序"
+      }
+    ],
+    "follow_up": "兩週後回顧睡眠與上課前的身體狀況"
+  }
+}

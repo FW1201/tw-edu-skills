@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-behavior-support"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "student_alias",
+        "behavior_definition",
+        "baseline",
+        "abc_records",
+        "function_hypotheses",
+        "support_tier",
+        "prevention",
+        "replacement_behavior",
+        "response_plan",
+        "review",
+        "stop_conditions",
+        "safety_check"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "student_alias": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12
+        },
+        "behavior_definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "period",
+            "frequency",
+            "settings"
+          ],
+          "properties": {
+            "period": {
+              "type": "string",
+              "minLength": 1
+            },
+            "frequency": {
+              "type": "string",
+              "minLength": 1
+            },
+            "settings": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "abc_records": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "when",
+              "antecedent",
+              "behavior",
+              "consequence"
+            ],
+            "properties": {
+              "when": {
+                "type": "string",
+                "minLength": 1
+              },
+              "antecedent": {
+                "type": "string",
+                "minLength": 1
+              },
+              "behavior": {
+                "type": "string",
+                "minLength": 1
+              },
+              "consequence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "function_hypotheses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "function",
+              "statement",
+              "evidence_for",
+              "evidence_against",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "function": {
+                "enum": [
+                  "取得注意",
+                  "取得物品或活動",
+                  "逃避任務",
+                  "逃避人際或感官刺激",
+                  "感官調節",
+                  "尚不確定"
+                ]
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_for": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "evidence_against": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "status": {
+                "enum": [
+                  "假設",
+                  "初步支持",
+                  "不支持"
+                ]
+              }
+            }
+          }
+        },
+        "support_tier": {
+          "enum": [
+            "班級層級",
+            "個別層級",
+            "家庭協作",
+            "專業轉介",
+            "行政協助"
+          ]
+        },
+        "prevention": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "replacement_behavior": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "behavior",
+            "teaching_steps",
+            "reinforcement"
+          ],
+          "properties": {
+            "behavior": {
+              "type": "string",
+              "minLength": 1
+            },
+            "teaching_steps": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "reinforcement": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "response_plan": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "situation",
+              "teacher_response"
+            ],
+            "properties": {
+              "situation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "teacher_response": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "method",
+            "owner",
+            "review_date"
+          ],
+          "properties": {
+            "method": {
+              "type": "string",
+              "minLength": 1
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1
+            },
+            "review_date": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "stop_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "safety_check": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "red_flags_present",
+            "note"
+          ],
+          "properties": {
+            "red_flags_present": {
+              "type": "boolean"
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "strengths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "collaboration": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "who",
+              "role"
+            ],
+            "properties": {
+              "who": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

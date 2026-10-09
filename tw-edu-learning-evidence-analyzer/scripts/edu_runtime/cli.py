@@ -23,6 +23,12 @@ SKILLS = {
     "tw-edu-worksheet-creator": "docx", "tw-edu-anti-ai-assessment": "docx",
     "tw-edu-mini-app": "html", "tw-edu-research-viz": "png",
     "tw-edu-slides-creator": "pptx",
+    "tw-edu-homeroom-operations": "docx", "tw-edu-behavior-support": "docx",
+    "tw-edu-incident-response": "docx", "tw-edu-student-guidance-advice": "docx",
+    "tw-edu-guidance-collaboration": "docx", "tw-edu-official-document": "docx",
+    "tw-edu-lesson-design-brainstorm": "docx", "tw-edu-school-curriculum-plan": "docx",
+    "tw-edu-open-lesson": "docx", "tw-edu-conduct-comments": "docx",
+    "tw-edu-school-affairs-meeting": "docx", "tw-edu-teacher-wellbeing": "docx",
 }
 
 class InputError(Exception): pass
@@ -61,7 +67,13 @@ def _validate(data: dict, schema_path: Path) -> None:
         location = ".".join(str(p) for p in e.absolute_path) or "$"
         raise InputError(f"validation failed at {location}: {e.message}") from e
 
-def _semantic(skill: str, d: dict) -> None:
+def _semantic(skill: str, d: dict) -> list[str]:
+    _legacy_semantic(skill, d)
+    from .semantics import check
+    try: return check(skill, d)
+    except (ValueError, KeyError, TypeError) as exc: raise InputError(str(exc)) from exc
+
+def _legacy_semantic(skill: str, d: dict) -> None:
     c = d["content"]
     if skill == "tw-edu-learning-evidence-analyzer":
         from .learning_evidence import analyze
@@ -131,14 +143,10 @@ def _semantic(skill: str, d: dict) -> None:
 
 DOC_LABELS={
 "tw-edu-feedback-writer":{"students":"學生觀察與回饋"},"tw-edu-learning-portfolio":{"records":"學習歷程紀錄"},
-"tw-edu-classroom-culture":{"agreements":"班級共識","routines":"日常程序","response_plan":"事件回應計畫"},
 "tw-edu-differentiated":{"shared_goal":"共同學習目標","learner_groups":"學習需求與支持","activities":"差異化活動"},
 "tw-edu-formative-assessment":{"learning_target":"學習目標","checks":"評量檢核","response_rules":"依證據調整教學"},
 "tw-edu-interdisciplinary":{"disciplines":"跨域學科","driving_question":"驅動問題","discipline_contributions":"各科貢獻","activities":"學習活動","product":"成果作品"},
-"tw-edu-meeting-facilitator":{"participants":"與會人員","agenda":"議程","decisions":"決議","actions":"待辦追蹤"},
-"tw-edu-parent-communication":{"recipients":"收件對象","purpose":"溝通目的","message":"訊息內容","requested_action":"期待配合事項","contact_channel":"聯絡管道"},
 "tw-edu-pbl-designer":{"driving_question":"驅動問題","authentic_context":"真實情境","milestones":"里程碑","final_product":"最終成果","assessment_criteria":"評量準則"},
-"tw-edu-school-document":{"document_type":"文件類型","basis":"依據","purpose":"目的","implementation":"實施方式","responsible_people":"權責人員","expected_results":"預期成果"},
 "tw-edu-worksheet-creator":{"instructions":"作答說明","prompts":"學習任務","reflection":"反思問題"},
 "tw-edu-anti-ai-assessment":{"items":"評量項目、向度分數與設計理由"},
 }
@@ -152,17 +160,23 @@ def _strings(value: Any, prefix=""):
     elif value is not None: yield prefix.rstrip("｜"), str(value)
 
 def _docx(d: dict, output: Path, teacher=False) -> None:
-    from docx import Document
-    from docx.oxml import OxmlElement
-    from docx.oxml.ns import qn
-    from docx.shared import Cm, Pt, RGBColor
-    doc = Document(); sec = doc.sections[0]; sec.page_width=Cm(21); sec.page_height=Cm(29.7); sec.top_margin=sec.bottom_margin=Cm(1.8); sec.left_margin=sec.right_margin=Cm(2)
+    from .docstyle import new_document, finish
+    from .layouts import LAYOUTS, render as render_layout
+    doc = new_document()
+    if d["skill"] == "tw-edu-official-document":
+        from .official import render_official
+        render_official(doc, d); finish(doc, output); return
     title = d["content"].get("title") or d["context"].get("topic") or d["skill"]
     doc.add_heading(title + ("｜教師答案" if teacher else ""), 0)
     doc.add_paragraph(f"{d['context'].get('subject','')}　{d['context'].get('grade','')}")
     doc.add_heading("來源與查核狀態",1)
     for source in d["sources"]: doc.add_paragraph(f"{source['title']}｜{source['status']}"+(f"｜{source['url']}" if source.get('url') else ""))
-    if d["skill"] == "tw-edu-lesson-plan-108":
+    if d["skill"] in LAYOUTS:
+        render_layout(doc, d, LAYOUTS[d["skill"]])
+    elif d["skill"] == "tw-edu-conduct-comments":
+        from .official import render_conduct
+        render_conduct(doc, d)
+    elif d["skill"] == "tw-edu-lesson-plan-108":
         c=d["content"]
         for heading,items,columns in [("學習目標",c["objectives"],["id","description"]),("教學活動",c["activities"],["id","title","minutes","instructions","objective_ids"]),("評量設計",c["assessments"],["id","method","criteria","objective_ids"])]:
             doc.add_heading(heading,1); table=doc.add_table(rows=1,cols=len(columns)); table.style="Table Grid"
@@ -170,6 +184,14 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
             for item in items:
                 cells=table.add_row().cells
                 for j,key in enumerate(columns): cells[j].text="、".join(item[key]) if isinstance(item[key],list) else str(item[key])
+        for key,heading in [("mode","設計模式"),("learning_focus","學習重點"),("issues","議題融入"),("differentiation","差異化與支持")]:
+            if key not in c: continue
+            doc.add_heading(heading,1); value=c[key]
+            if isinstance(value,dict):
+                doc.add_paragraph("學習表現："+"、".join(value["performance"])); doc.add_paragraph("學習內容："+"、".join(value["content"]))
+            elif isinstance(value,list):
+                for x in value: doc.add_paragraph(x,style="List Bullet")
+            else: doc.add_paragraph(value)
         if c.get("curriculum_codes"):
             doc.add_heading("課綱代碼與查核",1)
             for code in c["curriculum_codes"]: doc.add_paragraph(f"{code['code']}｜{'已查核' if code['verified'] else '待查核'}｜{code['description']}｜{code.get('verification_note','')}")
@@ -245,38 +267,7 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
             elif isinstance(val,dict):
                 for label,text in _strings(val): doc.add_paragraph(f"{label}：{text}")
             else: doc.add_paragraph(str(val))
-    styles=doc.styles
-    for n in ["Normal","Title","Heading 1","Heading 2"]:
-        styles[n].font.name="Noto Sans TC"; styles[n]._element.rPr.rFonts.set(qn("w:eastAsia"),"Noto Sans TC"); styles[n].font.size=Pt(11 if n=="Normal" else 16)
-        styles[n].paragraph_format.line_spacing=1.35
-        styles[n].font.color.rgb = RGBColor(0, 0, 0)
-        for border in styles[n]._element.xpath('.//w:pBdr'):
-            border.getparent().remove(border)
-    for paragraph in doc.paragraphs:
-        for border in paragraph._p.xpath('.//w:pBdr'):
-            border.getparent().remove(border)
-    for table in doc.tables:
-        header = OxmlElement('w:tblHeader')
-        table.rows[0]._tr.get_or_add_trPr().append(header)
-        headings = [cell.text for cell in table.rows[0].cells]
-        weights = [1 if h in {'編號','分鐘','配分'} else 2 if h == '對應目標' else 4 for h in headings]
-        table.autofit = False
-        for j, weight in enumerate(weights):
-            table.columns[j].width = Cm(17 * weight / sum(weights))
-        for row in table.rows:
-            for j, cell in enumerate(row.cells):
-                cell.width = Cm(17 * weights[j] / sum(weights))
-                for p in cell.paragraphs:
-                    p.paragraph_format.space_after = Pt(4)
-                    p.paragraph_format.space_before = Pt(4)
-                    p.paragraph_format.line_spacing = 1.15
-                    for run in p.runs:
-                        run.font.name = 'Noto Sans TC'
-                        run._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'), 'Noto Sans TC')
-    for paragraph in doc.paragraphs:
-        for run in paragraph.runs:
-            run.font.name="Noto Sans TC"; run._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"),"Noto Sans TC")
-    output.parent.mkdir(parents=True,exist_ok=True); doc.save(output)
+    finish(doc, output)
 
 def _xlsx(d: dict, output: Path) -> None:
     from openpyxl import Workbook
@@ -293,6 +284,11 @@ def _xlsx(d: dict, output: Path) -> None:
     for row in ws.iter_rows():
         for cell in row: cell.alignment=Alignment(vertical="top",wrap_text=True)
     ws.freeze_panes = 'A5'
+    if c.get("school_events"):
+        ev=wb.create_sheet("校行事對照"); ev.append(["週次","校行事"])
+        for cell in ev[1]: cell.font=Font(bold=True)
+        for e in c["school_events"]: ev.append([e["week"],e["event"]])
+        ev.column_dimensions["A"].width=12; ev.column_dimensions["B"].width=50
     ws.print_title_rows = '1:4'
     ws.sheet_properties.pageSetUpPr.fitToPage = True
     ws.page_setup.orientation = 'landscape'
@@ -335,21 +331,21 @@ def _png(d: dict, output: Path) -> None:
         if i<len(labels)-1: draw.line((800,y+box_h,800,y+gap),fill="#2471A3",width=4); draw.polygon([(790,y+gap-12),(810,y+gap-12),(800,y+gap)],fill="#2471A3")
     output.parent.mkdir(parents=True,exist_ok=True); image.save(output)
 
-def _report(input_path: Path, outputs: list[Path], d: dict, sample: bool) -> Path:
+def _report(input_path: Path, outputs: list[Path], d: dict, sample: bool, advisories: list[str] | None = None) -> Path:
     primary=outputs[0]; report=primary.with_name(primary.name+".validation.json")
     checks=[]
     if any(x["status"]!="verified" for x in d["sources"]): checks.append("source_verification")
     if d["skill"]=="tw-edu-lesson-plan-108" and any(not x.get("verified") for x in d["content"].get("curriculum_codes",[])): checks.append("curriculum_code_verification")
     if d["skill"]=="tw-edu-curriculum-mapper" and any(not x.get("verified") for u in d["content"]["units"] for x in u["codes"]): checks.append("curriculum_code_verification")
     checks.append("human_visual_review")
-    body={"schema_version":"1.0","skill":d["skill"],"sample":sample,"input":{"path":str(input_path),"sha256":_hash(input_path)},"outputs":[{"path":str(x),"sha256":_hash(x)} for x in outputs],"pending_checks":checks}
+    body={"schema_version":"1.0","skill":d["skill"],"sample":sample,"input":{"path":str(input_path),"sha256":_hash(input_path)},"outputs":[{"path":str(x),"sha256":_hash(x)} for x in outputs],"pending_checks":checks,"advisories":advisories or []}
     report.write_text(json.dumps(body,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"); return report
 
 def run(skill: str, input_path: Path, output: Path, validate_only=False, sample=False) -> list[Path]:
     root=_skill_dir(); schema=root/"schemas"/"input.schema.json"; d=_json(input_path)
     _validate(d,schema)
     if d.get("skill") != skill: raise InputError(f"input skill must be {skill}")
-    _semantic(skill,d)
+    advisories=_semantic(skill,d)
     if skill == 'tw-edu-slides-creator':
         from .slides import prepare
         try: prepare(d['content'], input_path.resolve().parent)
@@ -379,7 +375,7 @@ def run(skill: str, input_path: Path, output: Path, validate_only=False, sample=
         from .slides import render as render_slides
         {"docx":_docx,"xlsx":_xlsx,"html":_html,"png":_png,"pptx":render_slides}[kind](d,output); outputs=[output]
     if skill == "tw-edu-learning-evidence-analyzer": outputs.append(evidence_file)
-    _report(input_path,outputs,d,sample); return outputs
+    _report(input_path,outputs,d,sample,advisories); return outputs
 
 def main(skill_name: str) -> int:
     if skill_name not in SKILLS: print(f"unsupported skill: {skill_name}",file=sys.stderr); return 2

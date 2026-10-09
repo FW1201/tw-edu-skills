@@ -3,36 +3,74 @@
   "skill": "tw-edu-school-document",
   "language": "zh-TW",
   "context": {
-    "subject": "國語文",
-    "grade": "國中八年級",
-    "topic": "環境觀察"
+    "subject": "教育行政",
+    "grade": "國民中學",
+    "topic": "閱讀推廣補助申請"
   },
   "sources": [
     {
-      "title": "教師提供教材",
+      "title": "承辦人提供之計畫構想與報價單",
       "status": "user_provided"
     }
   ],
   "content": {
-    "title": "校園觀察活動計畫（範例）",
-    "document_type": "plan",
+    "title": "115 學年度閱讀推廣活動補助申請計畫（範例）",
+    "document_type": "補助申請計畫",
+    "approval_status": "草稿",
     "basis": [
-      "校本課程規劃"
+      "○○市政府教育局 115 年度閱讀推廣補助要點（待確認文號）"
     ],
     "purpose": [
-      "培養觀察與表達能力"
+      "提升七年級學生課外閱讀量",
+      "建立班級共讀機制"
     ],
     "implementation": [
       {
-        "item": "活動方式",
-        "details": "分組完成校園觀察紀錄"
+        "item": "班級共讀",
+        "details": "每班每學期共讀 2 本書，導師帶領討論"
+      },
+      {
+        "item": "作家講座",
+        "details": "邀請作家到校分享 1 場"
+      }
+    ],
+    "schedule": [
+      {
+        "date": "115年10月",
+        "item": "選書與購書"
+      },
+      {
+        "date": "115年12月",
+        "item": "作家講座"
       }
     ],
     "responsible_people": [
-      "教學組"
+      "教務處設備組：購書與經費",
+      "七年級導師：班級共讀"
     ],
+    "budget": [
+      {
+        "item": "共讀書籍",
+        "amount": 18000,
+        "unit": "60 本 × 300 元",
+        "basis": "書商報價單"
+      },
+      {
+        "item": "講師鐘點費",
+        "amount": 4000,
+        "unit": "2 小時 × 2,000 元",
+        "basis": "依講座鐘點費支給規定（待確認）"
+      }
+    ],
+    "total_budget": 22000,
+    "funding_source": "申請教育局補助",
     "expected_results": [
-      "每組完成一份紀錄"
+      "七年級每生學期閱讀至少 2 本",
+      "完成共讀討論紀錄"
+    ],
+    "pending": [
+      "補助要點文號與申請期限",
+      "鐘點費支給標準確認"
     ]
   }
 }

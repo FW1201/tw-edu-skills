@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-homeroom-operations"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "period",
+        "class_profile",
+        "boundaries",
+        "routines",
+        "timeline"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "period": {
+          "enum": [
+            "開學建班",
+            "學期中",
+            "學期末交接",
+            "全學年"
+          ]
+        },
+        "class_profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "boundaries": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "admin_procedures",
+            "class_decisions"
+          ],
+          "properties": {
+            "admin_procedures": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "class_decisions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "routines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "owner",
+              "when",
+              "steps",
+              "check"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "enum": [
+                  "導師",
+                  "學生幹部",
+                  "全班輪值",
+                  "科任教師",
+                  "學務處",
+                  "輔導室",
+                  "家長"
+                ]
+              },
+              "when": {
+                "type": "string",
+                "minLength": 1
+              },
+              "steps": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "check": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "when",
+              "tasks"
+            ],
+            "properties": {
+              "when": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tasks": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "role",
+              "tasks",
+              "authority",
+              "rotation",
+              "support"
+            ],
+            "properties": {
+              "role": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tasks": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "authority": {
+                "type": "string",
+                "minLength": 1
+              },
+              "rotation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "support": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "attendance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "daily_check",
+            "follow_up",
+            "alert_threshold",
+            "notify",
+            "basis"
+          ],
+          "properties": {
+            "daily_check": {
+              "type": "string",
+              "minLength": 1
+            },
+            "follow_up": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "alert_threshold": {
+              "type": "string",
+              "minLength": 1
+            },
+            "notify": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "communication": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "channel",
+              "purpose",
+              "frequency",
+              "privacy_rule"
+            ],
+            "properties": {
+              "channel": {
+                "enum": [
+                  "聯絡簿",
+                  "班級群組",
+                  "電話",
+                  "書面通知",
+                  "校務系統",
+                  "面談"
+                ]
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frequency": {
+                "type": "string",
+                "minLength": 1
+              },
+              "privacy_rule": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "device_agreement": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "handover": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "strengths",
+            "ongoing_supports",
+            "records_location",
+            "privacy_note"
+          ],
+          "properties": {
+            "strengths": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "ongoing_supports": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "records_location": {
+              "type": "string",
+              "minLength": 1
+            },
+            "privacy_note": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "pending": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

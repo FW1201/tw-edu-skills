@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-open-lesson",
+  "language": "zh-TW",
+  "context": {
+    "subject": "數學",
+    "grade": "國小五年級",
+    "topic": "公開授課：分數的除法"
+  },
+  "sources": [
+    {
+      "title": "授課教師與觀課教師提供之備課與觀察紀錄",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "五年級數學公開授課三階段紀錄（範例）",
+    "stage": "三階段完整",
+    "lesson_info": {
+      "teacher_role": "五年級導師（授課者）",
+      "class_info": "五年甲班 26 人",
+      "unit": "分數除以整數",
+      "date": "115年10月20日第3節"
+    },
+    "prep": {
+      "learning_goals": [
+        "能用圖示說明分數除以整數的意義"
+      ],
+      "student_prior": [
+        "已學過分數乘以整數",
+        "部分學生圖示表徵不穩定"
+      ],
+      "observation_focus": [
+        "學生如何用圖示說明自己的做法"
+      ],
+      "evidence_to_collect": [
+        "小組白板照片",
+        "學生口頭說明的關鍵句"
+      ],
+      "observers": [
+        {
+          "observer": "教師甲",
+          "focus": "第 1、2 組的圖示與說明",
+          "position": "教室左側"
+        },
+        {
+          "observer": "教師乙",
+          "focus": "第 3、4 組",
+          "position": "教室右側"
+        }
+      ]
+    },
+    "observations": [
+      {
+        "time": "10:12",
+        "target": "第1組",
+        "behavior": "學生S1 將長方形分成 4 等份後再塗 3/4 的一半，說「一半就是除以2」。",
+        "artifact": "第1組白板",
+        "observer": "教師甲"
+      },
+      {
+        "time": "10:20",
+        "target": "第3組",
+        "behavior": "學生S7 寫出 3/4÷2=3/8，未畫圖；同組 S8 問「為什麼分母變 8」，S7 未回答。",
+        "observer": "教師乙"
+      }
+    ],
+    "debrief": {
+      "facts": [
+        "4 組中 2 組完成圖示說明",
+        "第3組以算式完成但未能說明理由"
+      ],
+      "interpretations": [
+        "部分學生已掌握程序，但連結圖示與算式仍有困難"
+      ],
+      "learning_evidence": [
+        "S1 能用「一半」連結除以2",
+        "S8 的提問顯示同儕能質疑理由"
+      ],
+      "next_trial": [
+        "下次先請學生口頭說明圖示，再寫算式",
+        "提供 2 種圖示讓學生比較"
+      ],
+      "teacher_reflection": "我原本預期算式組會較快，但說明理由才是本節目標，下一輪調整活動順序。"
+    },
+    "records_privacy": "學生以座號代碼記錄；照片不含正臉，僅供本校社群研討使用。"
+  }
+}

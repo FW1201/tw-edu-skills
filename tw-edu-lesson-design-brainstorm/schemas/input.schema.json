@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "skill",
+    "language",
+    "context",
+    "sources",
+    "content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill": {
+      "const": "tw-edu-lesson-design-brainstorm"
+    },
+    "language": {
+      "const": "zh-TW"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "grade",
+        "topic"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "user_provided",
+              "pending"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "topic_input",
+        "learners",
+        "constraints",
+        "divergence",
+        "selected",
+        "big_idea",
+        "learning_focus",
+        "evidence",
+        "activity_outline",
+        "open_questions",
+        "next_skill"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic_input": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learners": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "divergence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "student_connections",
+            "authentic_contexts",
+            "interdisciplinary_angles",
+            "issues",
+            "essential_questions"
+          ],
+          "properties": {
+            "student_connections": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "authentic_contexts": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "interdisciplinary_angles": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "issues": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "essential_questions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "selected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "angle",
+            "rationale"
+          ],
+          "properties": {
+            "angle": {
+              "type": "string",
+              "minLength": 1
+            },
+            "rationale": {
+              "type": "string",
+              "minLength": 1
+            },
+            "set_aside": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "big_idea": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learning_focus": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "domain",
+              "kind",
+              "code",
+              "description",
+              "verified"
+            ],
+            "properties": {
+              "domain": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "enum": [
+                  "核心素養",
+                  "學習表現",
+                  "學習內容"
+                ]
+              },
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verified": {
+                "type": "boolean"
+              },
+              "verification_note": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "task",
+              "criteria"
+            ],
+            "properties": {
+              "task": {
+                "type": "string",
+                "minLength": 1
+              },
+              "criteria": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "activity_outline": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "phase",
+              "idea"
+            ],
+            "properties": {
+              "phase": {
+                "enum": [
+                  "引起動機",
+                  "發展活動",
+                  "綜合活動",
+                  "延伸"
+                ]
+              },
+              "idea": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minutes": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "open_questions": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "next_skill": {
+          "enum": [
+            "tw-edu-lesson-plan-108",
+            "tw-edu-pbl-designer",
+            "tw-edu-interdisciplinary",
+            "tw-edu-differentiated",
+            "none"
+          ]
+        }
+      }
+    }
+  }
+}

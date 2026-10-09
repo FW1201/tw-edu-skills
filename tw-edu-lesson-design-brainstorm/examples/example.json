@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "skill": "tw-edu-lesson-design-brainstorm",
+  "language": "zh-TW",
+  "context": {
+    "subject": "社會",
+    "grade": "國中八年級",
+    "topic": "食物里程與在地農業"
+  },
+  "sources": [
+    {
+      "title": "教師提供之議題與教學條件",
+      "status": "user_provided"
+    }
+  ],
+  "content": {
+    "title": "「一顆高麗菜的旅程」教學設計構想書（範例）",
+    "topic_input": "食物里程與在地農業",
+    "learners": "國中八年級，城市學校，學生多在便利商店購買早餐",
+    "constraints": [
+      "社會科 4 節",
+      "可使用平板查資料",
+      "無校外教學經費"
+    ],
+    "divergence": {
+      "student_connections": [
+        "早餐食材從哪裡來",
+        "家中常買的蔬菜產地標示"
+      ],
+      "authentic_contexts": [
+        "學校午餐菜單食材來源",
+        "附近傳統市場與超市價格比較"
+      ],
+      "interdisciplinary_angles": [
+        "自然：碳排放概念",
+        "數學：距離與成本計算"
+      ],
+      "issues": [
+        "環境教育",
+        "戶外教育"
+      ],
+      "essential_questions": [
+        "我們吃的食物走了多遠？誰為這段距離付出代價？"
+      ]
+    },
+    "selected": {
+      "angle": "學校午餐菜單食材來源",
+      "rationale": "每位學生都有共同經驗，資料可向午餐秘書取得，不需經費",
+      "set_aside": [
+        "市場價格比較需校外時間，暫不採用"
+      ]
+    },
+    "big_idea": "生產與消費的選擇會影響環境與在地經濟，需要在多重考量間取捨。",
+    "learning_focus": [
+      {
+        "domain": "社會",
+        "kind": "學習表現",
+        "code": "社3c-Ⅳ-1",
+        "description": "聆聽他人意見，表達自我觀點，並能與他人討論。",
+        "verified": false,
+        "verification_note": "待以 lookup_curriculum.py 回查領域與代碼"
+      }
+    ],
+    "evidence": [
+      {
+        "task": "以一週午餐菜單計算 3 項食材的運送距離並提出替代建議",
+        "criteria": "資料有來源、計算過程清楚、建議考量至少兩種代價"
+      }
+    ],
+    "activity_outline": [
+      {
+        "phase": "引起動機",
+        "idea": "猜猜今天午餐的高麗菜從哪裡來",
+        "minutes": 10
+      },
+      {
+        "phase": "發展活動",
+        "idea": "小組查詢食材產地並計算距離",
+        "minutes": 90
+      },
+      {
+        "phase": "綜合活動",
+        "idea": "向午餐秘書提出建議的模擬簡報",
+        "minutes": 80
+      }
+    ],
+    "open_questions": [
+      "是否與自然科合作計算碳排",
+      "成果是否實際提交學校午餐委員會"
+    ],
+    "next_skill": "tw-edu-lesson-plan-108"
+  }
+}
