@@ -75,6 +75,14 @@ def _semantic(skill: str, d: dict) -> list[str]:
 
 def _legacy_semantic(skill: str, d: dict) -> None:
     c = d["content"]
+    if skill == "tw-edu-worksheet-creator":
+        from .math_notation import validate_runs
+        for task in c.get("prompts", []):
+            if "prompt_parts" in task:
+                try:
+                    validate_runs(task["prompt_parts"])
+                except (ValueError, TypeError) as exc:
+                    raise InputError(str(exc)) from exc
     if skill == "tw-edu-learning-evidence-analyzer":
         from .learning_evidence import analyze
         try: analyze(c)
@@ -257,9 +265,18 @@ def _docx(d: dict, output: Path, teacher=False) -> None:
                 for item in val:
                     if isinstance(item,dict):
                         p=doc.add_paragraph(style="List Bullet")
-                        p.add_run("；".join(f"{FIELD_LABELS.get(k,k)}：{v}" for k,v in item.items() if not isinstance(v,(list,dict))))
+                        is_math_prompt = d["skill"] == "tw-edu-worksheet-creator" and "prompt" in item and (
+                            "prompt_parts" in item or d["context"].get("subject") == "數學"
+                        )
+                        if is_math_prompt:
+                            from .math_notation import append_runs
+                            p.add_run(f"編號：{item['id']}；題目：")
+                            append_runs(p, item["prompt"], item.get("prompt_parts"))
+                            p.add_run(f"；作答行數：{item['response_space_lines']}")
+                        else:
+                            p.add_run("；".join(f"{FIELD_LABELS.get(k,k)}：{v}" for k,v in item.items() if not isinstance(v,(list,dict))))
                         for k,v in item.items():
-                            if isinstance(v,(list,dict)):
+                            if k != "prompt_parts" and isinstance(v,(list,dict)):
                                 for label,text in _strings(v,f"{FIELD_LABELS.get(k,k)}｜"): doc.add_paragraph(f"{label}：{text}",style="List Bullet 2")
                         if d["skill"]=="tw-edu-worksheet-creator":
                             for _ in range(item.get("response_space_lines",0)): doc.add_paragraph("________________________________________________")

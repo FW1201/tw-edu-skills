@@ -164,6 +164,74 @@
               "table": {
                 "type": "array",
                 "minItems": 1
+              },
+              "prompt_parts": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "text"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "math"
+                      ],
+                      "properties": {
+                        "math": {
+                          "type": "array",
+                          "minItems": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "answer_parts": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "text"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "math"
+                      ],
+                      "properties": {
+                        "math": {
+                          "type": "array",
+                          "minItems": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                }
               }
             }
           }

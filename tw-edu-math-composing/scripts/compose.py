@@ -13,61 +13,10 @@ from tempfile import TemporaryDirectory
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 
 
-def native_math(parts):
-    from docx.oxml import OxmlElement
-
-    def node(name, *children):
-        result = OxmlElement("m:" + name)
-        for child in children:
-            result.append(child)
-        return result
-
-    def expression(parts):
-        return node("e", *(part(value) for value in parts))
-
-    def part(value):
-        if isinstance(value, str):
-            run_text = node("t")
-            run_text.text = value
-            return node("r", run_text)
-        kind, cells = next(iter(value.items()))
-        if kind in ("frac", "sup"):
-            first, second = cells
-            if kind == "frac":
-                return node("f", node("num", part(first)), node("den", part(second)))
-            return node("sSup", node("e", part(first)), node("sup", part(second)))
-        if kind == "system":
-            begin = node("begChr")
-            end = node("endChr")
-            from docx.oxml.ns import qn
-            begin.set(qn("m:val"), "{")
-            end.set(qn("m:val"), "")
-            return node("d", node("dPr", begin, end),
-                        node("e", node("eqArr", *(expression(row) for row in cells))))
-        matrix = node("m", *(node("mr", *(expression([cell]) for cell in row)) for row in cells))
-        return node("d", node("e", matrix))
-
-    return node("oMath", *(part(value) for value in parts))
-
-
-def validate_parts(parts):
-    if not isinstance(parts, list) or not parts:
-        raise ValueError("公式 parts 必須為非空陣列")
-    for value in parts:
-        if isinstance(value, str) and value:
-            continue
-        if not isinstance(value, dict) or len(value) != 1:
-            raise ValueError("無效的公式結構")
-        kind, rows = next(iter(value.items()))
-        if kind in ("frac", "sup") and isinstance(rows, list) and len(rows) == 2:
-            validate_parts(rows)
-        elif kind in ("matrix", "system") and isinstance(rows, list) and rows:
-            if kind == "matrix" and any(len(row) != len(rows[0]) for row in rows):
-                raise ValueError("矩陣每列的欄數必須一致")
-            for row in rows:
-                validate_parts(row)
-        else:
-            raise ValueError(f"不支援的公式結構：{kind}")
+from diagram_math import label_box
+from edu_runtime.math_notation import (
+    append_runs, legacy_runs, native_math, normalize_parts, validate_parts, validate_runs,
+)
 
 
 DEFAULT_FONT = "Noto Serif TC"
@@ -198,18 +147,44 @@ def diagram(spec, svg_path=None, png_path=None, font_family=DEFAULT_FONT, font_f
     svg = Element("svg", xmlns="http://www.w3.org/2000/svg", viewBox=f"0 0 {width} {height}")
     SubElement(svg, "title").text = spec["alt"]
     SubElement(svg, "rect", width=str(width), height=str(height), fill="white")
+    from functools import lru_cache
+    from PIL import Image, ImageDraw, ImageFont
     if png_path:
-        from PIL import Image, ImageDraw, ImageFont
         picture = Image.new("RGB", (3 * width, 3 * height), "white")
         canvas = ImageDraw.Draw(picture)
-        font_path = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
-        if not font_path.is_file() and shutil.which("fc-match"):
-            font_path = Path(subprocess.check_output(
-                ["fc-match", "-f", "%{file}", "DejaVu Sans"], text=True))
+    font_path = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
+    if not font_path.is_file() and shutil.which("fc-match"):
+        font_path = Path(subprocess.check_output(
+            ["fc-match", "-f", "%{file}", "DejaVu Sans"], text=True))
+
+    @lru_cache
+    def label_font(size):
+        px = round(size * 3)
         if font_file:
-            font = ImageFont.truetype(font_file[0], 38, index=font_file[1])
-        else:
-            font = ImageFont.truetype(str(font_path), 38) if font_path.is_file() else ImageFont.load_default(size=38)
+            return ImageFont.truetype(font_file[0], px, index=font_file[1])
+        if font_path.is_file():
+            return ImageFont.truetype(str(font_path), px)
+        return ImageFont.load_default(size=px)
+
+    def measure(label, size):
+        font = label_font(size)
+        _, top, _, bottom = font.getbbox(label, anchor="ls")
+        return font.getlength(label) / 3, top / 3, bottom / 3
+
+    def paint_text(x, y, label, size):
+        svg_label = SubElement(svg, "text", x=str(x), y=str(y), **{
+            "font-size": str(size), "font-family": f"{font_family}, sans-serif",
+            "{http://www.w3.org/XML/1998/namespace}space": "preserve",
+        })
+        svg_label.text = label
+        if png_path:
+            canvas.text((x * 3, y * 3), label, font=label_font(size), fill="black", anchor="ls")
+
+    def paint_stroke(points, pen):
+        SubElement(svg, "polyline", points=" ".join(f"{x:.3f},{y:.3f}" for x, y in points),
+                   fill="none", stroke="#181818", **{"stroke-width": str(pen)})
+        if png_path:
+            canvas.line([(3 * x, 3 * y) for x, y in points], fill="#181818", width=max(1, round(3 * pen)))
 
     def draw_line(points, dashed=False):
         if len(points) < 2:
@@ -254,9 +229,15 @@ def diagram(spec, svg_path=None, png_path=None, font_family=DEFAULT_FONT, font_f
             values = [low + (high - low) * index / 300 for index in range(301)]
             draw_line([(ox + sx * t, oy - sy * function(t)) for t in values], curve.get("dashed", False))
     for x, y, label in spec.get("labels", []):
-        SubElement(svg, "text", x=str(x), y=str(y), **{"font-size": "13", "font-family": f"{font_family}, sans-serif"}).text = label
-        if png_path:
-            canvas.text((x * 3, y * 3), label, font=font, fill="black", anchor="ls")
+        runs = list(legacy_runs(label))
+        if any("math" in run for run in runs):
+            parts = [part for run in runs for part in (run["math"] if "math" in run else [run["text"]])]
+            label_box(parts, 13, measure, paint_text, paint_stroke).paint(x, y)
+        else:
+            paint_text(x, y, label, 13)
+    for x, y, parts in spec.get("math_labels", []):
+        validate_parts(parts)
+        label_box(normalize_parts(parts), 13, measure, paint_text, paint_stroke).paint(x, y)
     if svg_path:
         ElementTree(svg).write(svg_path, encoding="utf-8", xml_declaration=True)
     if png_path:
@@ -273,6 +254,9 @@ def validate(source):
         if not key.isascii() or not key.isalnum() or key in ids or not item["prompt"]:
             raise ValueError("題目 ID 須是唯一英數字，且須有題幹")
         ids.add(key)
+        for key in ("prompt_parts", "answer_parts"):
+            if key in item:
+                validate_runs(item[key])
         if "formula" in item:
             if not item["formula"]["latex"]:
                 raise ValueError("缺少 LaTeX 原文")
@@ -441,7 +425,9 @@ def document(source, path, assets, teacher, font_family):
             heading.paragraph_format.space_before = Pt(question_gap)
         content_cm = (17.4 - COLUMN_GAP_CM * (columns - 1)) / columns - (0.4 if subquestion else 0)
         first_paragraph = len(doc.paragraphs) - 1
-        prompt = doc.add_paragraph(item["prompt"])
+        prompt = doc.add_paragraph()
+        if append_runs(prompt, item["prompt"], item.get("prompt_parts")):
+            prompt.paragraph_format.line_spacing = 1.0
         prompt.paragraph_format.keep_together = True
         following_answer = bool(item.get("answer") if teacher else
                                 item.get("answer_lines") or item.get("workspace_mm"))
@@ -491,10 +477,12 @@ def document(source, path, assets, teacher, font_family):
             label, delimiter, answer = item["answer"].partition("｜")
             if delimiter and label in ("解答", "原稿附答"):
                 teacher_note.add_run("解析｜").bold = True
-                teacher_note.add_run(answer)
+                if append_runs(teacher_note, answer, item.get("answer_parts")):
+                    teacher_note.paragraph_format.line_spacing = 1.0
             else:
                 teacher_note.add_run("解析｜").bold = True
-                teacher_note.add_run(item["answer"])
+                if append_runs(teacher_note, item["answer"], item.get("answer_parts")):
+                    teacher_note.paragraph_format.line_spacing = 1.0
         elif not teacher:
             blank_mm = item.get("workspace_mm", 6 * item.get("answer_lines", 0))
             if blank_mm:
@@ -590,7 +578,7 @@ def main():
     student = {key: source[key] for key in ("version", "title", "stage", "purpose", "sources", "layout") if key in source}
     student["items"] = [{key: value for key, value in item.items() if key in (
         "id", "heading", "prompt", "figure", "formula", "table", "answer_lines", "page_break",
-        "column_break", "group_heading", "workspace_mm", "subquestion", "parent_heading"
+        "column_break", "group_heading", "workspace_mm", "subquestion", "parent_heading", "prompt_parts"
     )} for item in source["items"]]
     student_file = out / "student.docx"
     teacher_file = out / "teacher.docx"

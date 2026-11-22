@@ -2,7 +2,7 @@
 name: tw-edu-worksheet-creator
 description: 學習單製作。依學習目標安排示例、引導練習、獨立練習與反思，設計鷹架與作答空間，檢查閱讀負荷、材料是否足以完成任務與可及性，學生版不含教師解答。適用於學習單、練習單、閱讀學習單、課堂任務單、分層學習單。
 metadata:
-  version: 4.2.0
+  version: 4.2.1
   author: 奇老師・數位敘事力社群
   category: 教材資源
 ---
@@ -50,6 +50,8 @@ metadata:
 python3 "$SKILL_DIR/scripts/generate_worksheet.py" --input "$TASK_DIR/input.json" --validate-only
 python3 "$SKILL_DIR/scripts/generate_worksheet.py" --input "$TASK_DIR/input.json" --output "$TASK_DIR/worksheet.docx"
 ```
+
+數學科題幹中的單純整數分數和數值根式會輸出成行內 Word 公式。要精確界定根號或分數的範圍，可在題目加 `prompt_parts`，以 `{"text":"長 "}` 和 `{"math":[{"frac":["3","4"]}]}` 交錯組成，同時保留原始 `prompt` 供內容審核。
 
 ## 品質關卡
 
