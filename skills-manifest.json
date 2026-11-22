@@ -1,5 +1,5 @@
 {
-  "version": "5.0.1",
+  "version": "5.1.0",
   "schema_version": 1,
   "skills": [
     {
@@ -493,6 +493,21 @@
       "dependencies": [
         "python-docx>=1.1,<2",
         "jsonschema>=4.20,<5"
+      ],
+      "bundles": []
+    },
+    {
+      "name": "tw-edu-math-composing",
+      "version": "0.4.0",
+      "title": "數學圖文與考卷排版",
+      "category": "教材資源",
+      "purpose": "精確數學圖表、公式排版、程式驗算與考卷輸出",
+      "entrypoint": "scripts/generate_math_composing.py",
+      "format": "docx",
+      "dependencies": [
+        "python-docx>=1.1,<2",
+        "jsonschema>=4.20,<5",
+        "Pillow>=10,<13"
       ],
       "bundles": []
     }

@@ -1,6 +1,6 @@
 # tw-edu-skills
 
-35 個獨立臺灣 K-12 教師 Skills（8 個面向），適用 Codex 與 Claude Code，繁體中文。保留 skills-manifest.json 中的名稱、面向與獨立安裝能力。
+36 個獨立臺灣 K-12 教師 Skills（8 個面向），適用 Codex 與 Claude Code，繁體中文。保留 skills-manifest.json 中的名稱、面向與獨立安裝能力。
 
 修改共用邏輯請編輯 shared/runtime、shared/references 或 shared/curriculum，並執行 scripts/sync_assets.py；不要手動編輯生成副本。各技能的 schema、示例與 SKILL.md 思維路線須對齊。新增或改寫技能依 docs/SKILL-AUTHORING-v5.md。正式生成不得使用未標示的範例資料，來源及學生事實不得虛構。
 

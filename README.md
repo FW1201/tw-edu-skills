@@ -1,6 +1,6 @@
-# tw-edu-skills v5.0.1
+# tw-edu-skills v5.1.0
 
-臺灣 K-12 教師的 35 個獨立 AI Skills，分 8 個面向：課程設計、評量命題、教材資源、學生表現、班級經營、教育行政、教師專業、套組設定。適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 依技能內的思維路線讀教材與實際資料、撰寫內容，Python 驗證並排版。教師保有教學判斷權。
+臺灣 K-12 教師的 36 個獨立 AI Skills，分 8 個面向：課程設計、評量命題、教材資源、學生表現、班級經營、教育行政、教師專業、套組設定。適用 Codex 與 Claude Code。各技能可單獨安裝；Agent 依技能內的思維路線讀教材與實際資料、撰寫內容，Python 驗證並排版。教師保有教學判斷權。
 
 v5 重點：每支技能改寫為「定位與邊界 → 開始前 → 思維路線 → 台灣情境要點 → 產出 → 品質關卡 → 交接」七段式；新增班級經營（導師事務、行為支持、事件應變與通報分流、學生輔導建議、輔導與特教協作）、教育行政（校園公文）與教師專業（公開授課、校事會議應對、教師壓力支持）等 12 支；法規與時限主張集中記錄於 [CITATIONS.md](CITATIONS.md)。遷移見 [v5 遷移指南](docs/MIGRATION-v5.md)；舊版見 [v4 遷移指南](docs/MIGRATION-v4.md)。
 
@@ -43,7 +43,7 @@ python3 -m venv .venv
 ## 技能清單
 
 <!-- inventory:start -->
-共 35 個獨立 Skills，分 8 個面向。
+共 36 個獨立 Skills，分 8 個面向。
 
 ### 課程設計（7）
 
@@ -66,7 +66,7 @@ python3 -m venv .venv
 | `tw-edu-formative-assessment` | 形成性評量：收集課中證據並決定教學調整 | docx |
 | `tw-edu-anti-ai-assessment` | 評量真實性設計：檢視評量證據與改善任務設計 | docx |
 
-### 教材資源（4）
+### 教材資源（5）
 
 | Skill | 用途 | 主要輸出 |
 |---|---|---|
@@ -74,6 +74,7 @@ python3 -m venv .venv
 | `tw-edu-slides-creator` | 教學簡報：製作可編輯投影片與教師講稿 | pptx |
 | `tw-edu-mini-app` | 教學小程式：產出可本機開啟的互動教學網頁 | html |
 | `tw-edu-material-reviewer` | 教材與評量品質審查：檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查 | docx |
+| `tw-edu-math-composing` | 數學圖文與考卷排版：精確數學圖表、公式排版、程式驗算與考卷輸出 | docx |
 
 ### 學生表現（4）
 

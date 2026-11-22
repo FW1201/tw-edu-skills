@@ -1,6 +1,6 @@
 # 技能參考
 
-由 skills-manifest.json 與各技能 schema 產生。共 35 個獨立 Skills。
+由 skills-manifest.json 與各技能 schema 產生。共 36 個獨立 Skills。
 
 ## 課程設計
 
@@ -31,6 +31,7 @@
 | [tw-edu-slides-creator](../tw-edu-slides-creator/SKILL.md) | 製作可編輯投影片與教師講稿 | title, slides | pptx |
 | [tw-edu-mini-app](../tw-edu-mini-app/SKILL.md) | 產出可本機開啟的互動教學網頁 | title, mode | html |
 | [tw-edu-material-reviewer](../tw-edu-material-reviewer/SKILL.md) | 檢查既有教材、試卷或簡報的可定位缺陷，提出局部修正並複查 | title, mode, materials, findings, unchecked | docx |
+| [tw-edu-math-composing](../tw-edu-math-composing/SKILL.md) | 精確數學圖表、公式排版、程式驗算與考卷輸出 | title, purpose, items | docx |
 
 ## 學生表現
 

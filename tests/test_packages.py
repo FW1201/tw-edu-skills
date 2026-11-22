@@ -38,7 +38,7 @@ def test_individual_archives_are_self_contained_and_validate_from_arbitrary_cwd(
         assert (installed / 'SKILL.md').is_file()
         assert (installed / 'references/common/workflow.md').is_file()
         if skill['entrypoint']:
-            example = next((installed / 'examples').glob('*.json'))
+            example = installed / 'examples' / 'example.json'
             result = subprocess.run(
                 [sys.executable, str(installed / skill['entrypoint']), '--input', str(example), '--validate-only'],
                 cwd=tmp_path,

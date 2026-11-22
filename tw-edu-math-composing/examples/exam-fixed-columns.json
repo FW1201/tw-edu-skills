@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "title": "五年級數學｜分數乘法練習卷",
+  "stage": "國小五年級",
+  "purpose": "版型對照",
+  "sources": [
+    "原創試題。僅參考附件所呈現的欄位與作答配置。"
+  ],
+  "layout": {
+    "mode": "double",
+    "column_rule": true,
+    "exam_header": true,
+    "font_family": "Noto Serif TC"
+  },
+  "items": [
+    {
+      "id": "A1",
+      "heading": "",
+      "prompt": "把四個八分之三相加，寫成一個乘法算式。",
+      "answer": "解答｜3/8 × 4 ＝ 12/8 ＝ 3/2。",
+      "group_heading": "一、概念填答（每題 10 分，共 20 分）",
+      "workspace_mm": 10
+    },
+    {
+      "id": "A2",
+      "heading": "",
+      "prompt": "每份是全量的九分之二。取六份時，一共是幾個九分之一？",
+      "answer": "解答｜6 × 2 ＝ 12，共 12 個九分之一。",
+      "workspace_mm": 12
+    },
+    {
+      "id": "B1",
+      "heading": "",
+      "prompt": "計算，並寫出約分過程。",
+      "answer": "解答｜2/9 × 6 ＝ 12/9 ＝ 4/3。",
+      "group_heading": "二、算算看（每題 10 分，共 30 分）",
+      "workspace_mm": 11,
+      "formula": {
+        "latex": "\\frac29\\times6",
+        "parts": [
+          {
+            "frac": [
+              "2",
+              "9"
+            ]
+          },
+          " × 6"
+        ],
+        "answer_blank": true
+      },
+      "subquestion": true,
+      "parent_heading": "分數乘法"
+    },
+    {
+      "id": "B2",
+      "heading": "",
+      "prompt": "計算，並將答案寫成最簡分數。",
+      "answer": "解答｜7/15 × 5 ＝ 35/15 ＝ 7/3。",
+      "workspace_mm": 11,
+      "formula": {
+        "latex": "\\frac{7}{15}\\times5",
+        "parts": [
+          {
+            "frac": [
+              "7",
+              "15"
+            ]
+          },
+          " × 5"
+        ],
+        "answer_blank": true
+      },
+      "subquestion": true
+    },
+    {
+      "id": "B3",
+      "heading": "",
+      "prompt": "計算，並將答案寫成帶分數。",
+      "answer": "解答｜11/8 × 2 ＝ 22/8 ＝ 2 又 3/4。",
+      "workspace_mm": 11,
+      "formula": {
+        "latex": "\\frac{11}{8}\\times2",
+        "parts": [
+          {
+            "frac": [
+              "11",
+              "8"
+            ]
+          },
+          " × 2"
+        ],
+        "answer_blank": true
+      },
+      "subquestion": true
+    },
+    {
+      "id": "C1",
+      "heading": "（15 分）",
+      "prompt": "每張書籤需用 3/10 公尺的緞帶。做 7 張共需要多少公尺？請列式並寫上單位。",
+      "answer": "解答｜3/10 × 7 ＝ 21/10，所以共需要 2 又 1/10 公尺。",
+      "group_heading": "三、應用題（共 50 分）",
+      "column_break": true,
+      "workspace_mm": 30
+    },
+    {
+      "id": "C2",
+      "heading": "（15 分）",
+      "prompt": "小安每天走 7/12 公里，連續走 6 天共走多少公里？請列式並簡化答案。",
+      "answer": "解答｜7/12 × 6 ＝ 42/12 ＝ 7/2，所以共走 3 又 1/2 公里。",
+      "workspace_mm": 30
+    },
+    {
+      "id": "C3",
+      "heading": "（20 分）",
+      "prompt": "如圖，一張長方形色紙長 5/6 公尺、寬 3 公尺。這張色紙面積是多少平方公尺？",
+      "answer": "解答｜長 × 寬 ＝ 5/6 × 3 ＝ 15/6 ＝ 5/2，面積是 2 又 1/2 平方公尺。",
+      "workspace_mm": 28,
+      "figure": {
+        "size": [
+          300,
+          104
+        ],
+        "alt": "長方形上邊標 5/6 公尺，左邊標 3 公尺。",
+        "lines": [
+          [
+            [
+              58,
+              29
+            ],
+            [
+              248,
+              29
+            ],
+            [
+              248,
+              93
+            ],
+            [
+              58,
+              93
+            ],
+            [
+              58,
+              29
+            ]
+          ]
+        ],
+        "labels": [
+          [
+            124,
+            21,
+            "5/6 m"
+          ],
+          [
+            31,
+            64,
+            "3 m"
+          ]
+        ]
+      }
+    }
+  ]
+}
