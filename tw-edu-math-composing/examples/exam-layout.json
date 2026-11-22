@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "title": "數學小考｜分欄版面示例",
+  "stage": "國中",
+  "purpose": "考卷排版",
+  "sources": [
+    "原創示範題"
+  ],
+  "layout": {
+    "mode": "mixed",
+    "font_family": "Noto Serif TC",
+    "zones": [
+      {
+        "start_item": "A1",
+        "columns": 2,
+        "title": "第一部分｜短題"
+      },
+      {
+        "start_item": "B1",
+        "columns": 1,
+        "title": "第二部分｜圖表與推理"
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "A1",
+      "heading": "正負數",
+      "prompt": "計算下列算式。",
+      "answer": "解答｜5",
+      "answer_lines": 1,
+      "formula": {
+        "latex": "-7+12",
+        "parts": [
+          "−7+12"
+        ],
+        "answer_blank": true
+      }
+    },
+    {
+      "id": "A2",
+      "heading": "比例",
+      "prompt": "3 比 5 的比值是多少？",
+      "answer": "解答｜3/5",
+      "answer_lines": 1
+    },
+    {
+      "id": "A3",
+      "heading": "整數運算",
+      "prompt": "計算下列算式。",
+      "answer": "解答｜−24",
+      "answer_lines": 1,
+      "formula": {
+        "latex": "-4\\times 6",
+        "parts": [
+          "−4×6"
+        ],
+        "answer_blank": true
+      }
+    },
+    {
+      "id": "A4",
+      "heading": "估算",
+      "prompt": "17.8 四捨五入到整數。",
+      "answer": "解答｜18",
+      "answer_lines": 1
+    },
+    {
+      "id": "A5",
+      "heading": "百分率",
+      "prompt": "60 的 25% 是多少？",
+      "answer": "解答｜15",
+      "answer_lines": 1
+    },
+    {
+      "id": "A6",
+      "heading": "一元一次方程",
+      "prompt": "若 3x＋2＝14，求 x。",
+      "answer": "解答｜4",
+      "answer_lines": 1
+    },
+    {
+      "id": "A7",
+      "heading": "絕對值",
+      "prompt": "−9 的絕對值是多少？",
+      "answer": "解答｜9",
+      "answer_lines": 1
+    },
+    {
+      "id": "A8",
+      "heading": "直角座標",
+      "prompt": "點 (−2, 3) 位於第幾象限？",
+      "answer": "解答｜第二象限",
+      "answer_lines": 1
+    },
+    {
+      "id": "B1",
+      "heading": "比較兩班的資料",
+      "prompt": "兩班記錄每人一週的閱讀時間。依表格比較兩班讀滿 20 分鐘的人數比例，並說明為什麼只看人數可能出現另一種結論。",
+      "table": [
+        [
+          "班級",
+          "未滿 20 分鐘",
+          "20 至未滿 40 分鐘",
+          "40 分鐘以上",
+          "全班人數"
+        ],
+        [
+          "甲班",
+          5,
+          12,
+          8,
+          25
+        ],
+        [
+          "乙班",
+          9,
+          8,
+          13,
+          30
+        ]
+      ],
+      "answer": "解答｜甲班 20/25＝80%，乙班 21/30＝70%。乙班達標人數較多，甲班達標比例較高，兩班總人數不同。",
+      "answer_lines": 3
+    }
+  ]
+}

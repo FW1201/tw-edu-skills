@@ -1,0 +1,6 @@
+interface:
+  display_name: "臺灣數學教材設計與排版"
+  short_description: "設計數學教材、驗證數學程式與資料視覺化、輸出 Word 與 PDF"
+  default_prompt: "使用 $tw-edu-math-composing 依需求設計數學教材、製作數學圖表或驗證數學程式。"
+policy:
+  allow_implicit_invocation: true

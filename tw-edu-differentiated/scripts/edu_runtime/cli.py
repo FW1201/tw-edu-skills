@@ -22,7 +22,7 @@ SKILLS = {
     "tw-edu-pbl-designer": "docx", "tw-edu-school-document": "docx",
     "tw-edu-worksheet-creator": "docx", "tw-edu-anti-ai-assessment": "docx",
     "tw-edu-mini-app": "html", "tw-edu-research-viz": "png",
-    "tw-edu-slides-creator": "pptx",
+    "tw-edu-slides-creator": "pptx", "tw-edu-math-composing": "math",
     "tw-edu-homeroom-operations": "docx", "tw-edu-behavior-support": "docx",
     "tw-edu-incident-response": "docx", "tw-edu-student-guidance-advice": "docx",
     "tw-edu-guidance-collaboration": "docx", "tw-edu-official-document": "docx",
@@ -350,6 +350,22 @@ def run(skill: str, input_path: Path, output: Path, validate_only=False, sample=
         from .slides import prepare
         try: prepare(d['content'], input_path.resolve().parent)
         except (ValueError, OSError) as exc: raise InputError(str(exc)) from exc
+    if skill == 'tw-edu-math-composing':
+        from compose import from_edu_input, render_docx_pair, validate
+        math_input = from_edu_input(d)
+        try:
+            validate(math_input)
+        except (ValueError, TypeError, KeyError, AttributeError) as exc:
+            raise InputError(f'數學文件資料無效：{exc}') from exc
+        if validate_only:
+            return []
+        if sample and '範例' not in math_input['title']:
+            math_input['title'] += '（範例）'
+        if output.suffix.lower() != '.docx':
+            raise InputError('output must use .docx')
+        outputs = render_docx_pair(math_input, output)
+        _report(input_path, outputs, d, sample, advisories)
+        return outputs
     if validate_only: return []
     if sample and '範例' not in d['content']['title']:
         d['content']['title'] += '（範例）'
@@ -386,7 +402,7 @@ def main(skill_name: str) -> int:
     if args.example and args.input: p.error("--example and --input are mutually exclusive")
     if not args.example and not args.input: p.error("--input is required unless --example is used")
     if not args.validate_only and not args.output:
-        extension = 'docx' if SKILLS[skill_name] == 'exam' else SKILLS[skill_name]
+        extension = 'docx' if SKILLS[skill_name] in ('exam', 'math') else SKILLS[skill_name]
         args.output = Path.cwd() / 'artifacts' / skill_name / uuid.uuid4().hex[:12] / ('output.' + extension)
     source=_skill_dir()/"examples"/"example.json" if args.example else args.input
     try:

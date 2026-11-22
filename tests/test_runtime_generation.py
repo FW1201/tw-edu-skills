@@ -13,13 +13,13 @@ def invoke(skill,*args,cwd=None):
     return subprocess.run([str(PY),str(ROOT/skill/"scripts"/GENERATORS[skill]),*map(str,args)],cwd=cwd,text=True,capture_output=True,env=env)
 
 def test_manifest_lists_every_generator():
-    assert len(GENERATORS)==33 and "tw-edu-official-document" in GENERATORS
+    assert len(GENERATORS)==34 and "tw-edu-official-document" in GENERATORS
 
 @pytest.mark.parametrize("skill",GENERATORS)
 def test_every_generator_example_and_arbitrary_cwd(skill,tmp_path):
     out=tmp_path/("result"+EXT.get(skill,".docx")); r=invoke(skill,"--example","--output",out,cwd=tmp_path)
     assert r.returncode==0,r.stderr
-    if skill=="tw-edu-exam-generator":
+    if skill in {"tw-edu-exam-generator","tw-edu-math-composing"}:
         assert (tmp_path/"result-student.docx").exists() and (tmp_path/"result-teacher.docx").exists()
     else: assert out.exists()
 
@@ -52,3 +52,18 @@ def test_task_specific_schemas_are_not_generic_blocks():
     for skill,field in expected.items():
         schema=json.loads((ROOT/skill/"schemas/input.schema.json").read_text()); required=schema["properties"]["content"]["required"]
         assert field in required and "sections" not in required
+
+
+def test_math_layout_keeps_answers_off_student_sheet(tmp_path):
+    from zipfile import ZipFile
+
+    skill = "tw-edu-math-composing"
+    result = invoke(skill, "--example", "--output", tmp_path / "math.docx")
+    assert result.returncode == 0, result.stderr
+    with ZipFile(tmp_path / "math-student.docx") as file:
+        student = file.read("word/document.xml").decode()
+    with ZipFile(tmp_path / "math-teacher.docx") as file:
+        teacher = file.read("word/document.xml").decode()
+    assert all(token in student for token in ("一、", "1、", "（1）", "<m:f>", 'w:sep="1"'))
+    assert "解析｜" not in student and "解析｜" in teacher
+    assert "w:leader=" not in student

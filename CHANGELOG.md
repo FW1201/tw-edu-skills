@@ -1,3 +1,7 @@
+# 5.1.0 — 2026-11-22
+
+新增獨立的數學圖文與考卷排版技能 v0.4.0。教案、學習單、簡報和命題驗證仍由既有技能主責；數學公式、圖表、分欄與空白作答由數學技能補足。
+
 # 5.0.1 — 2026-10-09
 
 manifest 顯示名稱與用途對齊 v5 SKILL.md（classroom-culture、parent-communication、school-document、meeting-facilitator、lesson-plan-108、curriculum-mapper、material-reviewer、learning-evidence-analyzer），README 與技能參考重新產生。各技能內容與個別版本不變。

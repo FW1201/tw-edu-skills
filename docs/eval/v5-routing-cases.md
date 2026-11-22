@@ -80,3 +80,9 @@
 2. 議題發想 → lesson-design-brainstorm → lesson-plan-108 → worksheet-creator → material-reviewer。
 3. 收到校事會議通知 → school-affairs-meeting ＋ teacher-wellbeing。
 4. 補助申請 → school-document（計畫書）→ official-document（簽稿併陳）→ 執行後 school-document（成果報告）→ official-document（函報）。
+
+## tw-edu-math-composing
+
+- 正例：「幫我把已審定的數學試題排成雙欄，分數可編輯、計算題留白」→ 數學考卷版型；題數及配分以試卷技能的規格為準。
+- 正例：「給我可插入學習單的二元一次方程式坐標圖，並用程式檢查點」→ 數學圖文與程式核對。
+- 近似反例：「排出完整七年級數學教案及學習單」→ 既有教案與學習單技能主責，數學技能交付公式、圖形與驗算。
