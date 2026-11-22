@@ -2,7 +2,7 @@
 
 輸出以繁中 A4 為預設。維持題幹、公式、圖與必要表格在同一作答脈絡。教師版加答案與提示，學生版採白名單組裝。學生交付時只傳學生檔及必要圖文來源。
 
-教材來源為 UTF-8 JSON。上層有 `version: 1`、`title`、`stage`、`purpose`、`sources`、`items`。每題有唯一 `id`、`prompt`，可含 `formula`、`figure`、`table`、`answer_lines` 及教師專用 `answer`。公式輸入含 `latex` 與 `parts`，可用字串、`frac`、`sup`、`matrix`、`system` 組成。樣例展示各圖形類型和參數。學生來源會移除教師專用欄位。檔案只在指定輸出目錄內產生。
+教材來源為 UTF-8 JSON。上層有 `version: 1`、`title`、`stage`、`purpose`、`sources`、`items`。每題有唯一 `id`、`prompt`，可含 `formula`、`figure`、`table`、`answer_lines` 及教師專用 `answer`。公式輸入含 `latex` 與 `parts`，可用字串、`frac`、`rad`、`sup`、`row`、`op`、`matrix`、`system` 組成。樣例展示各圖形類型和參數。學生來源會移除教師專用欄位。檔案只在指定輸出目錄內產生。
 
 ```bash
 python3 -m pip install python-docx Pillow
@@ -72,3 +72,11 @@ python3 scripts/compose.py examples/elementary.json --output /path/to/artifacts
 同一題有多個子題時，在第一個子題同時設 `"parent_heading": "分數乘法"` 與 `"subquestion": true`，後續子題只設 `"subquestion": true`，顯示為縮排的「（1）（2）（3）」。新父題、新大題與一般題目會結束前一組子題。Word 採三層標題樣式，可在導航窗格查看；產出的題號是依輸入順序生成，調整題序後重新輸出即可更新。
 
 優先使用 `workspace_mm` 指定純空白作答高度。只有姓名、座號及題意需要的圖表線保留線條。
+
+### 根式、分數與圖中公式
+
+- `{"frac":[{"rad":"3"},"2"]}` 表示根號三除以二；`{"rad":{"frac":["3","2"]}}` 表示整個二分之三開平方。根式若跨多項，使用 `{"rad":{"row":["x","+","1"]}}` 指定範圍。函數名稱可用 `{"op":"sin"}` 排正體。
+- 題幹使用 `prompt_parts`、教師解析使用 `answer_parts`，在純文字 `{"text":"長 "}` 和公式 `{"math":[{"frac":["3","4"]}]}` 間交錯。原始 `prompt` 與 `answer` 仍保存，以便比對。解析片段填答案本身，版面會加上「解析」標記。
+- 圖形使用 `math_labels: [[x,y,parts]]` 放入座標與公式片段。公式以文字及向量畫線輸出至 SVG，並同步出現在嵌入 Word 的 PNG。圖中公式支援分數、根式、上標與運算名稱。
+- 舊數學題幹、數學版解析及數學圖標籤中的簡單整數分數和數值根式會正規化。日期或網址等文字宜用明確的 `text` 片段，複雜分數與根式以結構明確指定。
+- 驗收時用「根號內是什麼、分母是什麼」逐式核對，並在 Word、PDF 和圖形中看根號橫線與分數線。插入中文句子的分數也要檢查行高與前後文。

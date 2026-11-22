@@ -1,5 +1,5 @@
 {
-  "version": "5.1.0",
+  "version": "5.1.1",
   "schema_version": 1,
   "skills": [
     {
@@ -108,7 +108,7 @@
     },
     {
       "name": "tw-edu-worksheet-creator",
-      "version": "4.2.0",
+      "version": "4.2.1",
       "title": "學習單",
       "category": "教材資源",
       "purpose": "編排學生可完成的練習與思考任務",
@@ -498,7 +498,7 @@
     },
     {
       "name": "tw-edu-math-composing",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "title": "數學圖文與考卷排版",
       "category": "教材資源",
       "purpose": "精確數學圖表、公式排版、程式驗算與考卷輸出",
